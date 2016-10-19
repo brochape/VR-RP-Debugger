@@ -1,26 +1,23 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Jint;
 using System.IO;
-using Noesis;
-using Noesis.Javascript;
+using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour {
+public class Spawn : MonoBehaviour {
 	private TextMesh textMesh;
 	// Use this for initialization
 	void Start () {
-		JavascriptContext context = new JavascriptContext ();
-		StreamReader reader = File.OpenText("elmAST.js");
+        Debug.Log("Coucou");
+        object result = new Jint.JintEngine().Run("return 21 * 2");
+        StreamReader reader = File.OpenText("Assets/Scripts/.elmAST.js");
 		string line;
-		line = reader.ReadToEnd ();
-		Debug.Log (line);
+        line = reader.ReadToEnd ();
+		Debug.Log (result);
 		var Text = new GameObject();
 		textMesh = Text.AddComponent<TextMesh>();
 		textMesh.font = Resources.Load("calibrili") as Font;
-		textMesh.text = line;
+        textMesh.text = "";//line;
 		textMesh.transform.Translate (Vector3.up*10);
-
-		context.Run (line);
-		context.Dispose ();
+        
 		//		Instantiate(textMesh, new Vector3(10, 10, 10), Quaternion.identity);
 
 		//		int i = 0;
