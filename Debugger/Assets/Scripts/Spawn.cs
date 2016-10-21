@@ -7,11 +7,11 @@ public class Spawn : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         Debug.Log("Coucou");
-        object result = new Jint.JintEngine().Run("return 21 * 2");
         StreamReader reader = File.OpenText("Assets/Scripts/.elmAST.js");
 		string line;
         line = reader.ReadToEnd ();
-		Debug.Log (result);
+        object result = new Jint.JintEngine().Run(line);
+        Debug.Log (result);
 		var Text = new GameObject();
 		textMesh = Text.AddComponent<TextMesh>();
 		textMesh.font = Resources.Load("calibrili") as Font;

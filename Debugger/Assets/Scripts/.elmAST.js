@@ -171,7 +171,7 @@
     }
 
     //import Native.Utils //
-
+    var globalVar_ = undefined;
     var _elm_lang$core$Native_Basics = function () {
 
         function div(a, b) {
@@ -1827,13 +1827,13 @@
             var init = flags
                 ? initWithFlags(moduleName, main.init, flags)
                 : initWithoutFlags(moduleName, main.init);
-
-            return _elm_lang$virtual_dom$VirtualDom$programWithFlags({
-                init: init,
-                view: main.view,
-                update: main.update,
-                subscriptions: main.subscriptions
-            });
+            return main.update;
+            //return _elm_lang$virtual_dom$VirtualDom$programWithFlags({
+            //    init: init,
+            //    view: main.view,
+            //    update: main.update,
+            //    subscriptions: main.subscriptions
+            //});
         }
 
         function initWithoutFlags(moduleName, realInit) {
@@ -9088,7 +9088,7 @@
                 kidList = kidList._1;
             }
             descendantsCount += children.length;
-
+            globalVar_ = children;
             return {
                 type: 'node',
                 tag: tag,
@@ -10781,11 +10781,12 @@
         module['exports'] = Elm;
         return;
     }
-
+    
     var globalElm = this['Elm'];
     if (typeof globalElm === "undefined") {
         this['Elm'] = Elm;
-        return;
+        return ;
+        // HERE THE RETURN IS HERE HALLELUJA
     }
 
     for (var publicModule in Elm) {
@@ -10794,6 +10795,5 @@
         }
         globalElm[publicModule] = Elm[publicModule];
     }
-    return 4;
 }).call(this);
 
