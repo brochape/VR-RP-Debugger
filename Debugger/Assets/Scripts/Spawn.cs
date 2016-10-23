@@ -1,18 +1,49 @@
 ﻿using Jint;
 using System.IO;
 using UnityEngine;
+using System.Text;
+//using Noesis.Javascript;
+//using Jurassic;
+using System.Diagnostics;
 
 public class Spawn : MonoBehaviour {
 	private TextMesh textMesh;
 	// Use this for initialization
 	void Start () {
-        Debug.Log("Coucou");
-        StreamReader reader = File.OpenText("Assets/Scripts/.demo-node.js");
+        //StreamReader reader = File.OpenText("Assets/Scripts/.demo-node.js");
 		string line;
-        line = reader.ReadToEnd ();
-		object result = new Jint.JintEngine ().Run (line);//"var a = [];a.push(42);a.push(32);return a;");
-        Debug.Log (result);
-		var Text = new GameObject();
+        string test = "coucou";
+
+        string json = JsonUtility.ToJson(test);
+        StringBuilder outputBuilder = new StringBuilder();
+
+        ProcessStartInfo StartInfo = new ProcessStartInfo
+        {
+            FileName = "cmd.exe",
+            Arguments = "node Assets/Scripts/.demo-node.js",
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            CreateNoWindow = true
+            //WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
+        };
+        using (Process process = Process.Start(StartInfo))
+        {
+            //
+            // Read in all the text from the process with the StreamReader.
+            //
+            using (StreamReader reader = process.StandardOutput)
+            {
+                string result = reader.ReadToEnd();
+                UnityEngine.Debug.Log(result);
+            }
+        }
+
+
+        //object result = new Jint.JintEngine().Run(line);//"var a = [];a.push(42);a.push(32);return a;");
+        //object result2 = engine.Evaluate(line);
+        //UnityEngine.Debug.Log (result);
+        UnityEngine.Debug.Log(json);
+        var Text = new GameObject();
 		textMesh = Text.AddComponent<TextMesh>();
 		textMesh.font = Resources.Load("calibrili") as Font;
         textMesh.text = "";//line;

@@ -1,4 +1,4 @@
-var Elm = require("./.elmAST.js");
+var Elm = require("./.elmASTHTML.js");
 var elm = Elm.Main.worker();
 
 /* When an Elm snippet has been parsed, output JSON repr to the <pre> */
