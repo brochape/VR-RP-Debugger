@@ -7,10 +7,10 @@ public class Spawn : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         Debug.Log("Coucou");
-        StreamReader reader = File.OpenText("Assets/Scripts/.elmAST.js");
+        StreamReader reader = File.OpenText("Assets/Scripts/.demo-node.js");
 		string line;
         line = reader.ReadToEnd ();
-        object result = new Jint.JintEngine().Run(line);
+		object result = new Jint.JintEngine ().Run (line);//"var a = [];a.push(42);a.push(32);return a;");
         Debug.Log (result);
 		var Text = new GameObject();
 		textMesh = Text.AddComponent<TextMesh>();
