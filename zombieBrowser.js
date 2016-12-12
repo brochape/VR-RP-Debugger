@@ -10,9 +10,11 @@ var str = "";
 browser.visit('file:///home/supayrponey/Master_Thesis/ZombieJs/index.html', function() {
 
     var graph = browser.window.globalVar;
+    str += "digraph {\n"
     for (var i = graph.length - 1; i >= 0; i--) {
       traverse(graph[i]);
     }
+    str += "}"
     writeToFile("test.dot");
 });
 
@@ -63,7 +65,7 @@ function traverse(node){
         for (var i = node.kids.length - 1; i >= 0; i--) {
 
             console.log(node.name);
-            str += '"' + node.name + '"'  + "->" + '"' + node.kids[i].name + '"' + "\n";
+            str += '\t"' + node.name + '"'  + "->" + '"' + node.kids[i].name + '"' + "\n";
             traverse(node.kids[i]);
         }
     }
@@ -80,10 +82,25 @@ function writeToFile(filename){
 }
 
 
+function create_node_entity(name, pos_x, pos_y, pos_z){
+  var node_template = '<a-entity bmfont-text="text:'+ name +
+                  '"; color: #333" position="' +
+                  pos_x + ' ' + pos_y + ' ' + pos_z + '"></a-entity>'
+  var circle_template = '<a-ring color="black" scale="0.9 0.25 2" radius-inner="1" position="'+
+                  (pos_x + 0.55) + ' ' +
+                  (pos_y + 0.07) + ' ' +
+                  pos_z +'" radius-outer="1.01"></a-ring>'
+  return node_template + '\n\t\t' + circle_template
+}
+
+
+node_test = create_node_entity("Coucou", 0, 4, -4)
+
+
 nunjucks.configure({ autoescape: false });
 a = nunjucks.render('template.html', { 
     title: 'Test',
-    scene: '<a-cylinder radius = "0.03" height= "0.5" color="black" open-ended="true" position="0.5 1.6 -4.5"></a-cylinder>'
+    scene: node_test
      });
 
 function writeToHTMLFile(filename, str){
