@@ -1,7 +1,7 @@
 parse
     = (varExp _?)*
     
-varExp = 'var' space name space? equal space? rightSide
+varExp = 'var' space word space? equal space? rightSide _
 
 
 rightSide 
@@ -27,7 +27,15 @@ booleanCombiner
     = 'or'
     / 'and'
 
-name = letter+
+string
+    = '"' (charContent)+ '"'
+
+char
+    = '"' charContent? '"'
+
+charContent = [a-zA-Z0-9]
+
+word = letter+
 
 space = [ ]
 
