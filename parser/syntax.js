@@ -1,7 +1,12 @@
 parse
-    = (varExp _?)*
+    = w:(varExp _?)*{
+        return w;
+    }
     
-varExp = 'var' space word space? equal space? rightSide _
+varExp = 'var' space word space? equal space? w:rightSide _ {
+    var a = w;
+    return a;
+}
 
 
 rightSide 
@@ -12,7 +17,6 @@ rightSide
       / char
       
 signal = 'Signal(' space? v:value space? ')' {
-    console.log(v);
 }
 
 value = [0-9]+ { return parseInt(text(), 10);}
@@ -24,7 +28,8 @@ boolean
         
 booleanExpr
     = w:(boolean (space c:booleanCombiner space b:boolean {return [c,b]})*) {
-        return 0;
+        var expression = "".concat(w).replace(/,/g,' ');
+        return eval(expression);
     }
     
 booleanCombiner
@@ -45,5 +50,5 @@ space = [ ]
 
 letter = [a-zA-Z0-9]
 _ 'whitespace'
-  = [\t\n\r]*
+  = [ \t\n\r]*
 equal = '='
