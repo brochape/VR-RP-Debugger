@@ -5,4 +5,4 @@ var syntax = fs.readFileSync("syntax.js").toString();
 
 var parser = peg.generate(syntax);
 
-parser.parse("var signalTest = Signal(9)\nvar boolTest = True or False or True")
+parser.parse("var signalTest = Signal(90)\nvar boolTest = true || false || true\nvar stringTest = 'coucou'")

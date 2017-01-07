@@ -8,30 +8,34 @@ rightSide
     =   signal
       / value
       / booleanExpr
+      / string
+      / char
       
-signal = 'Signal(' space? value space? ')' {
-    
+signal = 'Signal(' space? v:value space? ')' {
+    console.log(v);
 }
 
-value = v:[0-9]+ { return v;}
+value = [0-9]+ { return parseInt(text(), 10);}
 
 
 boolean 
-    = 'True'
-    / 'False'
+    = 'true'
+    / 'false'
         
 booleanExpr
-    = boolean (space booleanCombiner space boolean)*
+    = w:(boolean (space c:booleanCombiner space b:boolean {return [c,b]})*) {
+        return 0;
+    }
     
 booleanCombiner
-    = 'or'
-    / 'and'
+    = '&&'
+    / '||'
 
 string
-    = '"' (charContent)+ '"'
+    = ['"] (charContent)+ ['"]
 
 char
-    = '"' charContent? '"'
+    = ['"] charContent? ['"]
 
 charContent = [a-zA-Z0-9]
 
