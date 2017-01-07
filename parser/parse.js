@@ -1,37 +1,7 @@
-parse
-    = (varExp _?)*
-    
-varExp = "var" space name space? equal space? rightSide
+var fs = require('fs');
+var peg = require('pegjs')
 
+var syntax = fs.readFileSync("syntax.js").toString();
 
-rightSide 
-    =   signal
-      / value
-      / booleanExpr
-      
-signal = "Signal(" space? value space? ")" {
-    
-}
-
-value = [0-9]+
-
-
-boolean 
-    = "True"
-    / "False"
-        
-booleanExpr
-    = boolean (space booleanCombiner space boolean)*
-    
-booleanCombiner
-    = "or"
-    / "and"
-
-name = letter+
-
-space = [ ]
-
-letter = [a-zA-Z0-9]
-_ "whitespace"
-  = [\t\n\r]*
-equal = "="
+var parser = peg.generate(syntax);
+console.log(parser.parse("var co0c = Signal(9)"))
