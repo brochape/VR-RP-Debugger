@@ -1,2 +1,2 @@
-# VR-FRP-Debugger
-Visual debugger for functional reactive programs using VR
+# VR-RP-Debugger
+Visual debugger for reactive programs using VR
