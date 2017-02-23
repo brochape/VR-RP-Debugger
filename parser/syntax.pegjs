@@ -1,8 +1,26 @@
 parse
     = w:(varExp _?)*{
+        console.log(rootNode);
         return w;
     }
+    / operation
     
+operation
+    = 'fold'
+    / map
+    / filter
+
+fold = 'fold'//TODO
+
+filter = 'filter' space? '(' space? '(' lambda ')' space var space signal space? ')' _
+
+map = 'map' space? '(' space? '(' lambda ')' signal 
+
+lambda
+  = name space? '(' (words space)* ')' space body
+
+body = space// TODO
+
 varExp = 'var' space w:word space? equal space? r:rightSide _ {
     var leftNode = {
       name: w.join(""),
@@ -43,12 +61,21 @@ boolean
         
 booleanExpr
     = w:(boolean (space c:booleanCombiner space b:boolean {return [c,b]})*) {
+        console.log(w);
         var expression = "".concat(w).replace(/,/g,' ');
+        // if (w[1]) {
+        //   //Boolean arithmetic
+
+        // } 
+
+        // else {}
         var boolNode = {
           name: "Bool",
-          value: eval(expression),
+          value: eval(expression),// TODO: subtree of boolean operations
           children: []
         }
+
+        return boolNode;
       } 
     
 booleanCombiner
