@@ -11,7 +11,7 @@ statement
 import = "activate" space signal:word {
   var signalNode = {
     name: "signal",
-    value: signal,
+    value: "".concat(signal).replace(/,/g,''),
     children: []
   }
   return {
