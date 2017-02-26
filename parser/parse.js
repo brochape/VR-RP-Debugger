@@ -13,7 +13,7 @@ var rootNode = {
 var parser = peg.generate(syntax);
 
 
-var ast = parser.parse("fold(seconds + 0)\nfilter((a) => ( a > 0 ) 0 numbers)")//\nvar signalTest = Signal(90)\nvar boolTest = true || false || true\nvar stringTest = 'coucou'
+var ast = parser.parse("activate seconds\nfold(seconds + 0)\nfilter((a) => ( a > 0 ) 0 numbers)")//\nvar signalTest = Signal(90)\nvar boolTest = true || false || true\nvar stringTest = 'coucou'
 ast = ast;
 console.log(ast[1][0].children)
 

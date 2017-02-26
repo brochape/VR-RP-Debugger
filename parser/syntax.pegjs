@@ -6,6 +6,21 @@ parse
 statement
     = varExp
     / operation
+    / import
+
+import = "activate" space signal:word {
+  var signalNode = {
+    name: "signal",
+    value: signal,
+    children: []
+  }
+  return {
+    name: "signalActivation",
+    value: "signalActivation",
+    children: [signalNode]
+  }
+
+}
     
 operation
     = fold
