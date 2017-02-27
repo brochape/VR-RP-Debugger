@@ -13,7 +13,7 @@ var rootNode = {
 var parser = peg.generate(syntax);
 
 //
-var ast = parser.parse("activate seconds\nfold(seconds + 0)\nfilter((a) => ( a > 0 ) seconds 0)")//\nvar signalTest = Signal(90)\nvar boolTest = true || false || true\nvar stringTest = 'coucou'
+var ast = parser.parse("activate seconds\nmap( (a)=>(a+1) seconds)\nfilter((a) => ( a > 0 ) seconds 0)")//\nvar signalTest = Signal(90)\nvar boolTest = true || false || true\nvar stringTest = 'coucou'
 ast = ast.map(([x, y]) => x);
 // console.log(ast[0])
 
@@ -23,6 +23,9 @@ var signalGraph = {
     name: "root",
     children: []
 }
+
+//map signal + 1  | creates a new signal that will do +1 on the current value of signal
+//fold ((a)=>(a+1)signal + 1  | will add the value of signal to the current value (cumulative). Starts at 1
 
 
 for (var i = 0; i < ast.length; i++) {
@@ -57,7 +60,23 @@ for (var i = 0; i < ast.length; i++) {
             break;
 
         case "map":
-            [lambda, signal] = statement.children.map((x)=>(x.value));
+            [lambda, signal] = statement.children;
+            signal = signal.value;
+            // console.log(lambda);
+
+            var body = lambda.children[1];
+            var param = lambda.children[0].value;
+            var signalValue = signalGraph[signal].value;
+            console.log(param);
+
+            var initVal = eval(body.replace(param,signalValue))
+
+            var signalNode = {
+                name: "map",
+                value: initVal,
+                formula: [signal,lambda,initVal]
+            }
+            signalGraph[signal].children.push(signalNode);
             break;
 
         case "filter":
@@ -66,7 +85,6 @@ for (var i = 0; i < ast.length; i++) {
 
             var body = lambda.children[1];
             var param = lambda.children[0].value;
-            console.log(signal)
             var signalValue = signalGraph[signal].value;
 
             var behaviourNode = {
@@ -80,6 +98,8 @@ for (var i = 0; i < ast.length; i++) {
 
     }   
 }
+
+
 console.log(signalGraph.seconds);
 
 // function findValueForSignal(tree,signal){

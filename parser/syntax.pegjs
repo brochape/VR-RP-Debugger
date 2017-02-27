@@ -27,6 +27,7 @@ operation
     / map
     / filter
 
+//fold(signal operator initValue)
 fold = 'fold' space? '(' space? signal:word space op:operator space initVal:int space?')'{
   var leftNode={
     name: "signal",
@@ -75,14 +76,16 @@ filter = 'filter' space? '(' space? lam:lambda space signal:word space initVal:w
   }
 }
 
-map = 'map' space? '(' space? lam:lambda signal:word space? ')' _ {
+//map(signal operator initValue)
+map = 'map' space? '(' space? lam:lambda space? signal:word space? ')' _ {
 
 
   var rightNode = {
     name: "signal",
-    value: signal,
+    value: "".concat(signal).replace(/,/g,''),
     children: []
   }
+  lam.children[0].value = lam.children[0].value[0][0][0];
   return {
     name: "map",
     value: "map",
