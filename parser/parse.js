@@ -12,8 +12,10 @@ var rootNode = {
 
 var parser = peg.generate(syntax);
 
+var code = "activate seconds\nmap( (a)=>(a+1) seconds)\nfold(seconds + 0)"
+
 //
-var ast = parser.parse("activate seconds\nmap( (a)=>(a+1) seconds)\nfilter((a) => ( a > 0 ) seconds 0)")//\nvar signalTest = Signal(90)\nvar boolTest = true || false || true\nvar stringTest = 'coucou'
+var ast = parser.parse(code)//\nvar signalTest = Signal(90)\nvar boolTest = true || false || true\nvar stringTest = 'coucou'
 ast = ast.map(([x, y]) => x);
 // console.log(ast[0])
 
@@ -35,7 +37,7 @@ for (var i = 0; i < ast.length; i++) {
             var signalName = statement.children[0].value;
             switch(signalName){
                 case "seconds":
-                    secondSignal = true;
+                    secondSignalEnabled = true;
                     var secondSignal = {
                         name: signalName,
                         value: 0,
@@ -49,12 +51,12 @@ for (var i = 0; i < ast.length; i++) {
         case "fold":
             [signal,operand,initVal] = statement.children.map((x)=>(x.value));
             var signalValue = signalGraph[signal].value;
-            var formula = signalValue + operand + initVal;
-            var initVal = eval(formula);
+            var formula = "<signalValue>" + operand + "currentValue" ;
+            var initVal = eval(formula.replace("<signalValue>",signalValue).replace("currentValue",initVal));
             var signalNode = {
                 name: "fold",
                 value: initVal,
-                formula: [signal,operand,initVal]
+                formula: formula
             }
             signalGraph[signal].children.push(signalNode);
             break;
@@ -67,14 +69,13 @@ for (var i = 0; i < ast.length; i++) {
             var body = lambda.children[1];
             var param = lambda.children[0].value;
             var signalValue = signalGraph[signal].value;
-            console.log(param);
 
             var initVal = eval(body.replace(param,signalValue))
 
             var signalNode = {
                 name: "map",
                 value: initVal,
-                formula: [signal,lambda,initVal]
+                formula: [body,param]
             }
             signalGraph[signal].children.push(signalNode);
             break;
@@ -98,8 +99,25 @@ for (var i = 0; i < ast.length; i++) {
 
     }   
 }
+if (secondSignalEnabled) {
+    setInterval(function(){ 
+        signalGraph[signal].value ++;
+        for (var i = 0; i < signalGraph.seconds.children.length; i++) {
+            node = signalGraph.seconds.children[i];
+            switch(node.name){
+                case "fold":
+                    node.value = eval(formula.replace("<signalValue>",signalGraph[signal].value).replace("currentValue",node.value));
+                    break;
+                case "map":
+                    //TODO
+                    node.value = eval()
+                    break;
 
-
+            }
+            console.log(node);
+         } //code goes here that will be run every 5 seconds.    
+    }, 1000);
+}
 console.log(signalGraph.seconds);
 
 // function findValueForSignal(tree,signal){
