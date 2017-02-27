@@ -42,7 +42,7 @@ fold = 'fold' space? '(' space? signal:word space op:operator space initVal:int 
 
   var rightNode = {
     name: "initValue",
-    value: initVal,
+    value: initVal[0],
     children: []
   }
   return {
@@ -52,11 +52,11 @@ fold = 'fold' space? '(' space? signal:word space op:operator space initVal:int 
   }
 }//TODO
 
-filter = 'filter' space? '(' space? lam:lambda space initVal:word space signal:word space? ')' _{
+filter = 'filter' space? '(' space? lam:lambda space signal:word space initVal:word space? ')' _{
 
   var middleNode = {
     name: "initValue",
-    value: parseInt(initVal.join(""), 10),
+    value: initVal[0],
     children: []
   }
 
@@ -65,6 +65,9 @@ filter = 'filter' space? '(' space? lam:lambda space initVal:word space signal:w
     value: "".concat(signal).replace(/,/g,''),
     children: []
   }
+
+  lam.children[0].value = lam.children[0].value[0][0][0]; //Can only have one arg
+
   return {
     name: "filter",
     value: "filter",
@@ -89,7 +92,7 @@ map = 'map' space? '(' space? lam:lambda signal:word space? ')' _ {
 } 
 
 lambda
-  = '(' space? w:(word space?)* space?')' space? "=>" space?'(' space? b:simpleBody space?')'  {
+  = '(' space? w:(word space?)* space?')' space? "=>" space?'(' space? a:word space? o:operator space? b:word space?')'  {
     var leftNode = {
       name: "param",
       value: w,
@@ -99,32 +102,11 @@ lambda
     return {
       name: "lambda",
       value: "lambda",
-      children: [leftNode,b]
+      children: [leftNode,a+o+b]
     };
   }
 
 
-simpleBody 
-    = left:operand space operator:operator space right:operand {
-      var leftNode  = {
-        name: "leftOperand",
-        value: left,
-        children: []
-      }
-
-      var rightNode = {
-        name: "rightOperand",
-        value: right,
-        children: []
-
-      }
-
-        return {
-          name: "body",
-          value: operator,
-          children: [leftNode,rightNode]
-        }
-      }
 
 
 operand
