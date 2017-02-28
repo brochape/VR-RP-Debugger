@@ -95,17 +95,17 @@ map = 'map' space? '(' space? lam:lambda space? signal:word space? ')' _ {
 } 
 
 lambda
-  = '(' space? w:(word space?)* space?')' space? "=>" space?'(' space? a:word space? o:operator space? b:word space?')'  {
+  = '(' space? w:(word space?)* space?')' space? "=>" space?'(' space? a:word space? o:(operator space? word)* space?')'  {
     var leftNode = {
       name: "param",
       value: w,
       children: []
     }
-
+    var tail = "".concat(o.map((a)=>(a[0]+a[2][0]))).replace(/,/g,'');
     return {
       name: "lambda",
       value: "lambda",
-      children: [leftNode,a+o+b]
+      children: [leftNode,a+tail]
     };
   }
 
@@ -193,6 +193,7 @@ calculusOperator
     / '-'
     / '/'
     / '*'
+    / '%'
 
 comparisonOperator
     = '>'
