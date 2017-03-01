@@ -1,6 +1,7 @@
 var fs = require('fs');
 var peg = require('pegjs')
 
+var ID = 1;
 
 // console.log(ast[0])
 module.exports = {
@@ -34,8 +35,10 @@ module.exports = {
                             var secondSignal = {
                                 name: signalName,
                                 value: 0,
+                                id: ID,
                                 children: []
                             }
+                            ID += 1;
                             signalGraph["seconds"] = secondSignal;
                             break;
                     }
@@ -49,8 +52,10 @@ module.exports = {
                     var signalNode = {
                         name: "fold",
                         value: initVal,
-                        formula: formula
+                        formula: formula,
+                        id: ID
                     }
+                    ID += 1;
                     signalGraph[signal].children.push(signalNode);
                     break;
 
@@ -68,8 +73,10 @@ module.exports = {
                     var signalNode = {
                         name: "map",
                         value: initVal,
-                        formula: [body,param]
+                        formula: [body,param],
+                        id: ID
                     }
+                    ID += 1;
                     signalGraph[signal].children.push(signalNode);
                     break;
 
@@ -84,8 +91,10 @@ module.exports = {
                     var behaviourNode = {
                         name: "filter",
                         value: initValue,
-                        formula: [body, param]
+                        formula: [body, param],
+                        id: ID
                     }
+                    ID += 1;
                     signalGraph[signal].children.push(behaviourNode);
                     break;
 

@@ -31,8 +31,7 @@ function traverse(node){
     // console.log(node.kids);
     if (node.children != undefined) {
         for (var i = node.children.length - 1; i >= 0; i--) {
-
-            str += '\t"' + node.name + '\n    ' + node.value + '"'  + "->" + '"' + node.children[i].name + '\n    ' + node.children[i].value +'"' + "\n";
+            str += '\t"' + node.name + "$$"+ node.id+"$$"  + '\n    ' + node.value + '"'  + "->" + '"' + node.children[i].name + "$$"+ node.children[i].id+"$$"  + '\n    ' + node.children[i].value +'"' + "\n";
             traverse(node.children[i]);
         }
     }
@@ -50,16 +49,15 @@ function writeToFile(filename){
 
 var ID = 1;
 
-function create_node_entity(name, pos_x, pos_y, pos_z){
+//A Textnode with ID i is associated with a circle of ID i*10000
+function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     var node_template = '<a-entity id="' + ID + '" bmfont-text="text:'+ name +
                   '"; color: #333" position="' +
                   (pos_x - 0.35) + ' ' + (pos_y - 0.17) + ' ' + pos_z + '"></a-entity>';
-    ID += 1;
-    var circle_template = '<a-ring id="' + ID + '" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="'+
+    var circle_template = '<a-ring id="' + ID + '0000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="'+
                   (pos_x) + ' ' +
                   (pos_y) + ' ' +
                   pos_z +'" radius-outer="1"></a-ring>';
-    ID += 1;
     return node_template + '\n\t\t' + circle_template
 }
 
@@ -89,10 +87,12 @@ function execute(command){
     exec(command, function(error, stdout, stderr){
         var graph = dot.read(stdout);
         for (var key in graph._nodes){
-          pos = graph._nodes[key].pos.split(',');
-          htmlString += create_node_entity(key, parseFloat(pos[0])/40, parseFloat(pos[1])/70, -4) + "\n\t\t";
+            pos = graph._nodes[key].pos.split(',');
+            splitname = key.split("$$");
+            name = splitname[0] + splitname[2]
+            id = splitname[1]
+            htmlString += create_node_entity(name, parseFloat(pos[0])/40, parseFloat(pos[1])/70, -4, id) + "\n\t\t";
         }
-        console.log(graph._edgeLabels);
         for (var edge in graph._edgeLabels){
             edges = graph._edgeLabels[edge].pos.replace("e,","").split(" ")
             var res_edges = [];
