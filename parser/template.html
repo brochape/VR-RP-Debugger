@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+    {{title}}
+    </title>
+    <meta name="description" content="Hello, World! - A-Frame">
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <script src="https://aframe.io/releases/0.3.2/aframe.min.js"></script>
+    <script src="https://rawgit.com/bryik/aframe-bmfont-text-component/master/dist/aframe-bmfont-text-component.min.js"></script>
+    <script src="https://rawgit.com/andreasplesch/aframe-meshline-component/master/dist/aframe-meshline-component.min.js"></script>
+    <script type="text/javascript">
+      function start() {
+        var ring = document.querySelector('#\\32');
+        
+        var t = 0;
+        var colors = ['black',"orange"]
+        function render() {
+          t = 1- t;
+          requestAnimationFrame(render);
+
+          ring.setAttribute('color', colors[t]);
+        }
+        render();
+
+       }
+        
+    </script>
+
+</head>
+<body onload=start()>
+    <a-scene id = "scene">
+        {{scene}}
+    </a-scene>
+</body>
+</html>
