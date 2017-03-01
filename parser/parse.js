@@ -130,23 +130,6 @@ module.exports = {
 //map signal + 1  | creates a new signal that will do +1 on the current value of signal
 //fold ((a)=>(a+1)signal + 1  | will add the value of signal to the current value (cumulative). Starts at 1
 
-// function findValueForSignal(tree,signal){
-//     return tree.children.filter((el)=>(el.name == signal))[0].value;
-// }
-
-// var indent = 1;
-// function walk(tree) {
-//     tree.forEach(function(node) {
-//         if(node.children) {
-//             indent ++;
-//             walk(node.children);
-//         }
-//         if(tree.indexOf(node) === tree.length - 1) {
-//             indent--;
-//         }
-//     })
-// }
-
 
 
 
