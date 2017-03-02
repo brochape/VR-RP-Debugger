@@ -11,7 +11,9 @@
     <script src="https://rawgit.com/bryik/aframe-bmfont-text-component/master/dist/aframe-bmfont-text-component.min.js"></script>
     <script src="https://rawgit.com/andreasplesch/aframe-meshline-component/master/dist/aframe-meshline-component.min.js"></script>
     <script type="text/javascript">
-      // function start() {
+        function start() {
+            var signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
+            console.log(signalGraph);
       //   var ring = document.querySelector('#\\32');
         
       //   var t = 0;
@@ -24,7 +26,7 @@
       //   }
       //   render();
 
-      //  }
+        }
         
     </script>
 
@@ -33,5 +35,8 @@
     <a-scene id = "scene">
         {{scene}}
     </a-scene>
+    <div id="graph" style="display: none;">
+        {{graph}}
+    </div>
 </body>
 </html>

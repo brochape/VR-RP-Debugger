@@ -115,7 +115,8 @@ function execute(command){
         }
         a = nunjucks.render('template.html', { 
               title: 'Example',
-              scene: htmlString
+              scene: htmlString,
+              graph: JSON.stringify(signalGraph)
             });
         writeToHTMLFile("test.html",a)
         // console.log(JSON.parse(JSON.stringify(graph._nodes)));

@@ -47,8 +47,8 @@ module.exports = {
                 case "fold":
                     [signal,operand,initVal] = statement.children.map((x)=>(x.value));
                     var signalValue = signalGraph[signal].value;
-                    var formula = "<signalValue>" + operand + "currentValue" ;
-                    var initVal = eval(formula.replace("<signalValue>",signalValue).replace("currentValue",initVal));
+                    var formula = "$$signalValue$$" + operand + "currentValue" ;
+                    var initVal = eval(formula.replace("$$signalValue$$",signalValue).replace("currentValue",initVal));
                     var signalNode = {
                         name: "fold",
                         value: initVal,
@@ -113,7 +113,7 @@ module.exports = {
                 node = signalGraph.seconds.children[i];
                 switch(node.name){
                     case "fold":
-                        node.value = eval(node.formula.replace("<signalValue>",signalGraph[signal].value).replace("currentValue",node.value));
+                        node.value = eval(node.formula.replace("$$signalValue$$",signalGraph[signal].value).replace("currentValue",node.value));
                         break;
                     case "map":
                         [body,param] = node.formula;
