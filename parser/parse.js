@@ -105,32 +105,6 @@ module.exports = {
         
     },
 
-    handle_signals: function(signalGraph) {
-        if (secondSignalEnabled) {
-        setInterval(function(){ 
-            signalGraph[signal].value ++;
-            for (var i = 0; i < signalGraph.seconds.children.length; i++) {
-                node = signalGraph.seconds.children[i];
-                switch(node.name){
-                    case "fold":
-                        node.value = eval(node.formula.replace("$$signalValue$$",signalGraph[signal].value).replace("currentValue",node.value));
-                        break;
-                    case "map":
-                        [body,param] = node.formula;
-                        node.value = eval(body.replace(param, signalGraph[signal].value));
-                        break;
-                    case "filter":
-                        [body,param] = node.formula;
-                        signalValue = signalGraph[signal].value
-                        if (eval(body.replace(param, signalValue))) {
-                            node.value = signalValue;
-                        }
-
-                }
-             }   
-        }, 1000);
-        }
-    }
 }
 
 

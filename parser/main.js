@@ -9,10 +9,8 @@ var parser = require('./parse.js');
 var code = "activate seconds\nmap( (a)=>(a+1) seconds)\nfold(seconds + 0)\nfilter((a)=>(a%3==0) seconds 0)"
 ast = parser.parse(code);
 
-var secondSignal = false;
 signalGraph = parser.interprete(ast);
-parser.handle_signals(signalGraph);
-setInterval(function(){console.log(signalGraph.seconds.children)}, 2000);
+// setInterval(function(){console.log(signalGraph.seconds.children)}, 2000);
 
 var str = "";
 make_dot_file(signalGraph);
