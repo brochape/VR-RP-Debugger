@@ -6,8 +6,9 @@ const exec = require('child_process').exec;
 
 var parser = require('./parse.js');
 
-var code = "activate seconds\nmap( (a)=>(a+1) seconds)\nfold(seconds + 0)\nfilter((a)=>(a%3==0) seconds 0)"
+var code = "activate seconds\nvar mapVar = map( (a)=>(a+1) seconds)\nfold(seconds + 0)\nfilter((a)=>(a%3==0) seconds 0)"
 ast = parser.parse(code);
+// console.log(ast);
 
 signalGraph = parser.interprete(ast);
 // setInterval(function(){console.log(signalGraph.seconds.children)}, 2000);
