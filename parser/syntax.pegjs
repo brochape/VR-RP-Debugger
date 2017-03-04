@@ -6,12 +6,14 @@ parse
 statement
     = varExp
     / operation
+    / assignment
     / import
 
 import = "activate" space signal:word {
   var signalNode = {
     name: "signal",
     value: "".concat(signal).replace(/,/g,''),
+    referencer: "".concat(signal).replace(/,/g,''),
     children: []
   }
   return {
@@ -20,6 +22,19 @@ import = "activate" space signal:word {
     children: [signalNode]
   }
 
+}
+
+assignment = 'var' space ref:word space? equal space? r:operation _ {
+    var leftNode = {
+      name: "".concat(ref).replace(/,/g,''),
+      children: []
+    }
+    var equalNode = {
+      name: "=",
+      value: "=",
+      children: [leftNode, r]
+    }
+    return equalNode;
 }
     
 operation
