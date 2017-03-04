@@ -37,6 +37,7 @@ module.exports = {
                                 value: 0,
                                 id: ID,
                                 children: []
+
                             }
                             ID += 1;
                             signalGraph["seconds"] = secondSignal;
@@ -53,7 +54,9 @@ module.exports = {
                         name: "fold",
                         value: initVal,
                         formula: formula,
-                        id: ID
+                        id: ID,
+                        children: [],
+                        parent: signal
                     }
                     ID += 1;
                     signalGraph[signal].children.push(signalNode);
@@ -74,7 +77,9 @@ module.exports = {
                         name: "map",
                         value: initVal,
                         formula: [body,param],
-                        id: ID
+                        id: ID,
+                        children: [],
+                        parent: signal
                     }
                     ID += 1;
                     signalGraph[signal].children.push(signalNode);
@@ -92,7 +97,9 @@ module.exports = {
                         name: "filter",
                         value: initValue,
                         formula: [body, param],
-                        id: ID
+                        id: ID,
+                        children: [],
+                        parent: signal
                     }
                     ID += 1;
                     signalGraph[signal].children.push(behaviourNode);
