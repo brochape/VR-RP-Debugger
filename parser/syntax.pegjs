@@ -13,7 +13,7 @@ import = "activate" space signal:word {
   var signalNode = {
     name: "signal",
     value: "".concat(signal).replace(/,/g,''),
-    referencer: "".concat(signal).replace(/,/g,''),
+    ref: "".concat(signal).replace(/,/g,''),
     children: []
   }
   return {
