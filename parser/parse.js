@@ -18,12 +18,49 @@ module.exports = {
         return ast;
     },
 
+    findSignalNode: function(signalGraph, signalName) {
+        function searchInNode(node, signalName) {
+            // console.log(node);
+            if (node.ref == signalName) {
+                return node;
+            }
+            else if (node.children) {
+                var i;
+                var result = null;
+                for(i = 0; result == null && i < node.children.length; i++){
+                    result = searchInNode(node.children[i], signalName);
+               }
+               return result;
+            }
+            return null;
+        }
+        var i;
+        var result = null;
+        var keys = Object.keys(signalGraph);
+        for (i = 0; result == null && i < keys.length; i++){
+            // console.log(signalGraph);
+            console.log(signalGraph[keys[i]])
+            if (signalGraph[keys[i]].ref ==signalName ) {
+                result = signalGraph[keys[i]];
+            }
+            else{
+                result = searchInNode(signalGraph[keys[i]], signalName);
+            }
+        }
+        return result;
+    },
+
     nodeInterpreter: function(signalGraph,statement){
 
             switch(statement.name){
                 case "fold":
                     [signal,operand,initVal] = statement.children.map((x)=>(x.value));
-                    var signalValue = signalGraph[signal].value;
+                    if (Object.keys(signalGraph).indexOf(signal) >= 0) {
+                        var signalValue = signalGraph[signal].value;
+                    }
+                    else{
+                        var signalValue = this.findSignalNode(signalGraph,signal).value;
+                    }
                     var formula = "$$signalValue$$" + operand + "currentValue" ;
                     var initVal = eval(formula.replace("$$signalValue$$",signalValue).replace("currentValue",initVal));
                     var signalNode = {
@@ -43,7 +80,12 @@ module.exports = {
 
                     var body = lambda.children[1];
                     var param = lambda.children[0].value;
-                    var signalValue = signalGraph[signal].value;
+                    if (Object.keys(signalGraph).indexOf(signal) >= 0) {
+                        var signalValue = signalGraph[signal].value;
+                    }
+                    else{
+                        var signalValue = this.findSignalNode(signalGraph,signal).value;
+                    }
 
                     var initVal = eval(body.replace(param,signalValue))
 
@@ -52,6 +94,7 @@ module.exports = {
                         value: initVal,
                         formula: [body,param],
                         id: ID,
+                        ref: "",
                         children: [],
                         parent: signal
                     }
@@ -65,13 +108,21 @@ module.exports = {
 
                     var body = lambda.children[1];
                     var param = lambda.children[0].value;
-                    var signalValue = signalGraph[signal].value;
+
+
+                    if (Object.keys(signalGraph).indexOf(signal) >= 0) {
+                        var signalValue = signalGraph[signal].value;
+                    }
+                    else{
+                        var signalValue = this.findSignalNode(signalGraph,signal).value;
+                    }
 
                     var signalNode = {
                         name: "filter",
                         value: initValue,
                         formula: [body, param],
                         id: ID,
+                        ref: "",
                         children: [],
                         parent: signal
                     }
@@ -98,12 +149,13 @@ module.exports = {
                             var secondSignal = {
                                 name: signalName,
                                 value: 0,
+                                ref: signalName,
                                 id: ID,
                                 children: []
 
                             }
                             ID += 1;
-                            signalGraph["seconds"] = secondSignal;
+                            signalGraph[signalName] = secondSignal;
                             break;
                     }
                     break;
@@ -112,14 +164,18 @@ module.exports = {
                 case "map":
                 case "filter":
                     [signal,node] = this.nodeInterpreter(signalGraph,statement);
-                    signalGraph[signal].children.push(node);
+                    // console.log(node.parent);
+                    parentNode = this.findSignalNode(signalGraph,node.parent);
+                    parentNode.children.push(node);
                     break;
                 case "=":
                     var varName = statement.children[0].name;
                     var subStatement = statement.children[1];
                     [signal,node] = this.nodeInterpreter(signalGraph,subStatement);
+                    // console.log(node.parent);
                     node.ref = varName;
-                    signalGraph[signal].children.push(node);
+                    parentNode = this.findSignalNode(signalGraph,node.parent);
+                    parentNode.children.push(node);
 
 
 
