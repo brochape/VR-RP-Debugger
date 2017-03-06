@@ -99,6 +99,35 @@
             // }
             // render();
         }
+
+        function update_children(parentNode){
+            if (parentNode.children) {
+                for (var i = 0; i < parentNode.children.length; i++) {
+                    node = parentNode.children[i];
+                    switch(node.name){
+                        case "fold":
+                            node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value));
+                            updateNode(node);
+                            break;
+                        case "map":
+                            [body,param] = node.formula;
+                            node.value = eval(body.replace(param, parentNode.value));
+                            updateNode(node);
+                            break;
+                        case "filter":
+                            [body,param] = node.formula;
+                            signalValue = parentNode.value
+                            if (eval(body.replace(param, signalValue))) {
+                                node.value = signalValue;
+                            }
+                            updateNode(node);
+                            break;
+
+                    }
+                    update_children(node);
+                }
+            }
+        }
         
         function handle_signals(signalGraph) {
             if (secondSignalEnabled) {
@@ -106,29 +135,7 @@
                     // console.log(signalGraph)
                     signalGraph[signal].value ++;
                     updateNode(signalGraph[signal]);
-                    for (var i = 0; i < signalGraph.seconds.children.length; i++) {
-                        node = signalGraph.seconds.children[i];
-                        switch(node.name){
-                            case "fold":
-                                node.value = eval(node.formula.replace("$$signalValue$$",signalGraph[signal].value).replace("currentValue",node.value));
-                                updateNode(node);
-                                break;
-                            case "map":
-                                [body,param] = node.formula;
-                                node.value = eval(body.replace(param, signalGraph[signal].value));
-                                updateNode(node);
-                                break;
-                            case "filter":
-                                [body,param] = node.formula;
-                                signalValue = signalGraph[signal].value
-                                if (eval(body.replace(param, signalValue))) {
-                                    node.value = signalValue;
-                                }
-                                updateNode(node);
-                                break;
-
-                        }
-                     }   
+                    update_children(signalGraph[signal]);   
                 }, 1000);
             }
         }
