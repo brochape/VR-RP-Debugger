@@ -41,6 +41,7 @@ operation
     = fold
     / map
     / filter
+    / merge
 
 //fold(signal operator initValue)
 fold = 'fold' space? '(' space? signal:word space op:operator space initVal:int space?')'{
@@ -66,7 +67,7 @@ fold = 'fold' space? '(' space? signal:word space op:operator space initVal:int 
     value: "fold",
     children: [leftNode,middleNode,rightNode]
   }
-}//TODO
+}
 
 filter = 'filter' space? '(' space? lam:lambda space signal:word space initVal:word space? ')' _{
 
@@ -108,6 +109,32 @@ map = 'map' space? '(' space? lam:lambda space? signal:word space? ')' _ {
   }
 
 } 
+
+merge = 'merge' space? '(' space? signal1:word space signal2:word space operator:operator space?')' _{
+  var leftNode = {
+    name: "signal1",
+    value: "".concat(signal1).replace(/,/g,''),
+    children: []
+  }
+  var rightNode = {
+    name: "signal2",
+    value: "".concat(signal2).replace(/,/g,''),
+    children: []
+  }
+
+  var operation = {
+    name: "operator",
+    value: operator,
+    children: [leftNode,rightNode]
+  }
+
+  return {
+    name: "merge",
+    value: "merge",
+    children: [operation]
+  }
+
+}
 
 lambda
   = '(' space? w:(word space?)* space?')' space? "=>" space?'(' space? a:word space? o:(operator space? word)* space?')'  {
