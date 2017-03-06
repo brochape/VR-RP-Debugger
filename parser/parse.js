@@ -10,8 +10,6 @@ module.exports = {
 
         var parser = peg.generate(syntax);
 
-
-        //
         var ast = parser.parse(codeString)//\nvar signalTest = Signal(90)\nvar boolTest = true || false || true\nvar stringTest = 'coucou'
         ast = ast.map(([x, y]) => x);
 
@@ -39,7 +37,6 @@ module.exports = {
         var keys = Object.keys(signalGraph);
         for (i = 0; result == null && i < keys.length; i++){
             // console.log(signalGraph);
-            console.log(signalGraph[keys[i]])
             if (signalGraph[keys[i]].ref ==signalName ) {
                 result = signalGraph[keys[i]];
             }
@@ -55,6 +52,7 @@ module.exports = {
             switch(statement.name){
                 case "fold":
                     [signal,operand,initVal] = statement.children.map((x)=>(x.value));
+
                     if (Object.keys(signalGraph).indexOf(signal) >= 0) {
                         var signalValue = signalGraph[signal].value;
                     }
@@ -68,8 +66,9 @@ module.exports = {
                         value: initVal,
                         formula: formula,
                         id: ID,
+                        ref: "",
                         children: [],
-                        parent: signal
+                        parents: [signal]
                     }
                     ID += 1;
                     return [signal,signalNode];
@@ -96,11 +95,10 @@ module.exports = {
                         id: ID,
                         ref: "",
                         children: [],
-                        parent: signal
+                        parents: [signal]
                     }
                     ID += 1;
                     return [signal,signalNode];
-
 
                 case "filter":
                     [lambda, initValue, signal] = statement.children;
@@ -124,7 +122,32 @@ module.exports = {
                         id: ID,
                         ref: "",
                         children: [],
-                        parent: signal
+                        parents: [signal]
+                    }
+                    ID += 1;
+                    return [signal,signalNode];
+
+
+                case "merge":
+                    [operation] = statement.children;
+                    [signal1,signal2] = operation.children.map((x)=>(x.value));
+                    operator = operation.value;
+
+
+                    var signal1Value = this.findSignalNode(signalGraph,signal1).value;
+                    var signal2Value = this.findSignalNode(signalGraph,signal2).value;
+
+                    initValue = eval(signal1Value + operator + signal2Value);
+                    console.log(initValue);
+
+                    var signalNode = {
+                        name: "merge",
+                        value: initValue,
+                        formula: [signal1, signal2, operator],
+                        id: ID,
+                        ref: "",
+                        children: [],
+                        parents: [signal1,signal2]
                     }
                     ID += 1;
                     return [signal,signalNode];
@@ -137,9 +160,9 @@ module.exports = {
             name: "root",
             children: []
         }
-
-        for (var i = 0; i < ast.length; i++) {
-            var statement = ast[i];
+        console.log()
+        for (var j = 0; j < ast.length; j++) {
+            var statement = ast[j];
             switch(statement.name){
                 case "signalActivation":
                     var signalName = statement.children[0].value;
@@ -162,20 +185,28 @@ module.exports = {
 
                 case "fold":
                 case "map":
+                case "merge":
                 case "filter":
                     [signal,node] = this.nodeInterpreter(signalGraph,statement);
-                    // console.log(node.parent);
-                    parentNode = this.findSignalNode(signalGraph,node.parent);
-                    parentNode.children.push(node);
+                    // console.log(node.parents);
+                    for (var i = 0; i < node.parents.length; i++) {
+                        // console.log(node.parents[i]);
+                        parentsNode = this.findSignalNode(signalGraph,node.parents[i]);
+                        // console.log(parentsNode);
+                        parentsNode.children.push(node);
+                    }
                     break;
                 case "=":
                     var varName = statement.children[0].name;
                     var subStatement = statement.children[1];
                     [signal,node] = this.nodeInterpreter(signalGraph,subStatement);
-                    // console.log(node.parent);
+                    // console.log(node.parents);
                     node.ref = varName;
-                    parentNode = this.findSignalNode(signalGraph,node.parent);
-                    parentNode.children.push(node);
+                    for (var i = 0; i < node.parents.length; i++) {
+                        parentsNode = this.findSignalNode(signalGraph,node.parents[i]);
+                        parentsNode.children.push(node);
+                    }
+                    break;
 
 
 
