@@ -113,7 +113,7 @@ function execute(command){
             htmlString += create_line_entity(res_edges) + "\n\t\t";
         }
         a = nunjucks.render('template.html', { 
-              title: 'Example',
+              title: 'VaRken Debugger',
               scene: htmlString,
               graph: JSON.stringify(signalGraph)
             });
