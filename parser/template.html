@@ -11,6 +11,8 @@
     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.1/dist/aframe-extras.misc.min.js"></script><!-- For controllers -->
     <script src="https://rawgit.com/bryik/aframe-bmfont-text-component/master/dist/aframe-bmfont-text-component.min.js"></script>
     <script src="https://rawgit.com/andreasplesch/aframe-meshline-component/master/dist/aframe-meshline-component.min.js"></script>
+    <script src="https://rawgit.com/ngokevin/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
+    <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
     <script type="text/javascript">
         var signalGraph = ""
         function sleep(milliseconds) {
@@ -68,36 +70,70 @@
             }
             var sceneEl = document.querySelector('a-scene');
             var reached = false;
-            var entityEl;
 
-            // VALUES FLOWING       
-            // for (var i = 0; i < node.children.length; i++) {
+            // VALUES FLOWINGs      
+            console.log(node.children.length);
+            for (var i = 0; i < node.children.length; i++) {
                 
-            //     var fromDest = document.querySelector('#\\3' + node.id).getAttribute('position');
-            //     var toDest = document.querySelector('#\\3' + node.children[i].id).getAttribute('position');
+                var fromNode = document.querySelector('#\\3' + node.id);
+                var toNode = document.querySelector('#\\3' + node.children[i].id);
 
-            //     entityEl = document.createElement('a-entity');
-            //     var dist = {
-            //         x:(toDest.x - fromDest.x),
-            //         y:(toDest.y - fromDest.y)
-            //     }
-            //     var deltaX = dist.x/50;
-            //     var deltaY = dist.y/50;
+                var fromDest = fromNode.getAttribute('position');
+                var toDest = toNode.getAttribute('position');
 
-            //     entityEl.setAttribute('bmfont-text', "text:coucou");
-            //     entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
-            //     entityEl.addEventListener('move', function (event) {
-            //         sleep(20);
-            //         var currentPos = entityEl.getAttribute("position");
-            //         // console.log("yo")
-            //         entityEl.setAttribute('position', (currentPos.x-deltaX) + " " + (currentPos.y+deltaY) +" " + currentPos.z);
-            //     });
+                // var newFromDest = Object.keys(fromDest).reduce(function(previous, current) {
+                //     if (key != 'z') {
+                //         previous[current] =  -= 4;
+                //     }
+                //     return previous;
+                // }, {});
 
-            //     for (var i = 0; i < 50; i++) {
-            //         // console.log(fromDest.x-deltaX*i);
-            //         entityEl.emit("move")
+
+                // var newToDest = Object.keys(toDest).reduce(function(previous, current) {
+                //     if (key != 'z') {
+                //         previous[current] =  -= 4;
+                //     }
+                //     return previous;
+                // }, {});
+
+                
+                // console.log(fromDest, toDest);
+                // console.log(pathstring);
+                // sleep(4000);
+
+                var entityEl = document.createElement('a-entity');
+                var dist = {
+                    x:(toDest.x - fromDest.x),
+                    y:(toDest.y - fromDest.y)
+                }
+
+                var division = 3;
+                var deltaX = dist.x/division;
+                var deltaY = dist.y/division;
+
+                var nodeText = fromNode.getAttribute('bmfont-text').text.split("\n");
+                var slidingText = nodeText[nodeText.length-1];
+                // console.log(nodeText);
+                entityEl.setAttribute('bmfont-text', "text:" + slidingText);
+                entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
+                // var currentPos = entityEl.getAttribute("position");
+                // entityEl.addEventListener('move', function (event) {
+                //     sleep(20);
+                //     // console.log("yo")
+                // });
+                var pathstring = 'path:'
+                for (var j = 0; j < division; j++) {
+                    pathstring += `${fromDest.x + j*deltaX}` + "," + `${fromDest.y + j*deltaY}` + "," + `${fromDest.z} `
+                }
+                pathstring += `${toDest.x}` + "," + `${toDest.y}` + "," + `${toDest.z} `
+                pathstring += `; closed: false; dur: 10000; loop: false`;
+                entityEl.setAttribute('alongpath', pathstring);
+
+                // for (var i = 0; i < 50; i++) {
+                //     // console.log(fromDest.x-deltaX*i);
+                //     entityEl.emit("move")
                     
-            //     }
+                // }
                 
 
                 // console.log("From: ");
@@ -105,9 +141,11 @@
                 // console.log("To: ");
                 // console.log(toDest);
                 // node.children[i];
+                if (entityEl) {
+                    sceneEl.appendChild(entityEl);
+                }
+            }
             
-
-            // sceneEl.appendChild(entityEl);
             var circle = document.querySelector("[id='"+ node.id + "0000"+ "']"); //#\\3' + node.id + "0000");
             // console.log(circle);//'#\\320000');// + node.id + "0000");
             render('blue');
@@ -132,7 +170,7 @@
         }
 
         function update_children(parentNode, graph){
-            console.log("Cocou",graph);
+            // console.log("Cocou",graph);
             if (parentNode.children) {
                 for (var i = 0; i < parentNode.children.length; i++) {
                     node = parentNode.children[i];
@@ -189,6 +227,9 @@
 </head>
 <body onload=start()>
     <a-scene id = "scene">
+        <!-- Hands -->
+        <a-entity hand-controls="left" aabb-collider="objects: .cube;" grab></a-entity>
+        <a-entity hand-controls="right" aabb-collider="objects: .cube;" grab></a-entity>
         {{scene}}
     </a-scene>
     <div id="graph" style="display: none;">
