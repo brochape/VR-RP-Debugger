@@ -8,6 +8,7 @@
     <meta name="description" content="Hello, World! - A-Frame">
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
     <script src="https://aframe.io/releases/0.3.2/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.1/dist/aframe-extras.misc.min.js"></script><!-- For controllers -->
     <script src="https://rawgit.com/bryik/aframe-bmfont-text-component/master/dist/aframe-bmfont-text-component.min.js"></script>
     <script src="https://rawgit.com/andreasplesch/aframe-meshline-component/master/dist/aframe-meshline-component.min.js"></script>
     <script type="text/javascript">
@@ -19,6 +20,36 @@
                     break;
             }
           }
+        }
+        function findSignalNode(signalGraph, signalName) {
+            function searchInNode(node, signalName) {
+                // console.log(node);
+                if (node.ref == signalName) {
+                    return node;
+                }
+                else if (node.children) {
+                    var i;
+                    var result = null;
+                    for(i = 0; result == null && i < node.children.length; i++){
+                        result = searchInNode(node.children[i], signalName);
+                   }
+                   return result;
+                }
+                return null;
+            }
+            var i;
+            var result = null;
+            var keys = Object.keys(signalGraph);
+            for (i = 0; result == null && i < keys.length; i++){
+                // console.log(signalGraph);
+                if (signalGraph[keys[i]].ref ==signalName ) {
+                    result = signalGraph[keys[i]];
+                }
+                else{
+                    result = searchInNode(signalGraph[keys[i]], signalName);
+                }
+            }
+            return result;
         }
         function start() {
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
@@ -100,7 +131,8 @@
             // render();
         }
 
-        function update_children(parentNode){
+        function update_children(parentNode, graph){
+            console.log("Cocou",graph);
             if (parentNode.children) {
                 for (var i = 0; i < parentNode.children.length; i++) {
                     node = parentNode.children[i];
@@ -122,9 +154,20 @@
                             }
                             updateNode(node);
                             break;
+                        case "merge":
+                            [signal1, signal2, operator] = node.formula;
+                            // console.log(signalGraph);
+                            signal1Value = findSignalNode(graph,signal1).value;
+                            // console.log(signal1Value)
+                            signal2Value = findSignalNode(graph,signal2).value;
+                            node.value = eval(signal1Value + operator + signal2Value);
+                            
+                            updateNode(node);
+                            break;
+
 
                     }
-                    update_children(node);
+                    update_children(node, graph);
                 }
             }
         }
@@ -135,7 +178,9 @@
                     // console.log(signalGraph)
                     signalGraph[signal].value ++;
                     updateNode(signalGraph[signal]);
-                    update_children(signalGraph[signal]);   
+
+                    // console.log(signalGraph);
+                    this.update_children(signalGraph[signal], signalGraph);   
                 }, 1000);
             }
         }
