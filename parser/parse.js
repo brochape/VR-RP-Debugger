@@ -138,7 +138,7 @@ module.exports = {
                     var signal2Value = this.findSignalNode(signalGraph,signal2).value;
 
                     initValue = eval(signal1Value + operator + signal2Value);
-                    console.log(initValue);
+                    // console.log(initValue);
 
                     var signalNode = {
                         name: "merge",
@@ -160,7 +160,6 @@ module.exports = {
             name: "root",
             children: []
         }
-        console.log()
         for (var j = 0; j < ast.length; j++) {
             var statement = ast[j];
             switch(statement.name){
