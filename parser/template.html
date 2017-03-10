@@ -57,6 +57,12 @@
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
             var nodeTest = document.querySelector('#\\3' + 2);
             // nodeTest.setAttribute('bmfont-text', "coucou");
+
+            /*if (typeof(Worker) !== "undefined") {
+                if (typeof(w) == "undefined") {
+                    w = new Worker("webworker.js");
+                } 
+            }*/
             handle_signals(signalGraph);
         }
 
@@ -72,7 +78,6 @@
             var reached = false;
 
             // VALUES FLOWINGs      
-            console.log(node.children.length);
             for (var i = 0; i < node.children.length; i++) {
                 
                 var fromNode = document.querySelector('#\\3' + node.id);
@@ -116,6 +121,7 @@
                 // console.log(nodeText);
                 entityEl.setAttribute('bmfont-text', "text:" + slidingText);
                 entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
+                entityEl.setAttribute('class', "flowing")
                 // var currentPos = entityEl.getAttribute("position");
                 // entityEl.addEventListener('move', function (event) {
                 //     sleep(20);
@@ -209,16 +215,37 @@
                 }
             }
         }
+
+        function close_enough_2D(pos1,pos2) {
+            return (Math.abs(pos1[0]-pos2[0]) < 0.5 && Math.abs(pos1[1]-pos2[1]) < 0.5)
+        }
         
+        function delete_flowing_values(argument) {
+
+
+            var flowing = document.querySelectorAll(".flowing");
+            for (var i = flowing.length - 1; i >= 0; i--) {
+                var pathArray = flowing[i].getAttribute('alongpath').path.split(' ');
+                var destination = pathArray[pathArray.length - 1].split(",");
+                //console.log(destination);// Array os destination pos
+                var currentPos = flowing[i].getAttribute('position');
+                var currentPosArray = [currentPos.x,currentPos.y,currentPos.z];
+                if (close_enough_2D(currentPosArray, destination)) {
+                    flowing[i].parentNode.removeChild(flowing[i]);
+                }
+                //console.log(currentPos);
+            }
+        }
+
         function handle_signals(signalGraph) {
             if (secondSignalEnabled) {
                 setInterval(function(){ 
-                    // console.log(signalGraph)
                     signalGraph[signal].value ++;
                     updateNode(signalGraph[signal]);
 
                     // console.log(signalGraph);
                     this.update_children(signalGraph[signal], signalGraph);   
+                    delete_flowing_values();
                 }, 1000);
             }
         }
