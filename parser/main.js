@@ -53,7 +53,7 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     var node_template = '<a-entity id="' + ID + '" bmfont-text="text:'+ name +
                   '" color= "#333" position="' +
                   (pos_x - 0.35) + ' ' + (pos_y - 0.17) + ' ' + pos_z + '"></a-entity>';
-    var circle_template = '<a-ring id="' + ID + '0000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="'+
+    var circle_template = '<a-ring class= "node" id="' + ID + '0000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="'+
                   (pos_x) + ' ' +
                   (pos_y) + ' ' +
                   pos_z +'" radius-outer="1"></a-ring>';
