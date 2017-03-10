@@ -63,7 +63,7 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 function create_line_entity(path){
     html = '<a-entity meshline="lineWidth: 2; path: ';
     for (var i = path.length - 1; i >= 0; i--) {
-      html += path[i][0] + ' ' + path[i][1] + ' ' + '-4';
+      html += path[i][0] + ' ' + path[i][1] + ' ' + '-2.5';
       if (i!=0) {html+=','}
     }
     html += '; color: black"></a-entity>';
@@ -90,7 +90,7 @@ function execute(command){
             splitname = key.split("$$");
             name = splitname[0] + splitname[2]
             id = splitname[1]
-            htmlString += create_node_entity(name, parseFloat(pos[0])/40, parseFloat(pos[1])/70, -4, id) + "\n\t\t";
+            htmlString += create_node_entity(name, parseFloat(pos[0])/40 -2.5, parseFloat(pos[1])/70, -2.5, id) + "\n\t\t";
         }
         for (var edge in graph._edgeLabels){
             edges = graph._edgeLabels[edge].pos.replace("e,","").split(" ")
@@ -104,6 +104,7 @@ function execute(command){
             edges.forEach(function(item) {
               temp_edge = item.split(',').map(parseFloat);
               temp_edge[0] /= 40;
+              temp_edge[0] -= 2.5;
               temp_edge[1] /= 70;
               // console.log(temp_edge);
 
