@@ -255,8 +255,8 @@
 <body onload=start()>
     <a-scene id = "scene">
         <!-- Hands -->
-        <a-entity hand-controls="left" aabb-collider="objects: .cube;" grab></a-entity>
-        <a-entity hand-controls="right" aabb-collider="objects: .cube;" grab></a-entity>
+        <a-entity hand-controls="left" aabb-collider="objects: .node;" grab></a-entity>
+        <a-entity hand-controls="right" aabb-collider="objects: .node;" grab></a-entity>
         {{scene}}
         <a-sky color="#ECECEC"></a-sky>
     </a-scene>
