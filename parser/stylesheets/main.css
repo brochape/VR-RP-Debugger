@@ -2,10 +2,29 @@
 .menu {
   float:left;
   width:20%;
-  height:80%;
+  height: 100%;
+  padding: 10px;
+  border: 2px solid black;
+  display: table;
 }
 .mainContent {
   float:left;
-  width:75%;
+  width:80%;
   height:80%;
+}
+
+.footer{
+  display: table-cell;
+  vertical-align: bottom;
+  min-width: 100%;
+}
+.fullwidth{
+  min-width: 100%;
+}
+
+.codeEditor{
+  display: table-row;
+  min-width: 100%;
+  height: 95%;
+
 }

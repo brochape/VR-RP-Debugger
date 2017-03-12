@@ -264,11 +264,14 @@
 </head>
 <body style="font-family:monospace" onload=start()>
 
-    <div id="code" class="menu" contenteditable="true" >
-        {{code}}
+    <div id="code" class="menu">
+        <div contenteditable="true" class="codeEditor">
+            {{code}}
+        </div>
 
-        <br />
-        <button style="min-width: 100%" onclick="dive()">Dive</button>
+        <div class="footer">
+            <button class="btn btn-primary fullwidth" onclick="dive()">Dive</button>
+        </div>
     </div>
     <a-scene class="mainContent" style="float:right" id = "scene">
         <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
