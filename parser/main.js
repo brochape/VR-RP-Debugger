@@ -113,10 +113,12 @@ function execute(command){
             
             htmlString += create_line_entity(res_edges) + "\n\t\t";
         }
+        console.log(code);
         a = nunjucks.render('template.html', { 
               title: 'VaRken Debugger',
               scene: htmlString,
-              graph: JSON.stringify(signalGraph)
+              graph: JSON.stringify(signalGraph),
+              code: code.split('\n').join('<br />')
             });
         writeToHTMLFile("test.html",a)
         // console.log(JSON.parse(JSON.stringify(graph._nodes)));

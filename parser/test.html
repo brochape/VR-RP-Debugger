@@ -13,6 +13,23 @@
     <script src="https://rawgit.com/andreasplesch/aframe-meshline-component/master/dist/aframe-meshline-component.min.js"></script>
     <script src="https://rawgit.com/ngokevin/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
     <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+    <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+    <style>
+        .menu {
+          float:left;
+          width:20%;
+          height:80%;
+        }
+        .mainContent {
+          float:left;
+          width:75%;
+          height:80%;
+        }
+    </style>
+
     <script type="text/javascript">
         var signalGraph = ""
         function sleep(milliseconds) {
@@ -54,9 +71,16 @@
             return result;
         }
         function start() {
+
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
             var nodeTest = document.querySelector('#\\3' + 2);
             // nodeTest.setAttribute('bmfont-text', "coucou");
+
+            /*if (typeof(Worker) !== "undefined") {
+                if (typeof(w) == "undefined") {
+                    w = new Worker("webworker.js");
+                } 
+            }*/
             handle_signals(signalGraph);
         }
 
@@ -72,7 +96,6 @@
             var reached = false;
 
             // VALUES FLOWINGs      
-            console.log(node.children.length);
             for (var i = 0; i < node.children.length; i++) {
                 
                 var fromNode = document.querySelector('#\\3' + node.id);
@@ -116,6 +139,7 @@
                 // console.log(nodeText);
                 entityEl.setAttribute('bmfont-text', "text:" + slidingText);
                 entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
+                entityEl.setAttribute('class', "flowing")
                 // var currentPos = entityEl.getAttribute("position");
                 // entityEl.addEventListener('move', function (event) {
                 //     sleep(20);
@@ -209,55 +233,104 @@
                 }
             }
         }
+
+        function close_enough_2D(pos1,pos2) {
+            return (Math.abs(pos1[0]-pos2[0]) < 0.5 && Math.abs(pos1[1]-pos2[1]) < 0.5)
+        }
         
+        function delete_flowing_values(argument) {
+
+
+            var flowing = document.querySelectorAll(".flowing");
+            for (var i = flowing.length - 1; i >= 0; i--) {
+                var pathArray = flowing[i].getAttribute('alongpath').path.split(' ');
+                var destination = pathArray[pathArray.length - 1].split(",");
+                //console.log(destination);// Array os destination pos
+                var currentPos = flowing[i].getAttribute('position');
+                var currentPosArray = [currentPos.x,currentPos.y,currentPos.z];
+                if (close_enough_2D(currentPosArray, destination)) {
+                    flowing[i].parentNode.removeChild(flowing[i]);
+                }
+                //console.log(currentPos);
+            }
+        }
+
         function handle_signals(signalGraph) {
             if (secondSignalEnabled) {
                 setInterval(function(){ 
-                    // console.log(signalGraph)
                     signalGraph[signal].value ++;
                     updateNode(signalGraph[signal]);
 
                     // console.log(signalGraph);
                     this.update_children(signalGraph[signal], signalGraph);   
+                    delete_flowing_values();
                 }, 1000);
             }
         }
+        function dive() {
+            document.getElementById("code").style.display="none";
+            document.getElementById("scene").style = null;
+        }
+
+    </script>
+    <script type="text/javascript">
+         $(".menu").resizable({
+           handleSelector: ".splitter",
+           resizeHeight: false
+         });
+
+         $(".mainContent").resizable({
+           handleSelector: ".splitter-horizontal",
+           resizeWidth: false
+         });
     </script>
 
 </head>
-<body onload=start()>
-    <a-scene id = "scene">
+<body style="font-family:monospace" onload=start()>
+
+    <div id="code" class="menu" contenteditable="true" >
+        activate seconds<br />var mapVar = map( (a)=>(a+1) seconds)<br />fold(seconds + 0)<br />filter((a)=>(a%3==0) seconds 0)<br />var map2 = map((a)=>(a+1) mapVar)<br />merge(mapVar map2 +)
+
+        <br />
+        <button style="min-width: 100%" onclick="dive()">Dive</button>
+    </div>
+    <a-scene class="mainContent" style="float:right" id = "scene">
+        <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
         <!-- Hands -->
-        <a-entity hand-controls="left" aabb-collider="objects: .cube;" grab></a-entity>
-        <a-entity hand-controls="right" aabb-collider="objects: .cube;" grab></a-entity>
+        <a-entity teleport-controls hand-controls="left" aabb-collider="objects: .node;" grab if-no-vr-headset="visible: false"></a-entity>
+        <a-entity teleport-controls hand-controls="right" aabb-collider="objects: .node;" grab if-no-vr-headset="visible: false"></a-entity>
+        <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
+
         <a-entity id="1" bmfont-text="text:seconds
-    0" color= "#333" position="5.114750000000001 4.059857142857142 -4"></a-entity>
-		<a-ring id="10000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="5.46475 4.229857142857142 -4" radius-outer="1"></a-ring>
+    0" color= "#333" position="2.6147500000000004 4.059857142857142 -2.5"></a-entity>
+		<a-ring class= "node" id="10000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="2.9647500000000004 4.229857142857142 -2.5" radius-outer="1"></a-ring>
 		<a-entity id="4" bmfont-text="text:filter
-    0" color= "#333" position="1.364725 2.777857142857143 -4"></a-entity>
-		<a-ring id="40000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="1.714725 2.947857142857143 -4" radius-outer="1"></a-ring>
+    0" color= "#333" position="-1.135275 2.777857142857143 -2.5"></a-entity>
+		<a-ring class= "node" id="40000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="-0.785275 2.947857142857143 -2.5" radius-outer="1"></a-ring>
 		<a-entity id="3" bmfont-text="text:fold
-    0" color= "#333" position="5.114750000000001 2.777857142857143 -4"></a-entity>
-		<a-ring id="30000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="5.46475 2.947857142857143 -4" radius-outer="1"></a-ring>
+    0" color= "#333" position="2.6147500000000004 2.777857142857143 -2.5"></a-entity>
+		<a-ring class= "node" id="30000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="2.9647500000000004 2.947857142857143 -2.5" radius-outer="1"></a-ring>
 		<a-entity id="2" bmfont-text="text:map
-    1" color= "#333" position="8.76475 2.777857142857143 -4"></a-entity>
-		<a-ring id="20000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="9.114749999999999 2.947857142857143 -4" radius-outer="1"></a-ring>
+    1" color= "#333" position="6.264749999999999 2.777857142857143 -2.5"></a-entity>
+		<a-ring class= "node" id="20000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="6.614749999999999 2.947857142857143 -2.5" radius-outer="1"></a-ring>
 		<a-entity id="6" bmfont-text="text:merge
-    3" color= "#333" position="8.739749999999999 0.21385714285714288 -4"></a-entity>
-		<a-ring id="60000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="9.089749999999999 0.3838571428571429 -4" radius-outer="1"></a-ring>
+    3" color= "#333" position="6.239749999999999 0.21385714285714288 -2.5"></a-entity>
+		<a-ring class= "node" id="60000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="6.589749999999999 0.3838571428571429 -2.5" radius-outer="1"></a-ring>
 		<a-entity id="5" bmfont-text="text:map
-    2" color= "#333" position="9.91475 1.495857142857143 -4"></a-entity>
-		<a-ring id="50000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="10.26475 1.665857142857143 -4" radius-outer="1"></a-ring>
-		<a-entity meshline="lineWidth: 2; path: 4.4697499999999994 3.8897142857142852 -4,2.65625 3.2697142857142856 -4; color: black"></a-entity>
-		<a-entity meshline="lineWidth: 2; path: 5.46475 3.8452857142857146 -4,5.46475 3.3322857142857143 -4; color: black"></a-entity>
-		<a-entity meshline="lineWidth: 2; path: 6.442749999999999 3.8862857142857146 -4,8.19675 3.270285714285714 -4; color: black"></a-entity>
-		<a-entity meshline="lineWidth: 2; path: 8.747 2.570857142857143 -4,8.735 0.7617 -4; color: black"></a-entity>
-		<a-entity meshline="lineWidth: 2; path: 9.4535 2.5701428571428573 -4,9.92425 2.045285714285714 -4; color: black"></a-entity>
-		<a-entity meshline="lineWidth: 2; path: 9.9185 1.288157142857143 -4,9.4375 0.7633 -4; color: black"></a-entity>
+    2" color= "#333" position="7.41475 1.495857142857143 -2.5"></a-entity>
+		<a-ring class= "node" id="50000" color="black" scale="0.9 0.25 2" radius-inner="0.97" position="7.764749999999999 1.665857142857143 -2.5" radius-outer="1"></a-ring>
+		<a-entity meshline="lineWidth: 2; path: 1.9697499999999994 3.8897142857142852 -2.5,0.15625 3.2697142857142856 -2.5; color: black"></a-entity>
+		<a-entity meshline="lineWidth: 2; path: 2.9647500000000004 3.8452857142857146 -2.5,2.9647500000000004 3.3322857142857143 -2.5; color: black"></a-entity>
+		<a-entity meshline="lineWidth: 2; path: 3.9427499999999993 3.8862857142857146 -2.5,5.69675 3.270285714285714 -2.5; color: black"></a-entity>
+		<a-entity meshline="lineWidth: 2; path: 6.247 2.570857142857143 -2.5,6.234999999999999 0.7617 -2.5; color: black"></a-entity>
+		<a-entity meshline="lineWidth: 2; path: 6.9535 2.5701428571428573 -2.5,7.424250000000001 2.045285714285714 -2.5; color: black"></a-entity>
+		<a-entity meshline="lineWidth: 2; path: 7.4185 1.288157142857143 -2.5,6.9375 0.7633 -2.5; color: black"></a-entity>
 		
+        <!-- <a-sky color="#ECECEC"></a-sky> -->
     </a-scene>
     <div id="graph" style="display: none;">
         {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"ref":"seconds","id":1,"children":[{"name":"map","value":1,"formula":["a+1","a"],"id":2,"ref":"mapVar","children":[{"name":"map","value":2,"formula":["a+1","a"],"id":5,"ref":"map2","children":[{"name":"merge","value":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","children":[],"parents":["mapVar","map2"]}],"parents":["mapVar"]},{"name":"merge","value":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","children":[],"parents":["mapVar","map2"]}],"parents":["seconds"]},{"name":"fold","value":0,"formula":"$$signalValue$$+currentValue","id":3,"ref":"","children":[],"parents":["seconds"]},{"name":"filter","value":"0","formula":["a%3==0","a"],"id":4,"ref":"","children":[],"parents":["seconds"]}]}}
     </div>
+
 </body>
 </html>

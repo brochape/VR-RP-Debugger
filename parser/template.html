@@ -13,6 +13,23 @@
     <script src="https://rawgit.com/andreasplesch/aframe-meshline-component/master/dist/aframe-meshline-component.min.js"></script>
     <script src="https://rawgit.com/ngokevin/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
     <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+    <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+    <style>
+        .menu {
+          float:left;
+          width:20%;
+          height:80%;
+        }
+        .mainContent {
+          float:left;
+          width:75%;
+          height:80%;
+        }
+    </style>
+
     <script type="text/javascript">
         var signalGraph = ""
         function sleep(milliseconds) {
@@ -54,6 +71,7 @@
             return result;
         }
         function start() {
+
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
             var nodeTest = document.querySelector('#\\3' + 2);
             // nodeTest.setAttribute('bmfont-text', "coucou");
@@ -249,19 +267,35 @@
                 }, 1000);
             }
         }
+        function dive() {
+            document.getElementById("code").style.display="none";
+            document.getElementById("scene").style = null;
+        }
+
     </script>
 
 </head>
-<body onload=start()>
-    <a-scene id = "scene">
+<body style="font-family:monospace" onload=start()>
+
+    <div id="code" class="menu" contenteditable="true" >
+        {{code}}
+
+        <br />
+        <button style="min-width: 100%" onclick="dive()">Dive</button>
+    </div>
+    <a-scene class="mainContent" style="float:right" id = "scene">
+        <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
         <!-- Hands -->
-        <a-entity hand-controls="left" aabb-collider="objects: .node;" grab></a-entity>
-        <a-entity hand-controls="right" aabb-collider="objects: .node;" grab></a-entity>
+        <a-entity teleport-controls hand-controls="left" aabb-collider="objects: .node;" grab if-no-vr-headset="visible: false"></a-entity>
+        <a-entity teleport-controls hand-controls="right" aabb-collider="objects: .node;" grab if-no-vr-headset="visible: false"></a-entity>
+        <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
+
         {{scene}}
-        <a-sky color="#ECECEC"></a-sky>
+        <!-- <a-sky color="#ECECEC"></a-sky> -->
     </a-scene>
     <div id="graph" style="display: none;">
         {{graph}}
     </div>
+
 </body>
 </html>
