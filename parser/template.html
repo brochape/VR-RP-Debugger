@@ -100,7 +100,7 @@
                 var nodeText = fromNode.getAttribute('text').value.split("\n");
                 var slidingText = nodeText[nodeText.length-1];
                 //console.log(nodeText);
-                var text_ = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + slidingText +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"
+                var text_ = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + slidingText +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
                 //console.log(text_);
                 entityEl.setAttribute('text', text_);
                 entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
@@ -145,7 +145,7 @@
             // console.log('#\\3' + node.id);
             var nodeText = nodeTest.getAttribute('text').value;
             // console.log(nodeText.split(" ")[0]);
-            var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"
+            var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
             //"text:" + ;//nodeTest.setAttribute('bmfont-text',
             nodeTest.setAttribute('text', newNodeText);
 
@@ -272,6 +272,7 @@
 
         {{scene}}
 
+        <a-entity class= "node" material="color: white" geometry="primitive: circle ; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" text="align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value: map\n\nThis is s test; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"></a-entity>
 
         <!-- <a-sky color="#ECECEC"></a-sky> -->
     </a-scene>
