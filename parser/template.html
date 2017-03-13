@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/main.css">
     <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.1/dist/aframe-extras.misc.min.js"></script><!-- For controllers -->
-    <script src="https://rawgit.com/bryik/aframe-bmfont-text-component/master/dist/aframe-bmfont-text-component.min.js"></script>
     <script src="https://rawgit.com/andreasplesch/aframe-meshline-component/master/dist/aframe-meshline-component.min.js"></script>
     <script src="https://rawgit.com/ngokevin/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
     <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
@@ -87,25 +86,6 @@
                 var fromDest = fromNode.getAttribute('position');
                 var toDest = toNode.getAttribute('position');
 
-                // var newFromDest = Object.keys(fromDest).reduce(function(previous, current) {
-                //     if (key != 'z') {
-                //         previous[current] =  -= 4;
-                //     }
-                //     return previous;
-                // }, {});
-
-
-                // var newToDest = Object.keys(toDest).reduce(function(previous, current) {
-                //     if (key != 'z') {
-                //         previous[current] =  -= 4;
-                //     }
-                //     return previous;
-                // }, {});
-
-                
-                // console.log(fromDest, toDest);
-                // console.log(pathstring);
-                // sleep(4000);
 
                 var entityEl = document.createElement('a-entity');
                 var dist = {
@@ -124,7 +104,6 @@
                 //console.log(text_);
                 entityEl.setAttribute('text', text_);
                 entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
-                entityEl.setAttribute('class', "flowing")
                 // var currentPos = entityEl.getAttribute("position");
                 // entityEl.addEventListener('move', function (event) {
                 //     sleep(20);
@@ -136,9 +115,10 @@
                 }
                 pathstring += `${toDest.x}` + "," + `${toDest.y}` + "," + `${toDest.z} `
                 pathstring += `; closed: false; dur: 10000; loop: false`;
-                entityEl.setAttribute('alongpath', pathstring);
+                entityEl.setAttribute("alongpath", pathstring);
+                entityEl.setAttribute('class', "flowingText");
 
-                console.log(entityEl.alongpath);
+                //console.log(entityEl.getAttribute("alongpath"));
 
                 // for (var i = 0; i < 50; i++) {
                 //     // console.log(fromDest.x-deltaX*i);
@@ -226,20 +206,27 @@
             return (Math.abs(pos1[0]-pos2[0]) < 0.5 && Math.abs(pos1[1]-pos2[1]) < 0.5)
         }
         
-        function delete_flowing_values(argument) {
+        function delete_flowing_values() {
 
 
-            var flowing = document.querySelectorAll(".flowing");
+            var flowing = document.querySelectorAll(".flowingText");
             //console.log(flowing[flowing.length - 1],flowing[flowing.length - 1].getAttribute('scale'));
-            for (var i = flowing.length - 1; i >= 0; i--) {
-                var pathArray = flowing[i].getAttribute('alongpath').path.split(' ');
-                console.log("bib");
-                var destination = pathArray[pathArray.length - 1].split(",");
-                //console.log(destination);// Array os destination pos
-                var currentPos = flowing[i].getAttribute('position');
-                var currentPosArray = [currentPos.x,currentPos.y,currentPos.z];
-                if (close_enough_2D(currentPosArray, destination)) {
-                    flowing[i].parentNode.removeChild(flowing[i]);
+            for (var i = 0; i < flowing.length-1; i++) {
+                console.log(flowing[i].attributes);
+                //console.log(flowing[i])
+                try{
+                    var pathArray = flowing[i].getAttribute('alongpath').path.split(' ');
+                    //console.log("bib");
+                    var destination = pathArray[pathArray.length - 1].split(",");
+                    //console.log(destination);// Array os destination pos
+                    var currentPos = flowing[i].getAttribute('position');
+                    var currentPosArray = [currentPos.x,currentPos.y,currentPos.z];
+                    if (close_enough_2D(currentPosArray, destination)) {
+                        flowing[i].parentNode.removeChild(flowing[i]);
+                    }
+                }
+                catch(err){
+                    
                 }
                 //console.log(currentPos);
             }
