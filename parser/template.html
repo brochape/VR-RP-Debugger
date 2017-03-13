@@ -7,8 +7,8 @@
     </title>
     <meta name="description" content="Hello, World! - A-Frame">
     <link rel="stylesheet" type="text/css" href="stylesheets/main.css">
-    <script src="https://aframe.io/releases/0.3.2/aframe.min.js"></script>
-    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.1/dist/aframe-extras.misc.min.js"></script><!-- For controllers -->
+    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.1/dist/aframe-extras.misc.min.js"></script><!-- For controllers -->
     <script src="https://rawgit.com/bryik/aframe-bmfont-text-component/master/dist/aframe-bmfont-text-component.min.js"></script>
     <script src="https://rawgit.com/andreasplesch/aframe-meshline-component/master/dist/aframe-meshline-component.min.js"></script>
     <script src="https://rawgit.com/ngokevin/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
@@ -60,7 +60,7 @@
         function start() {
 
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
-            var nodeTest = document.querySelector('#\\3' + 2);
+            //var nodeTest = document.querySelector('#\\3' + 2);
             // nodeTest.setAttribute('bmfont-text', "coucou");
 
             /*if (typeof(Worker) !== "undefined") {
@@ -75,10 +75,6 @@
         var signal = "seconds";
 
         function updateNode(node){
-            function render(color) {
-                // requestAnimationFrame(render);
-                circle.setAttribute('color', color);
-            }
             var sceneEl = document.querySelector('a-scene');
             var reached = false;
 
@@ -120,11 +116,13 @@
                 var division = 3;
                 var deltaX = dist.x/division;
                 var deltaY = dist.y/division;
-
-                var nodeText = fromNode.getAttribute('bmfont-text').text.split("\n");
+                //console.log(fromNode, fromNode.getAttribute('text'));
+                var nodeText = fromNode.getAttribute('text').value.split("\n");
                 var slidingText = nodeText[nodeText.length-1];
-                // console.log(nodeText);
-                entityEl.setAttribute('bmfont-text', "text:" + slidingText);
+                //console.log(nodeText);
+                var text_ = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + slidingText +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"
+                //console.log(text_);
+                entityEl.setAttribute('text', text_);
                 entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
                 entityEl.setAttribute('class', "flowing")
                 // var currentPos = entityEl.getAttribute("position");
@@ -139,6 +137,8 @@
                 pathstring += `${toDest.x}` + "," + `${toDest.y}` + "," + `${toDest.z} `
                 pathstring += `; closed: false; dur: 10000; loop: false`;
                 entityEl.setAttribute('alongpath', pathstring);
+
+                console.log(entityEl.alongpath);
 
                 // for (var i = 0; i < 50; i++) {
                 //     // console.log(fromDest.x-deltaX*i);
@@ -159,17 +159,18 @@
             
             var circle = document.querySelector("[id='"+ node.id + "0000"+ "']"); //#\\3' + node.id + "0000");
             // console.log(circle);//'#\\320000');// + node.id + "0000");
-            render('blue');
+            //render('blue');
 
             var nodeTest = document.querySelector('#\\3' + node.id);
             // console.log('#\\3' + node.id);
-            var nodeText = nodeTest.getAttribute('bmfont-text').text;
+            var nodeText = nodeTest.getAttribute('text').value;
             // console.log(nodeText.split(" ")[0]);
-            var newNodeText = "text:" + node.name +'\n'+ node.value.toString();//nodeTest.setAttribute('bmfont-text',
-            nodeTest.setAttribute('bmfont-text', newNodeText);
+            var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"
+            //"text:" + ;//nodeTest.setAttribute('bmfont-text',
+            nodeTest.setAttribute('text', newNodeText);
 
 
-            render('black');
+            //render('black');
             // var t = 0;
             // var colors = ['black',"orange"]
             // function render() {
@@ -229,8 +230,10 @@
 
 
             var flowing = document.querySelectorAll(".flowing");
+            //console.log(flowing[flowing.length - 1],flowing[flowing.length - 1].getAttribute('scale'));
             for (var i = flowing.length - 1; i >= 0; i--) {
                 var pathArray = flowing[i].getAttribute('alongpath').path.split(' ');
+                console.log("bib");
                 var destination = pathArray[pathArray.length - 1].split(",");
                 //console.log(destination);// Array os destination pos
                 var currentPos = flowing[i].getAttribute('position');
@@ -281,6 +284,9 @@
         <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
 
         {{scene}}
+
+        <a-entity class= "node" material="color: black" geometry="primitive: ring; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" text="align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value: map\n\nThis is s test; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"></a-entity>
+
         <!-- <a-sky color="#ECECEC"></a-sky> -->
     </a-scene>
     <div id="graph" style="display: none;">
