@@ -12,7 +12,8 @@
     <script src="https://rawgit.com/andreasplesch/aframe-meshline-component/master/dist/aframe-meshline-component.min.js"></script>
     <script src="https://rawgit.com/ngokevin/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
     <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
-    <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+    <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.2/dist/aframe-controller-cursor-component.min.js"></script>
+    <!-- <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 
@@ -28,7 +29,7 @@
         }
         function findSignalNode(signalGraph, signalName) {
             function searchInNode(node, signalName) {
-                // console.log(node);
+                // //console.log(node);
                 if (node.ref == signalName) {
                     return node;
                 }
@@ -46,7 +47,7 @@
             var result = null;
             var keys = Object.keys(signalGraph);
             for (i = 0; result == null && i < keys.length; i++){
-                // console.log(signalGraph);
+                // //console.log(signalGraph);
                 if (signalGraph[keys[i]].ref ==signalName ) {
                     result = signalGraph[keys[i]];
                 }
@@ -96,18 +97,18 @@
                 var division = 3;
                 var deltaX = dist.x/division;
                 var deltaY = dist.y/division;
-                //console.log(fromNode, fromNode.getAttribute('text'));
+                ////console.log(fromNode, fromNode.getAttribute('text'));
                 var nodeText = fromNode.getAttribute('text').value.split("\n");
                 var slidingText = nodeText[nodeText.length-1];
-                //console.log(nodeText);
+                ////console.log(nodeText);
                 var text_ = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + slidingText +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
-                //console.log(text_);
+                ////console.log(text_);
                 entityEl.setAttribute('text', text_);
                 entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
                 // var currentPos = entityEl.getAttribute("position");
                 // entityEl.addEventListener('move', function (event) {
                 //     sleep(20);
-                //     // console.log("yo")
+                //     // //console.log("yo")
                 // });
                 var pathstring = 'path:'
                 for (var j = 0; j < division; j++) {
@@ -118,19 +119,19 @@
                 entityEl.setAttribute("alongpath", pathstring);
                 entityEl.setAttribute('class', "flowingText");
 
-                //console.log(entityEl.getAttribute("alongpath"));
+                ////console.log(entityEl.getAttribute("alongpath"));
 
                 // for (var i = 0; i < 50; i++) {
-                //     // console.log(fromDest.x-deltaX*i);
+                //     // //console.log(fromDest.x-deltaX*i);
                 //     entityEl.emit("move")
                     
                 // }
                 
 
-                // console.log("From: ");
-                // console.log(fromDest);
-                // console.log("To: ");
-                // console.log(toDest);
+                // //console.log("From: ");
+                // //console.log(fromDest);
+                // //console.log("To: ");
+                // //console.log(toDest);
                 // node.children[i];
                 if (entityEl) {
                     sceneEl.appendChild(entityEl);
@@ -138,13 +139,13 @@
             }
             
             var circle = document.querySelector("[id='"+ node.id + "0000"+ "']"); //#\\3' + node.id + "0000");
-            // console.log(circle);//'#\\320000');// + node.id + "0000");
+            // //console.log(circle);//'#\\320000');// + node.id + "0000");
             //render('blue');
 
             var nodeTest = document.querySelector('#\\3' + node.id);
-            // console.log('#\\3' + node.id);
+            // //console.log('#\\3' + node.id);
             var nodeText = nodeTest.getAttribute('text').value;
-            // console.log(nodeText.split(" ")[0]);
+            // //console.log(nodeText.split(" ")[0]);
             var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
             //"text:" + ;//nodeTest.setAttribute('bmfont-text',
             nodeTest.setAttribute('text', newNodeText);
@@ -162,7 +163,7 @@
         }
 
         function update_children(parentNode, graph){
-            // console.log("Cocou",graph);
+            // //console.log("Cocou",graph);
             if (parentNode.children) {
                 for (var i = 0; i < parentNode.children.length; i++) {
                     node = parentNode.children[i];
@@ -186,9 +187,9 @@
                             break;
                         case "merge":
                             [signal1, signal2, operator] = node.formula;
-                            // console.log(signalGraph);
+                            // //console.log(signalGraph);
                             signal1Value = findSignalNode(graph,signal1).value;
-                            // console.log(signal1Value)
+                            // //console.log(signal1Value)
                             signal2Value = findSignalNode(graph,signal2).value;
                             node.value = eval(signal1Value + operator + signal2Value);
                             
@@ -210,15 +211,15 @@
 
 
             var flowing = document.querySelectorAll(".flowingText");
-            //console.log(flowing[flowing.length - 1],flowing[flowing.length - 1].getAttribute('scale'));
+            ////console.log(flowing[flowing.length - 1],flowing[flowing.length - 1].getAttribute('scale'));
             for (var i = 0; i < flowing.length-1; i++) {
-                console.log(flowing[i].attributes);
-                //console.log(flowing[i])
+                //console.log(flowing[i].attributes);
+                ////console.log(flowing[i])
                 try{
                     var pathArray = flowing[i].getAttribute('alongpath').path.split(' ');
-                    //console.log("bib");
+                    ////console.log("bib");
                     var destination = pathArray[pathArray.length - 1].split(",");
-                    //console.log(destination);// Array os destination pos
+                    ////console.log(destination);// Array os destination pos
                     var currentPos = flowing[i].getAttribute('position');
                     var currentPosArray = [currentPos.x,currentPos.y,currentPos.z];
                     if (close_enough_2D(currentPosArray, destination)) {
@@ -228,7 +229,7 @@
                 catch(err){
                     
                 }
-                //console.log(currentPos);
+                ////console.log(currentPos);
             }
         }
 
@@ -238,7 +239,7 @@
                     signalGraph[signal].value ++;
                     updateNode(signalGraph[signal]);
 
-                    // console.log(signalGraph);
+                    // //console.log(signalGraph);
                     this.update_children(signalGraph[signal], signalGraph);   
                     delete_flowing_values();
                 }, 1000);
@@ -266,14 +267,16 @@
     <a-scene class="mainContent" style="float:right" id = "scene">
         <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
         <!-- Hands -->
-        <a-entity teleport-controls hand-controls="left" aabb-collider="objects: .node;" grab if-no-vr-headset="visible: false"></a-entity>
-        <a-entity teleport-controls hand-controls="right" aabb-collider="objects: .node;" grab if-no-vr-headset="visible: false"></a-entity>
+        <a-entity teleport-controls hand-controls="left" aabb-collider="objects: .node;" grab controller-cursor if-no-vr-headset="visible: false"></a-entity>
+        <a-entity teleport-controls hand-controls="right" aabb-collider="objects: .node;" grab controller-cursor if-no-vr-headset="visible: false"></a-entity>
+
         <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
 
         {{scene}}
 
         <a-entity class= "node" material="color: white" geometry="primitive: circle ; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" text="align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value: map\n\nThis is s test; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"></a-entity>
 
+        <a-entity position="" camera="active:false;near:0.01;userHeight:1.2" rotation="" look-controls="" aframe-injected="" data-aframe-inspector="default-camera"></a-entity>
         <!-- <a-sky color="#ECECEC"></a-sky> -->
     </a-scene>
     <div id="graph" style="display: none;">
