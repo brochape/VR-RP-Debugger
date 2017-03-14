@@ -3,7 +3,7 @@ AFRAME.registerComponent('cursor-listener', {
         var visible = 0;
         var counter = 0;
         var COLORS = ['blue','white'];
-        var menuElements = ["fold", "+", "-", "0", "","X"]
+        var menuElements = ["fold", "+", "-", "0", "merge","","","","map","","","","filter","","","X"]
         this.el.addEventListener('click', function (evt) {
             counter ++;
             console.log("click");
@@ -32,9 +32,13 @@ AFRAME.registerComponent('cursor-listener', {
                         menu.appendChild(button);
                         menu.setAttribute("position",pos);
                         button.setAttribute("class","menu-button");
+                        button.setAttribute("text","color: white;font: https://cdn.aframe.io/fonts/Roboto-msdf.json; value:"+menuElements[i*4+j]+";")
 
                         /*button.setAttribute("text", )*/
-                        button.setAttribute("color", "black")
+                        button.setAttribute("color", "black");
+                        if (i*4+j == 15) {
+                            button.setAttribute("color", "red");
+                        }
                         button.setAttribute("height",0.4);
                         button.setAttribute("width",0.4);
                         newPos = {
