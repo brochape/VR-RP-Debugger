@@ -51,7 +51,7 @@ var ID = 1;
 //A Textnode with ID i is associated with a circle of ID i*10000
 function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 
-    var circle_template = '<a-entity class= "node" id="' + ID + '" material="color: white" geometry="primitive: circle; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" position="'+
+    var circle_template = '<a-entity class= "node" cursor-listener id="' + ID + '" material="color: white" geometry="primitive: circle; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" position="'+
                   (pos_x) + ' ' +
                   (pos_y) + ' ' +
                   pos_z +'" text="align: center; zOffset: 0.01; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value: '+ name.replace("\n","\n\n") +
