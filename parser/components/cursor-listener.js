@@ -3,6 +3,7 @@ AFRAME.registerComponent('cursor-listener', {
         var visible = 0;
         var counter = 0;
         var COLORS = ['blue','white'];
+        var menuElements = ["fold", "+", "-", "0", "","X"]
         this.el.addEventListener('click', function (evt) {
             counter ++;
             console.log("click");
@@ -31,6 +32,8 @@ AFRAME.registerComponent('cursor-listener', {
                         menu.appendChild(button);
                         menu.setAttribute("position",pos);
                         button.setAttribute("class","menu-button");
+
+                        /*button.setAttribute("text", )*/
                         button.setAttribute("color", "black")
                         button.setAttribute("height",0.4);
                         button.setAttribute("width",0.4);
@@ -39,9 +42,11 @@ AFRAME.registerComponent('cursor-listener', {
                           y: 0.75 - (j*0.5),
                           z: 0.01
                         }
-                        this.addEventListener('click',function (evt) {
-                            
-                        })
+                        var that = this;
+                        button.addEventListener('click',function (evt) {
+                            // This works!
+                            //that.parentNode.removeChild(that);
+                        });
                         buttonPosition = button.setAttribute('position', newPos);
                         button.setAttribute('position', buttonPosition);
                         
