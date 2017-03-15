@@ -31,8 +31,6 @@ function findNodeByID(signalGraph, ID) {
 }
 
 function delete_flowing_values() {
-
-
     var flowing = document.querySelectorAll(".flowingText");
     ////console.log(flowing[flowing.length - 1],flowing[flowing.length - 1].getAttribute('scale'));
     for (var i = 0; i < flowing.length-1; i++) {
@@ -66,6 +64,24 @@ function deleteEdgesForID(ID) {
         console.log(fromNodeID,toNodeID);
         if (fromNodeID == ID || toNodeID == ID){
             edge.parentNode.removeChild(edge);
+        }
+    }
+}
+
+
+function deleteNodeFromGraph(signalGraph,nodeID) {
+    var node = findNodeByID(signalGraph,nodeID);
+    if (node) {
+        for (var i = 0; i < node.parents.length; i++) {
+            var parentNode = findSignalNode(signalGraph,node.parents[i]);
+            console.log(parentNode)
+            var array = parentNode.children;
+            var index = array.indexOf(node);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+            parentNode.children = array;
+            
         }
     }
 }

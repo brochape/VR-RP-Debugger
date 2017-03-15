@@ -53,22 +53,13 @@ AFRAME.registerComponent('cursor-listener', {
                             switch(action){
                                 case "DEL":
                                     console.log("I'm deleting",that.id);
-                                    var node = findNodeByID(signalGraph,that.id);
-                                    for (var i = 0; i < node.parents.length; i++) {
-                                        var parentNode = findSignalNode(signalGraph,node.parents[i]);
-                                        console.log(parentNode)
-                                        var array = parentNode.children;
-                                        var index = array.indexOf(node);
-                                        if (index > -1) {
-                                            array.splice(index, 1);
-                                        }
-                                        parentNode.children = array;
-                                        
-                                        that.parentNode.removeChild(that);
-                                    }
+
+                                    deleteNodeFromGraph(signalGraph,that.id);
+                                    that.parentNode.removeChild(that);
 
                                     deleteEdgesForID(that.id);
                                     //TODO: delete all depending children?
+                                    //TODO: Tiggered twice for some reason
                             }
                             // This works!
                             //
