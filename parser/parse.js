@@ -48,7 +48,7 @@ module.exports = {
     },
 
     nodeInterpreter: function(signalGraph,statement){
-
+            console.log(statement.name, statement.location.start.line);
             switch(statement.name){
                 case "fold":
                     [signal,operand,initVal] = statement.children.map((x)=>(x.value));
@@ -67,6 +67,7 @@ module.exports = {
                         formula: formula,
                         id: ID,
                         ref: "",
+                        line: statement.location.start.line,
                         children: [],
                         parents: [signal]
                     }
@@ -94,6 +95,7 @@ module.exports = {
                         formula: [body,param],
                         id: ID,
                         ref: "",
+                        line: statement.location.start.line,
                         children: [],
                         parents: [signal]
                     }
@@ -121,6 +123,7 @@ module.exports = {
                         formula: [body, param],
                         id: ID,
                         ref: "",
+                        line: statement.location.start.line,
                         children: [],
                         parents: [signal]
                     }
@@ -146,6 +149,7 @@ module.exports = {
                         formula: [signal1, signal2, operator],
                         id: ID,
                         ref: "",
+                        line: statement.location.start.line,
                         children: [],
                         parents: [signal1,signal2]
                     }

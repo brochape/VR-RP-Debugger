@@ -65,6 +65,7 @@ fold = 'fold' space? '(' space? signal:word space op:operator space initVal:int 
   return {
     name: "fold",
     value: "fold",
+    location: location(),
     children: [leftNode,middleNode,rightNode]
   }
 }
@@ -88,6 +89,7 @@ filter = 'filter' space? '(' space? lam:lambda space signal:word space initVal:w
   return {
     name: "filter",
     value: "filter",
+    location: location(),
     children: [lam,middleNode,rightNode]
   }
 }
@@ -105,6 +107,7 @@ map = 'map' space? '(' space? lam:lambda space? signal:word space? ')' _ {
   return {
     name: "map",
     value: "map",
+    location: location(),
     children: [lam,rightNode]
   }
 
@@ -131,6 +134,7 @@ merge = 'merge' space? '(' space? signal1:word space signal2:word space operator
   return {
     name: "merge",
     value: "merge",
+    location: location(),
     children: [operation]
   }
 

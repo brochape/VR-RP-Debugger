@@ -2,7 +2,6 @@ function findNodeByID(signalGraph, ID) {
     function searchInNode(node, ID) {
         //console.log(node);
         if (node.id == ID) {
-            console.log(node);
             return node;
         }
         else if (node.children) {
@@ -56,12 +55,9 @@ function delete_flowing_values() {
 
 function deleteEdgesForID(ID) {
     var edges = document.querySelectorAll(".edge");
-    console.log(edges);
     for (var i = 0; i < edges.length; i++) {
         edge = edges[i];
-        console.log(edge);
         [fromNodeID,toNodeID] = edge.id.split('-');
-        console.log(fromNodeID,toNodeID);
         if (fromNodeID == ID || toNodeID == ID){
             edge.parentNode.removeChild(edge);
         }
@@ -74,7 +70,6 @@ function deleteNodeFromGraph(signalGraph,nodeID) {
     if (node) {
         for (var i = 0; i < node.parents.length; i++) {
             var parentNode = findSignalNode(signalGraph,node.parents[i]);
-            console.log(parentNode)
             var array = parentNode.children;
             var index = array.indexOf(node);
             if (index > -1) {
@@ -83,5 +78,12 @@ function deleteNodeFromGraph(signalGraph,nodeID) {
             parentNode.children = array;
             
         }
+        var code = document.querySelector(".codeEditor");
+        console.log(code.innerHTML);
+        //activate seconds<br>var mapVar = map( (a)=&gt;(a+1) seconds)<br>fold(seconds + 0)<br>filter((a)=&gt;(a%3==0) seconds 0)<br>var map2 = map((a)=&gt;(a+1) mapVar)<br>merge(mapVar map2 +)
+        var previousCode = code.innerHTML.split('<br>')[node.line-1] 
+        code.innerHTML = code.innerHTML.replace(previousCode,"");
+        console.log(node.line)
     }
+
 }
