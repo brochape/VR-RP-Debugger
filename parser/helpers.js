@@ -55,3 +55,17 @@ function delete_flowing_values() {
         ////console.log(currentPos);
     }
 }
+
+function deleteEdgesForID(ID) {
+    var edges = document.querySelectorAll(".edge");
+    console.log(edges);
+    for (var i = 0; i < edges.length; i++) {
+        edge = edges[i];
+        console.log(edge);
+        [fromNodeID,toNodeID] = edge.id.split('-');
+        console.log(fromNodeID,toNodeID);
+        if (fromNodeID == ID || toNodeID == ID){
+            edge.parentNode.removeChild(edge);
+        }
+    }
+}

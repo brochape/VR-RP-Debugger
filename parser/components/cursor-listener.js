@@ -66,6 +66,8 @@ AFRAME.registerComponent('cursor-listener', {
                                         
                                         that.parentNode.removeChild(that);
                                     }
+
+                                    deleteEdgesForID(that.id);
                                     //TODO: delete all depending children?
                             }
                             // This works!
