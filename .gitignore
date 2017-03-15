@@ -4,3 +4,5 @@ Debugger/obj
 Noesis.Javascript v0.7 - Binaries
 
 parser/node_modules/*
+parser/test.dot
+parser/test.html
