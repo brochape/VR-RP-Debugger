@@ -48,8 +48,14 @@ AFRAME.registerComponent('cursor-listener', {
                         }
                         var that = this;
                         button.addEventListener('click',function (evt) {
+                            var action = this.getAttribute('text').value;
+                            switch(action){
+                                case "X":
+                                    that.parentNode.removeChild(that);
+                                    //TODO: update the tree
+                            }
                             // This works!
-                            //that.parentNode.removeChild(that);
+                            //
                         });
                         buttonPosition = button.setAttribute('position', newPos);
                         button.setAttribute('position', buttonPosition);
