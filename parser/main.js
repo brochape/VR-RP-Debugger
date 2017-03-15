@@ -59,13 +59,15 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     return circle_template
 }
 
-function create_line_entity(path){
-    html = '<a-entity meshline="lineWidth: 2; path: ';
+function create_line_entity(path, fromNode, toNode){
+    html = '<a-entity class="edge" meshline="lineWidth: 2; path: ';
     for (var i = path.length - 1; i >= 0; i--) {
       html += path[i][0] + ' ' + path[i][1] + ' ' + '-2.5';
       if (i!=0) {html+=','}
     }
-    html += '; color: black"></a-entity>';
+    html += '; color: black" id="'+
+    fromNode + '-' + toNode
+    +'"></a-entity>';
     return html;
 }
 
@@ -92,6 +94,10 @@ function execute(command){
             htmlString += create_node_entity(name, parseFloat(pos[0])/40 -2.5, parseFloat(pos[1])/70, -2.5, id) + "\n\t\t";
         }
         for (var edge in graph._edgeLabels){
+            edge_ = edge.split("$$")
+            var fromNode = edge_[1]
+            var toNode = edge_[3]
+            console.log(fromNode,toNode);
             edges = graph._edgeLabels[edge].pos.replace("e,","").split(" ")
             var res_edges = [];
             updated_edges = [];
@@ -110,7 +116,7 @@ function execute(command){
               res_edges.push(temp_edge);
             })
             
-            htmlString += create_line_entity(res_edges) + "\n\t\t";
+            htmlString += create_line_entity(res_edges,fromNode,toNode) + "\n\t\t";
         }
         console.log(code);
         a = nunjucks.render('template.html', { 
