@@ -13,13 +13,20 @@ AFRAME.registerComponent('cursor-listener', {
                 //console.log('I was clicked at: ', evt.detail.intersection.point);
 
                 /* DISPLAY MENU */
-                menu = document.querySelector("#menu");
+                menuBackgroud = document.querySelector("#menu-backgroud");
                 console.log(menu);
                 if(menu == undefined){
                     //console.log("Adding menu");
                     var sceneEl = document.querySelector('a-scene');
                     var menu = document.createElement('a-plane');
+                    var menuBackgroud = document.createElement('a-plane');
+                    menuBackgroud.setAttribute("id", "menu-backgroud")
                     menu.setAttribute("id", "menu")
+
+                    menuBackgroud.setAttribute("material", " color: black");
+
+                    menuBackgroud.setAttribute("height",2.15);
+                    menuBackgroud.setAttribute("width",2.15);
 
                     menu.setAttribute("height",2.1);
                     menu.setAttribute("width",2.1);
@@ -31,7 +38,7 @@ AFRAME.registerComponent('cursor-listener', {
                       for (var j = 0; j < 4; j++) {
                         var button = document.createElement('a-entity');
                         menu.appendChild(button);
-                        menu.setAttribute("position",pos);
+                        menuBackgroud.setAttribute("position",pos);
                         button.setAttribute("geometry","primitive: plane; width: 0.4; height:0.4;")
                         button.setAttribute("class","menu-button");
                         button.setAttribute("text","color: white; zOffset: 0.02; align: center; width:2; height:2; value:"+menuElements[i*4+j]+";")
@@ -77,11 +84,12 @@ AFRAME.registerComponent('cursor-listener', {
                       }
                     }
                     
-                    sceneEl.appendChild(menu);
+                    menuBackgroud.appendChild(menu);
+                    sceneEl.appendChild(menuBackgroud);
                 }
                 else{
                     /*console.log("DELETE");*/
-                    menu.parentNode.removeChild(menu);
+                    menuBackgroud.parentNode.removeChild(menuBackgroud);
                 }
 
                 visible = 1 - visible;
