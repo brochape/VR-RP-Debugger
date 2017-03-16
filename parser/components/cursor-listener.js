@@ -3,7 +3,7 @@ AFRAME.registerComponent('cursor-listener', {
         var visible = 0;
         var counter = 0;
         var COLORS = ['blue','white'];
-        var menuElements = ["fold", "+", "-", "0", "merge","","","","map","","","","filter","","","DEL"]
+        var menuElements = ["fold", "+", "", "0", "merge","-","","","map","*","","","filter","/","","DEL"]
         this.el.addEventListener('click', function (evt) {
             counter ++;
             //console.log("click");
@@ -16,7 +16,7 @@ AFRAME.registerComponent('cursor-listener', {
                 menu = document.querySelector("#menu");
                 console.log(menu);
                 if(menu == undefined){
-                    console.log("Adding menu");
+                    //console.log("Adding menu");
                     var sceneEl = document.querySelector('a-scene');
                     var menu = document.createElement('a-plane');
                     menu.setAttribute("id", "menu")
@@ -25,6 +25,7 @@ AFRAME.registerComponent('cursor-listener', {
                     menu.setAttribute("width",2.1);
                     var pos = this.getAttribute("position");
                     pos.x -= 2;
+                    pos.z += 0.02;
 
                     for (var i = 0; i < 4; i++) {
                       for (var j = 0; j < 4; j++) {
@@ -33,7 +34,7 @@ AFRAME.registerComponent('cursor-listener', {
                         menu.setAttribute("position",pos);
                         button.setAttribute("geometry","primitive: plane; width: 0.4; height:0.4;")
                         button.setAttribute("class","menu-button");
-                        button.setAttribute("text","color: white; zOffset: 0.01; align: center; width:2; height:2; value:"+menuElements[i*4+j]+";")
+                        button.setAttribute("text","color: white; zOffset: 0.02; align: center; width:2; height:2; value:"+menuElements[i*4+j]+";")
 
                         /*button.setAttribute("text", )*/
                         button.setAttribute("material", " color: #496FFF");
@@ -60,6 +61,12 @@ AFRAME.registerComponent('cursor-listener', {
                                     deleteEdgesForID(that.id);
                                     //TODO: delete all depending children?
                                     //TODO: Tiggered twice for some reason
+                                case "+":
+                                case "-":
+                                case "/":
+                                case "*":
+                                    var node = findNodeByID(signalGraph, that.id);
+                                    changeFormula(signalGraph, node, action);
                             }
                             // This works!
                             //

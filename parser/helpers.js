@@ -87,3 +87,18 @@ function deleteNodeFromGraph(signalGraph,nodeID) {
     }
 
 }
+
+function changeFormula(signalGraph, node, operation){
+    switch(node.name){
+        case "fold":
+            var parentValue = findSignalNode(signalGraph,node.parents[0]).value// TODO: THIS ONLY WORKS FOR A SECOND- based signal
+            console.log(parentValue);
+            var newValue = [...Array(parentValue+1).keys()].reduce(function (acc, val) {
+                return eval(acc + operation + val);
+            }, node.initValue);
+            console.log(newValue);
+            node.value = newValue;
+            node.formula = node.formula.replace(/\+|\/|\-|\*/g,operation)
+    }
+    console.log(node);
+}

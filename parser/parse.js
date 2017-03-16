@@ -59,11 +59,12 @@ module.exports = {
                     else{
                         var signalValue = this.findSignalNode(signalGraph,signal).value;
                     }
-                    var formula = "$$signalValue$$" + operand + "currentValue" ;
+                    var formula =  "currentValue" + operand + "$$signalValue$$" ;
                     var initVal = eval(formula.replace("$$signalValue$$",signalValue).replace("currentValue",initVal));
                     var signalNode = {
                         name: "fold",
                         value: initVal,
+                        initValue: initVal,
                         formula: formula,
                         id: ID,
                         ref: "",
