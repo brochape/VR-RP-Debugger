@@ -99,12 +99,20 @@ function changeFormula(signalGraph, node, operation){
             console.log(newValue);
             node.value = newValue;
             node.formula = node.formula.replace(/\+|\/|\-|\*/g,operation)
+            break;
 
         case "map":
             [body,param] = node.formula;
             var newBody = body.replace(/\+|\/|\-|\*/g,operation);
             node.formula = [newBody,formula];// Value automatically updated at first computation of the formula
+            break;
 
     }
+    var code = document.querySelector(".codeEditor");
+    // console.log(code.innerHTML);
+    //activate seconds<br>var mapVar = map( (a)=&gt;(a+1) seconds)<br>fold(seconds + 0)<br>filter((a)=&gt;(a%3==0) seconds 0)<br>var map2 = map((a)=&gt;(a+1) mapVar)<br>merge(mapVar map2 +)
+    var previousCode = code.innerHTML.split('<br>')[node.line-1];
+    var newCode = previousCode.replace(/\+|\/|\-|\*/g,operation);
+    code.innerHTML = code.innerHTML.replace(previousCode,"");
     console.log(node);
 }
