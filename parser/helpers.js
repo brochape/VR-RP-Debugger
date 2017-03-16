@@ -99,6 +99,12 @@ function changeFormula(signalGraph, node, operation){
             console.log(newValue);
             node.value = newValue;
             node.formula = node.formula.replace(/\+|\/|\-|\*/g,operation)
+
+        case "map":
+            [body,param] = node.formula;
+            var newBody = body.replace(/\+|\/|\-|\*/g,operation);
+            node.formula = [newBody,formula];// Value automatically updated at first computation of the formula
+
     }
     console.log(node);
 }
