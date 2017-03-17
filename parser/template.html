@@ -179,7 +179,7 @@
                     node = parentNode.children[i];
                     switch(node.name){
                         case "fold":
-                            node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value));
+                            node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value)) + node.initValue;
                             updateNode(node);
                             break;
                         case "map":
