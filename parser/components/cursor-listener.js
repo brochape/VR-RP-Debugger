@@ -75,6 +75,7 @@ AFRAME.registerComponent('cursor-listener', {
                                     that.parentNode.removeChild(that);
 
                                     deleteEdgesForID(that.id);
+                                    break;
         //TODO: delete all depending children?
         //TODO: Tiggered twice for some reason
                                 case "+":
@@ -82,11 +83,13 @@ AFRAME.registerComponent('cursor-listener', {
                                 case "/":
                                 case "*":
                                     changeOperator(signalGraph, node, action);
+                                    break;
                                 case "arg-1":
                                 case "arg+1":
                                 case "arg-5":
                                 case "arg+5":
-                                    changeArgument(signalGraph, node, action.replace("arg",""))
+                                    changeArgument(signalGraph, node, action.replace("arg",""));
+                                    break;
                             }
                             // This works!
                             //
