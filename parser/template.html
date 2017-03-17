@@ -21,6 +21,9 @@
     <!-- HELPERS -->
     <script type="text/javascript" src="./helpers.js" charset="utf-8"></script>
 
+    <script src="lib/codemirror.js"></script>
+    <link rel="stylesheet" href="lib/codemirror.css">
+
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="stylesheets/main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -68,7 +71,12 @@
             return result;
         }
         function start() {
-
+            var myCodeMirror = CodeMirror(document.querySelector("#code"), {
+                value: "function myScript(){return 100;}\n",
+                mode:  "javascript",
+                lineNumbers: true,
+                theme: "monokai"
+            });
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
             //var nodeTest = document.querySelector('#\\3' + 2);
             // nodeTest.setAttribute('bmfont-text', "coucou");
