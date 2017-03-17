@@ -87,16 +87,40 @@ function deleteNodeFromGraph(signalGraph,nodeID) {
     }
 
 }
+function changeArgument(signalGraph, node, operation){
+    switch(node.name){
+        case "fold":
+            var initVal = node.initValue;
+            node.initValue = eval(initVal + operation); 
+            var parentValue = findSignalNode(signalGraph,node.parents[0]).value// TODO: THIS ONLY WORKS FOR A SECOND- based signal
+            var newValue = [...Array(parentValue+1).keys()].reduce(function (acc, val) {
+                return eval(acc + operation + val) ;
+            }, node.initValue);
+            node.value = newValue;
+            break;
 
-function changeFormula(signalGraph, node, operation){
+        case "map":
+            [body,param] = node.formula;
+            var newBody = body.split(/\+|\/|\-|\*/g);
+            var oldArg = newBody[newBody.length - 1];
+            var newArg = eval(oldArg + operation);
+            newBody = body.replace(oldArg,newArg) ;
+            node.formula = [newBody,param];// Value automatically updated at first computation of the formula
+            console.log("Node formula: ",node.formula)
+            break;
+
+    }
+    
+
+}
+
+function changeOperator(signalGraph, node, operation){
     switch(node.name){
         case "fold":
             var parentValue = findSignalNode(signalGraph,node.parents[0]).value// TODO: THIS ONLY WORKS FOR A SECOND- based signal
-            console.log(parentValue);
             var newValue = [...Array(parentValue+1).keys()].reduce(function (acc, val) {
                 return eval(acc + operation + val);
             }, node.initValue);
-            console.log(newValue);
             node.value = newValue;
             node.formula = node.formula.replace(/\+|\/|\-|\*/g,operation)
             break;
@@ -104,7 +128,8 @@ function changeFormula(signalGraph, node, operation){
         case "map":
             [body,param] = node.formula;
             var newBody = body.replace(/\+|\/|\-|\*/g,operation);
-            node.formula = [newBody,formula];// Value automatically updated at first computation of the formula
+            node.formula = [newBody,param];// Value automatically updated at first computation of the formula
+            console.log("Node formula: ",node.formula)
             break;
 
     }
@@ -113,6 +138,5 @@ function changeFormula(signalGraph, node, operation){
     //activate seconds<br>var mapVar = map( (a)=&gt;(a+1) seconds)<br>fold(seconds + 0)<br>filter((a)=&gt;(a%3==0) seconds 0)<br>var map2 = map((a)=&gt;(a+1) mapVar)<br>merge(mapVar map2 +)
     var previousCode = code.innerHTML.split('<br>')[node.line-1];
     var newCode = previousCode.replace(/\+|\/|\-|\*/g,operation);
-    code.innerHTML = code.innerHTML.replace(previousCode,"");
-    console.log(node);
+    code.innerHTML = code.innerHTML.replace(previousCode,newCode);
 }

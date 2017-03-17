@@ -3,7 +3,7 @@ AFRAME.registerComponent('cursor-listener', {
         var visible = 0;
         var counter = 0;
         var COLORS = ['blue','white'];
-        var menuElements = ["fold", "+", "", "0", "merge","-","","","map","*","","","filter","/","","DEL"]
+        var menuElements = ["fold", "+", "arg+1", "arg+5", "merge","-","arg-1","arg-5","map","*","","","filter","/","","DEL"]
         this.el.addEventListener('click', function (evt) {
             counter ++;
             //console.log("click");
@@ -64,7 +64,9 @@ AFRAME.registerComponent('cursor-listener', {
                         }
                         var that = this;
                         button.addEventListener('click',function (evt) {
+                            evt.stopPropagation();
                             var action = this.getAttribute('text').value;
+                            var node = findNodeByID(signalGraph, that.id);
                             switch(action){
                                 case "DEL":
                                     console.log("I'm deleting",that.id);
@@ -73,14 +75,18 @@ AFRAME.registerComponent('cursor-listener', {
                                     that.parentNode.removeChild(that);
 
                                     deleteEdgesForID(that.id);
-                                    //TODO: delete all depending children?
-                                    //TODO: Tiggered twice for some reason
+        //TODO: delete all depending children?
+        //TODO: Tiggered twice for some reason
                                 case "+":
                                 case "-":
                                 case "/":
                                 case "*":
-                                    var node = findNodeByID(signalGraph, that.id);
-                                    changeFormula(signalGraph, node, action);
+                                    changeOperator(signalGraph, node, action);
+                                case "arg-1":
+                                case "arg+1":
+                                case "arg-5":
+                                case "arg+5":
+                                    changeArgument(signalGraph, node, action.replace("arg",""))
                             }
                             // This works!
                             //
@@ -95,7 +101,6 @@ AFRAME.registerComponent('cursor-listener', {
                     sceneEl.appendChild(menuBackgroud);
                 }
                 else{
-                    console.log("DELETE");
                     menuBackgroud.parentNode.removeChild(menuBackgroud);
                 }
 
