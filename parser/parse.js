@@ -221,34 +221,3 @@ module.exports = {
     },
 
 }
-
-
-
-
-//map signal + 1  | creates a new signal that will do +1 on the current value of signal
-//fold ((a)=>(a+1)signal + 1  | will add the value of signal to the current value (cumulative). Starts at 1
-
-
-
-
-// simpleBody 
-//     = left:operand space operator:operator space right:operand {
-//       var leftNode  = {
-//         name: "leftOperand",
-//         value: left,
-//         children: []
-//       }
-
-//       var rightNode = {
-//         name: "rightOperand",
-//         value: right,
-//         children: []
-
-//       }
-
-//         return {
-//           name: "body",
-//           value: operator,
-//           children: [leftNode,rightNode]
-//         }
-//       }
