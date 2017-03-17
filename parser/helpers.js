@@ -108,6 +108,17 @@ function changeArgument(signalGraph, node, operation){
             node.formula = [newBody,param];// Value automatically updated at first computation of the formula
             console.log("Node formula: ",node.formula)
             break;
+        case "filter"://TODO: this is "hardcoded"
+            [body,param] = node.formula;
+            var newBody = body.split(/\>\=|\%|\<\=|\=\=|\>|\<|\=/g);
+            var oldArg = newBody[1];
+            var newArg = eval(oldArg + operation);
+            newBody = body.replace(oldArg,newArg) ;
+            node.formula = [newBody,param];// Value automatically updated at first computation of the formula
+            console.log("Node formula: ",node.formula)
+            break;
+
+
 
     }
     
