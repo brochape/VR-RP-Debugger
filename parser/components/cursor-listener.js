@@ -14,8 +14,8 @@ AFRAME.registerComponent('cursor-listener', {
 
                 /* DISPLAY MENU */
                 menuBackgroud = document.querySelector("#menu-backgroud");
-                console.log(menu);
-                if(menu == undefined){
+                console.log(menuBackgroud);
+                if(menuBackgroud == undefined){
                     //console.log("Adding menu");
                     var sceneEl = document.querySelector('a-scene');
                     var menu = document.createElement('a-plane');
@@ -34,11 +34,18 @@ AFRAME.registerComponent('cursor-listener', {
                     pos.x -= 2;
                     pos.z += 0.02;
 
+
+                    menuPos = {
+                      x: 0,
+                      y: 0,
+                      z: 0.01
+                    }
+                    menu.setAttribute('position',menuPos);
+                    menuBackgroud.setAttribute("position",pos); 
                     for (var i = 0; i < 4; i++) {
                       for (var j = 0; j < 4; j++) {
                         var button = document.createElement('a-entity');
                         menu.appendChild(button);
-                        menuBackgroud.setAttribute("position",pos);
                         button.setAttribute("geometry","primitive: plane; width: 0.4; height:0.4;")
                         button.setAttribute("class","menu-button");
                         button.setAttribute("text","color: white; zOffset: 0.02; align: center; width:2; height:2; value:"+menuElements[i*4+j]+";")
@@ -88,7 +95,7 @@ AFRAME.registerComponent('cursor-listener', {
                     sceneEl.appendChild(menuBackgroud);
                 }
                 else{
-                    /*console.log("DELETE");*/
+                    console.log("DELETE");
                     menuBackgroud.parentNode.removeChild(menuBackgroud);
                 }
 
