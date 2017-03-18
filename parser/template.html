@@ -20,6 +20,7 @@
     
     <!-- HELPERS -->
     <script type="text/javascript" src="./helpers.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <script src="lib/codemirror.js"></script>
     <link rel="stylesheet" href="lib/codemirror.css">
@@ -32,7 +33,8 @@
     <script type="text/javascript" src="./vendor/peg.js"></script>
 
     <script type="text/javascript" charset="utf-8">
-        var signalGraph = ""
+        var signalGraph = "";
+        var codeMirror;
         function sleep(milliseconds) {
             var start = new Date().getTime();
             for (var i = 0; i < 1e7; i++) {
@@ -72,10 +74,10 @@
             return result;
         }
         function start() {
-            var myCodeMirror = CodeMirror(function (elt) {
+            codeMirror = CodeMirror(function (elt) {
                 document.querySelector("#codeEditor").parentNode.replaceChild(elt, document.querySelector("#codeEditor"));
             }, {
-                value: "function myScript(){return 100;}\n",
+                value: decodeEntities(document.querySelector("#initCode").innerHTML),
                 mode:  "javascript",
                 lineNumbers: true
             });
@@ -294,6 +296,6 @@
     <div id="graph" style="display: none;">
         {{graph}}
     </div>
-
+    <div id="initCode"  style="display: none;">{{code}}</div>
 </body>
 </html>
