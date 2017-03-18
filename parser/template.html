@@ -72,11 +72,12 @@
             return result;
         }
         function start() {
-            var myCodeMirror = CodeMirror(document.querySelector("#code"), {
+            var myCodeMirror = CodeMirror(function (elt) {
+                document.querySelector("#codeEditor").parentNode.replaceChild(elt, document.querySelector("#codeEditor"));
+            }, {
                 value: "function myScript(){return 100;}\n",
                 mode:  "javascript",
-                lineNumbers: true,
-                theme: "monokai"
+                lineNumbers: true
             });
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
             //var nodeTest = document.querySelector('#\\3' + 2);
@@ -263,16 +264,16 @@
 <body style="font-family:monospace" onload=start()>
 
     <div id="code" class="menu">
-        <div contenteditable="true" class="codeEditor">
-            {{code}}
+        <div id="codeEditor" class="codeEditor">
+            
         </div>
 
         <div class="footer">
-            <button class="btn btn-primary fullwidth" disabled="true" onclick="inject()">Inject code</button>
+            <button class="btn btn-primary fullwidth" style="margin-top: 5px;" disabled="true" onclick="inject()">Inject code</button>
             <button class="btn btn-primary fullwidth" style="margin-top: 5px;" onclick="dive()">Dive</button>
         </div>
     </div>
-    <a-scene class="mainContent" style="float:right" id = "scene">
+    <a-scene class="mainContent" id = "scene">
         
         <!-- Hands -->
         <a-entity teleport-controls hand-controls="left" aabb-collider="objects: .node;" grab controller-cursor="color: #000080" if-no-vr-headset="visible: false"></a-entity>
