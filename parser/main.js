@@ -123,7 +123,7 @@ function execute(command){
               title: 'VaRken Debugger',
               scene: htmlString,
               graph: JSON.stringify(signalGraph),
-              code: code.split('\n').join('<br />')
+              code: code
             });
         writeToHTMLFile("test.html",a)
         // console.log(JSON.parse(JSON.stringify(graph._nodes)));
