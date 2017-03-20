@@ -97,6 +97,13 @@ function changeArgument(signalGraph, node, operation){
                 return eval(acc + operation + val) ;
             }, node.initValue);
             node.value = newValue;
+            var editor = $('.CodeMirror')[0].CodeMirror;
+
+            var code = editor.getValue();
+            var previousCode = code.split('\n')[node.line-1];
+            console.log(previousCode, initVal.toString(),node.initValue);
+            var newCode = previousCode.replace(initVal.toString(),node.initValue);
+            editor.setValue(code.replace(previousCode,newCode));
             break;
 
         case "map":
@@ -107,6 +114,13 @@ function changeArgument(signalGraph, node, operation){
             newBody = body.replace(oldArg,newArg) ;
             node.formula = [newBody,param];// Value automatically updated at first computation of the formula
             console.log("Node formula: ",node.formula)
+
+            var editor = $('.CodeMirror')[0].CodeMirror;
+
+            var code = editor.getValue();
+            var previousCode = code.split('\n')[node.line-1];
+            var newCode = previousCode.replace(oldArg,newArg);
+            editor.setValue(code.replace(previousCode,newCode));
             break;
         case "filter"://TODO: this is "hardcoded"
             [body,param] = node.formula;
@@ -116,6 +130,13 @@ function changeArgument(signalGraph, node, operation){
             newBody = body.replace(oldArg,newArg) ;
             node.formula = [newBody,param];// Value automatically updated at first computation of the formula
             console.log("Node formula: ",node.formula)
+            
+            var editor = $('.CodeMirror')[0].CodeMirror;
+
+            var code = editor.getValue();
+            var previousCode = code.split('\n')[node.line-1];
+            var newCode = previousCode.replace(oldArg,newArg);
+            editor.setValue(code.replace(previousCode,newCode));
             break;
 
 
@@ -144,7 +165,8 @@ function changeOperator(signalGraph, node, operation){
             break;
 
     }
-    var editor = $('.CodeMirror').CodeMirror;
+    var editor = $('.CodeMirror')[0].CodeMirror;
+    console.log(editor)
 
     var code = editor.getValue();
     // console.log(code.innerHTML);
