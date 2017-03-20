@@ -9,13 +9,12 @@ AFRAME.registerComponent('cursor-listener', {
             //console.log("click");
             if (counter%2 == 1) {
                 var randomIndex = Math.floor(Math.random() * COLORS.length);
-                this.setAttribute('material', 'color', COLORS[visible%COLORS.length]);
                 //console.log('I was clicked at: ', evt.detail.intersection.point);
 
                 /* DISPLAY MENU */
                 menuBackgroud = document.querySelector("#menu-backgroud");
-                console.log(menuBackgroud);
                 if(menuBackgroud == undefined){
+                    this.setAttribute('material', 'color', COLORS[visible%COLORS.length]);
                     //console.log("Adding menu");
                     var sceneEl = document.querySelector('a-scene');
                     var menu = document.createElement('a-plane');
@@ -63,36 +62,39 @@ AFRAME.registerComponent('cursor-listener', {
                           z: 0.01
                         }
                         var that = this;
-                        button.addEventListener('click',function (evt) {
-                            evt.stopPropagation();
+                        var canModify = false;//avoid the doubletrigger
+                        button.addEventListener('click',function (event) {
+                            event.stopPropagation();
                             var action = this.getAttribute('text').value;
                             var node = findNodeByID(signalGraph, that.id);
-                            switch(action){
-                                case "DEL":
-                                    console.log("I'm deleting",that.id);
+                            canModify = !canModify;
+                            if (canModify) {
+                                console.log(canModify);
+                                switch(action){
+                                    case "DEL":
+                                        console.log("I'm deleting",that.id);
 
-                                    deleteNodeFromGraph(signalGraph,that.id);
-                                    that.parentNode.removeChild(that);
+                                        deleteNodeFromGraph(signalGraph,that.id);
+                                        that.parentNode.removeChild(that);
 
-                                    deleteEdgesForID(that.id);
-                                    break;
-        //TODO: delete all depending children?
-        //TODO: Tiggered twice for some reason
-                                case "+":
-                                case "-":
-                                case "/":
-                                case "*":
-                                    changeOperator(signalGraph, node, action);
-                                    break;
-                                case "arg-1":
-                                case "arg+1":
-                                case "arg-5":
-                                case "arg+5":
-                                    changeArgument(signalGraph, node, action.replace("arg",""));
-                                    break;
+                                        deleteEdgesForID(that.id);
+                                        break;
+            //TODO: delete all depending children?
+            //TODO: Tiggered twice for some reason
+                                    case "+":
+                                    case "-":
+                                    case "/":
+                                    case "*":
+                                        changeOperator(signalGraph, node, action);
+                                        break;
+                                    case "arg-1":
+                                    case "arg+1":
+                                    case "arg-5":
+                                    case "arg+5":
+                                        changeArgument(signalGraph, node, action.replace("arg",""));
+                                        break;
+                                }
                             }
-                            // This works!
-                            //
                         });
                         buttonPosition = button.setAttribute('position', newPos);
                         button.setAttribute('position', buttonPosition);
