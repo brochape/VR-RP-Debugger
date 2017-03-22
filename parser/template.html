@@ -278,9 +278,12 @@
     <a-scene class="mainContent" id = "scene">
         
         <!-- Hands -->
-        <a-entity teleport-controls hand-controls="left" aabb-collider="objects: .node;" grab controller-cursor="color: #000080" if-no-vr-headset="visible: false"></a-entity>
-        <a-entity teleport-controls hand-controls="right" aabb-collider="objects: .node;" grab controller-cursor="color: #000080" if-no-vr-headset="visible: false"></a-entity>
+        <a-entity position="3 1 1.38" teleport-controls hand-controls="left" aabb-collider="objects: .node;" grab controller-cursor="color: #000080" if-no-vr-headset="visible: false"></a-entity>
 
+        <!-- CAMERA -->
+        <a-entity position="3 1 1.68">
+            <a-camera user-height="1.6"></a-camera>
+        </a-entity>
         <!-- SKY -->
         <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
         <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
@@ -288,10 +291,6 @@
         <!-- SCENE -->
         {{scene}}
 
-        <!-- <a-entity class= "node" material="color: white" geometry="primitive: circle ; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" text="align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value: map\n\nThis is s test; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"></a-entity> -->
-
-       <!--  <a-entity position="" camera="active:false;near:0.01;userHeight:1.2" rotation="" look-controls="" aframe-injected="" data-aframe-inspector="default-camera"></a-entity> -->
-        <!-- <a-sky color="#ECECEC"></a-sky> -->
     </a-scene>
     <div id="graph" style="display: none;">
         {{graph}}
