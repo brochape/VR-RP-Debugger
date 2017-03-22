@@ -2,7 +2,7 @@ AFRAME.registerComponent('cursor-listener', {
     init: function () {
         var visible = 0;
         var counter = 0;
-        var COLORS = ['blue','white'];
+        var COLORS = ['green','white'];
         var menuElements = ["fold", "+", "arg+1", "arg+5", "merge","-","arg-1","arg-5","map","*","","","filter","/","","DEL"]
         this.el.addEventListener('click', function (evt) {
             counter ++;
