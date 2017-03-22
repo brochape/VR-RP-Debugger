@@ -78,12 +78,12 @@ function deleteNodeFromGraph(signalGraph,nodeID) {
             parentNode.children = array;
             
         }
-        var code = document.querySelector(".codeEditor");
-        console.log(code.innerHTML);
-        //activate seconds<br>var mapVar = map( (a)=&gt;(a+1) seconds)<br>fold(seconds + 0)<br>filter((a)=&gt;(a%3==0) seconds 0)<br>var map2 = map((a)=&gt;(a+1) mapVar)<br>merge(mapVar map2 +)
-        var previousCode = code.innerHTML.split('<br>')[node.line-1] 
-        code.innerHTML = code.innerHTML.replace(previousCode,"");
-        console.log(node.line)
+        var editor = $('.CodeMirror')[0].CodeMirror;
+
+        var code = editor.getValue();
+        var previousCode = code.split('\n')[node.line-1];
+        console.log("test");
+        editor.setValue(code.replace(previousCode,""));
     }
 
 }
