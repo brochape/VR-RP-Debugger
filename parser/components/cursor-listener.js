@@ -2,8 +2,10 @@ AFRAME.registerComponent('cursor-listener', {
     init: function () {
         var visible = 0;
         var counter = 0;
-        var COLORS = ['green','white'];
-        var menuElements = ["fold", "+", "arg+1", "arg+5", "merge","-","arg-1","arg-5","map","*","","","filter","/","","DEL"]
+        var menuElements = 
+            {"node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","",""],["filter","/","","DEL"]],
+             "edge": [["DEL"]]
+            };
         this.el.addEventListener('click', function (evt) {
             counter ++;
             //console.log("click");
@@ -41,13 +43,14 @@ AFRAME.registerComponent('cursor-listener', {
                     }
                     menu.setAttribute('position',menuPos);
                     menuBackgroud.setAttribute("position",pos); 
-                    for (var i = 0; i < 4; i++) {
-                      for (var j = 0; j < 4; j++) {
+                    var type = this.el.getAttribute("class")//here now if it's a node or an edge
+                    for (var i = 0; i < menuElements[type].length; i++) {
+                      for (var j = 0; j < menuElements[i][type].length; j++) {
                         var button = document.createElement('a-entity');
                         menu.appendChild(button);
                         button.setAttribute("geometry","primitive: plane; width: 0.4; height:0.4;")
                         button.setAttribute("class","menu-button");
-                        button.setAttribute("text","color: white; zOffset: 0.02; align: center; width:2; height:2; value:"+menuElements[i*4+j]+";")
+                        button.setAttribute("text","color: white; zOffset: 0.02; align: center; width:2; height:2; value:"+menuElements[type][i][j]+";")
 
                         /*button.setAttribute("text", )*/
                         button.setAttribute("material", " color: #496FFF");
@@ -73,11 +76,15 @@ AFRAME.registerComponent('cursor-listener', {
                                 switch(action){
                                     case "DEL":
                                         console.log("I'm deleting",that.id);
+                                        if (type == "node") {
+                                            deleteNodeFromGraph(signalGraph,that.id);
+                                            that.parentNode.removeChild(that);
 
-                                        deleteNodeFromGraph(signalGraph,that.id);
-                                        that.parentNode.removeChild(that);
-
-                                        deleteEdgesForID(that.id);
+                                            deleteEdgesForID(that.id);
+                                        }
+                                        // else{//edge
+                                        //     deleteEdge(that)
+                                        // }
                                         break;
             //TODO: delete all depending children?
             //TODO: Tiggered twice for some reason
