@@ -1,11 +1,20 @@
 {
   "name": "parser",
   "version": "1.0.0",
-  "description": "",
   "main": "parse.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "fs": "0.0.1-security",
+    "graphlib-dot": "^0.6.2",
+    "nunjucks": "^3.0.0",
+    "pegjs": "^0.10.0",
+    "xml2js": "^0.4.17"
+  },
+  "devDependencies": {},
+  "description": ""
 }
