@@ -60,7 +60,7 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 }
 
 function create_line_entity(path, fromNode, toNode){
-    html = '<a-entity class="edge" cursor-listener meshline="lineWidth: 2; path: ';
+    html = '<a-entity class="edge" cursor-listener meshline="lineWidth: 3; path: ';
     for (var i = path.length - 1; i >= 0; i--) {
       html += path[i][0] + ' ' + path[i][1] + ' ' + '-2.5';
       if (i!=0) {html+=','}
