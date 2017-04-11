@@ -6,6 +6,7 @@ AFRAME.registerComponent('cursor-listener', {
             {"node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","","SAVE"],["filter","/","","DEL"]],
              "edge": [["DEL"]]
             };
+        var COLORS = ['green','white'];
         this.el.addEventListener('click', function (evt) {
             counter ++;
             //console.log("click");
