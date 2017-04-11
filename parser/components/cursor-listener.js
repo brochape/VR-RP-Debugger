@@ -3,7 +3,7 @@ AFRAME.registerComponent('cursor-listener', {
         var visible = 0;
         var counter = 0;
         var menuElements = 
-            {"node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","",""],["filter","/","","DEL"]],
+            {"node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","","SAVE"],["filter","/","","DEL"]],
              "edge": [["DEL"]]
             };
         this.el.addEventListener('click', function (evt) {
@@ -57,6 +57,9 @@ AFRAME.registerComponent('cursor-listener', {
                         if (i*4+j == 15) {
                             button.setAttribute("material", " color: red");
                         }
+                        else if (i == 4 ) {
+                            button.setAttribute("material", " color: red");
+                        }
                         //button.setAttribute("height",0.4);
                         //button.setAttribute("width",0.4);
                         newPos = {
@@ -86,7 +89,11 @@ AFRAME.registerComponent('cursor-listener', {
                                         //     deleteEdge(that)
                                         // }
                                         break;
-            //TODO: delete all depending children?
+                                    case "SAVE":
+                                        previousSignalGraphs.push(signalGraph);
+                                        currentSignalGraph += 1;
+                                        //Todo: update the view
+                                        break;
             //TODO: Tiggered twice for some reason
                                     case "+":
                                     case "-":

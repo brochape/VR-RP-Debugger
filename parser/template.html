@@ -35,6 +35,8 @@
     <script type="text/javascript" charset="utf-8">
         var signalGraph = "";
         var codeMirror;
+        var previousSignalGraphs = [signalGraph];
+        var currentSignalGraph = 0;
         function sleep(milliseconds) {
             var start = new Date().getTime();
             for (var i = 0; i < 1e7; i++) {
