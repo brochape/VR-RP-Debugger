@@ -47,7 +47,6 @@
         }
         function findSignalNode(signalGraph, signalName) {
             function searchInNode(node, signalName) {
-                // //console.log(node);
                 if (node.ref == signalName) {
                     return node;
                 }
@@ -65,7 +64,6 @@
             var result = null;
             var keys = Object.keys(signalGraph);
             for (i = 0; result == null && i < keys.length; i++){
-                // //console.log(signalGraph);
                 if (signalGraph[keys[i]].ref ==signalName ) {
                     result = signalGraph[keys[i]];
                 }
@@ -84,8 +82,6 @@
                 lineNumbers: true
             });
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
-            //var nodeTest = document.querySelector('#\\3' + 2);
-            // nodeTest.setAttribute('bmfont-text', "coucou");
 
             /*if (typeof(Worker) !== "undefined") {
                 if (typeof(w) == "undefined") {
@@ -121,19 +117,15 @@
                 var division = 3;
                 var deltaX = dist.x/division;
                 var deltaY = dist.y/division;
-                ////console.log(fromNode, fromNode.getAttribute('text'));
+
                 var nodeText = fromNode.getAttribute('text').value.split("\n");
                 var slidingText = nodeText[nodeText.length-1];
-                ////console.log(nodeText);
+
                 var text_ = "align: center; color: white; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + slidingText +"; width: 5; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
-                ////console.log(text_);
+
                 entityEl.setAttribute('text', text_);
                 entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
-                // var currentPos = entityEl.getAttribute("position");
-                // entityEl.addEventListener('move', function (event) {
-                //     sleep(20);
-                //     // //console.log("yo")
-                // });
+
                 var pathstring = 'path:'
                 for (var j = 0; j < division; j++) {
                     pathstring += `${fromDest.x + j*deltaX}` + "," + `${fromDest.y + j*deltaY}` + "," + `${fromDest.z} `
@@ -143,51 +135,25 @@
                 entityEl.setAttribute("alongpath", pathstring);
                 entityEl.setAttribute('class', "flowingText");
 
-                ////console.log(entityEl.getAttribute("alongpath"));
 
-                // for (var i = 0; i < 50; i++) {
-                //     // //console.log(fromDest.x-deltaX*i);
-                //     entityEl.emit("move")
-                    
-                // }
-                
 
-                // //console.log("From: ");
-                // //console.log(fromDest);
-                // //console.log("To: ");
-                // //console.log(toDest);
-                // node.children[i];
+
                 if (entityEl) {
                     sceneEl.appendChild(entityEl);
                 }
             }
             
             var circle = document.querySelector("[id='"+ node.id + "0000"+ "']"); //#\\3' + node.id + "0000");
-            // //console.log(circle);//'#\\320000');// + node.id + "0000");
-            //render('blue');
 
             var nodeTest = document.querySelector('#\\3' + node.id);
-            // //console.log('#\\3' + node.id);
             var nodeText = nodeTest.getAttribute('text').value;
-            // //console.log(nodeText.split(" ")[0]);
             var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
-            //"text:" + ;//nodeTest.setAttribute('bmfont-text',
             nodeTest.setAttribute('text', newNodeText);
 
 
-            //render('black');
-            // var t = 0;
-            // var colors = ['black',"orange"]
-            // function render() {
-            //   t = 1- t;
-            //   requestAnimationFrame(render);
-            //   ring.setAttribute('color', colors[t]);
-            // }
-            // render();
         }
 
         function update_children(parentNode, graph){
-            // //console.log("Cocou",graph);
             if (parentNode.children) {
                 for (var i = 0; i < parentNode.children.length; i++) {
                     node = parentNode.children[i];
@@ -211,9 +177,7 @@
                             break;
                         case "merge":
                             [signal1, signal2, operator] = node.formula;
-                            // //console.log(signalGraph);
                             signal1Value = findSignalNode(graph, signal1).value;
-                            // //console.log(signal1Value)
                             signal2Value = findSignalNode(graph, signal2).value;
                             node.value = eval(signal1Value + operator + signal2Value);
                             
