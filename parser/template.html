@@ -78,7 +78,8 @@
 
         function refresh() {
             resString = ""
-            graphElements = document.querySelectorAll(".graphElement");
+            scene = document.querySelector("a-scene")
+            graphElements = scene.querySelectorAll(".graphElement");
             console.log("Graph elements",graphElements)
             // graphElements.forEach(function (graphElement) {
             //     graphElement.parentNode.removeChild(graphElement);
