@@ -59,7 +59,9 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     var node = document.createElement('a-entity');
     node.setAttribute('class', 'node graphElement');
     node.setAttribute('id', ID);
-    node.setAttribute('cursor-listener', {});
+    if (pos_z == -2.5) {
+    	node.setAttribute('cursor-listener', {});
+    }
     node.setAttribute('position', {x: pos_x, y:pos_y, z:pos_z});
     node.setAttribute('material', 'color', 'white');
     node.setAttribute('geometry', {primitive: 'circle',
