@@ -91,7 +91,7 @@ function create_line_entity(path, fromNode, toNode, z_index){
     }
 	
 	edge.setAttribute("class", "edge graphElement");
-	edge.setAttribute('cursor-listener');
+	edge.setAttribute('cursor-listener', {});
 	edge.setAttribute('meshline', {	lineWidth: 16,
 								   	path: stringPath,
 								   	color: 'black'
