@@ -1,6 +1,7 @@
 AFRAME.registerComponent('cursor-listener', {
     init: function () {
         var visible = 0;
+        this.isSelected = false;
         var counter = 0;
         var menuElements = 
             {"node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","","SAVE"],["filter","/","","DEL"]],
@@ -10,12 +11,19 @@ AFRAME.registerComponent('cursor-listener', {
         this.el.addEventListener('click', function (evt) {
             counter ++;
             if (counter%2 == 1) {
-                var randomIndex = Math.floor(Math.random() * COLORS.length);
+                document.querySelector('a-scene').querySelectorAll(".node").forEach(function (node) {
+                    node.setAttribute('material', 'color', "white");
+                });
 
+                this.setAttribute('material', 'color', COLORS[this.isSelected ? 1 : 0]);
+                this.isSelected = ! this.isSelected;
                 /* DISPLAY MENU */
                 menuBackgroud = document.querySelector("#menu-backgroud");
-                if(menuBackgroud == undefined){
-                    this.setAttribute('material', 'color', COLORS[visible%COLORS.length]);
+                if(menuBackgroud != undefined){
+                    menuBackgroud.parentNode.removeChild(menuBackgroud);
+                }
+                if (this.isSelected) {
+
                     //console.log("Adding menu");
                     var sceneEl = document.querySelector('a-scene');
                     var menu = document.createElement('a-plane');
@@ -83,18 +91,13 @@ AFRAME.registerComponent('cursor-listener', {
 
                                             deleteEdgesForID(that.id);
                                         }
-                                        // else{//edge
-                                        //     deleteEdge(that)
-                                        // }
                                         break;
                                     case "SAVE":
-                                    console.log("SAVE")
                                         previousSignalGraphs.push(signalGraph);
                                         currentSignalGraph += 1;
                                         console.log(previousSignalGraphs)
                                         refresh();
                                         break;
-            //TODO: Tiggered twice for some reason
                                     case "+":
                                     case "-":
                                     case "/":
@@ -119,14 +122,9 @@ AFRAME.registerComponent('cursor-listener', {
                     menuBackgroud.appendChild(menu);
                     sceneEl.appendChild(menuBackgroud);
                 }
-                else{
-                    menuBackgroud.parentNode.removeChild(menuBackgroud);
-                }
-
-                visible = 1 - visible;
-                //console.log(counter);
-                
             }
+                
+            
     });
   }
 });
