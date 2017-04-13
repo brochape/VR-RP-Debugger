@@ -57,7 +57,7 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 
 	var scene = document.querySelector('a-scene');
     var node = document.createElement('a-entity');
-    node.setAttribute('class', 'node');
+    node.setAttribute('class', 'node graphElement');
     node.setAttribute('id', ID);
     node.setAttribute('cursor-listener', {});
     node.setAttribute('position', {x: pos_x, y:pos_y, z:pos_z});

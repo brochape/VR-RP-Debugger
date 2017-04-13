@@ -42,7 +42,7 @@ AFRAME.registerComponent('cursor-listener', {
                     }
                     menu.setAttribute('position',menuPos);
                     menuBackgroud.setAttribute("position",pos); 
-                    var type = this.getAttribute("class")//here now if it's a node or an edge
+                    var type = this.getAttribute("class").split(" ")[0]//here know if it's a node or an edge
                     for (var i = 0; i < menuElements[type].length; i++) {
                       for (var j = 0; j < menuElements[type][i].length; j++) {
                         var button = document.createElement('a-entity');
