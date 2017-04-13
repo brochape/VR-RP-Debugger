@@ -59,7 +59,7 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     var node = document.createElement('a-entity');
     node.setAttribute('class', 'node');
     node.setAttribute('id', ID);
-    node.setAttribute('cursor-listener');
+    node.setAttribute('cursor-listener', {});
     node.setAttribute('position', {x: pos_x, y:pos_y, z:pos_z});
     node.setAttribute('material', 'color', 'white');
     node.setAttribute('geometry', {primitive: 'circle',
@@ -81,15 +81,25 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 }
 
 function create_line_entity(path, fromNode, toNode, z_index){
-    html = '<a-entity class="edge" cursor-listener meshline="lineWidth: 16; path: ';
+	var scene = document.querySelector('a-scene');
+    var edge = document.createElement('a-entity');
+
+    var stringPath = ""
     for (var i = path.length - 1; i >= 0; i--) {
-      html += path[i][0] + ' ' + path[i][1] + ' ' + z_index;
-      if (i!=0) {html+=','}
+      stringPath += path[i][0] + ' ' + path[i][1] + ' ' + z_index;
+      if (i!=0) {stringPath+=','}
     }
-    html += '; color: black" id="'+
-    fromNode + '-' + toNode
-    +'"></a-entity>';
-    return html;
+	
+	edge.setAttribute("class", "edge graphElement");
+	edge.setAttribute('cursor-listener');
+	edge.setAttribute('meshline', {	lineWidth: 16,
+								   	path: stringPath,
+								   	color: 'black'
+								   	});
+	edge.setAttribute('id', fromNode + '-' + toNode);
+
+    scene.appendChild(edge);
+
 }
 
 // graph = JSON.parse('{"name":"root","children":[],"seconds":{"name":"seconds","value":0,"ref":"seconds","id":1,"children":[{"name":"map","value":1,"formula":["a+1","a"],"id":2,"ref":"mapVar","line":2,"children":[{"name":"map","value":2,"formula":["a+1","a"],"id":5,"ref":"map2","line":5,"children":[{"name":"merge","value":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["mapVar"]},{"name":"merge","value":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["seconds"]},{"name":"fold","value":0,"initValue":0,"formula":"currentValue+$$signalValue$$","id":3,"ref":"","line":3,"children":[],"parents":["seconds"]},{"name":"filter","value":"0","formula":["a%3==0","a"],"id":4,"ref":"","line":4,"children":[],"parents":["seconds"]}]}}')
