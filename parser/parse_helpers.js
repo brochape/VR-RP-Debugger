@@ -31,7 +31,7 @@ function json_to_hml(jsonGraph,z_index) {
         splitname = jsonGraph.objects[node].name.split("$$");
         name = splitname[0] + splitname[2]
         id = splitname[1]
-        htmlString += create_node_entity(name, parseFloat(pos[0])/40 -2.5, parseFloat(pos[1])/70, z_index*-2.5, id) + "\n\t\t";
+        create_node_entity(name, parseFloat(pos[0])/40 -2.5, parseFloat(pos[1])/70, z_index*-2.5, id) + "\n\t\t";
     }
 	for (var edge in jsonGraph.edges){
 
@@ -55,14 +55,29 @@ function json_to_hml(jsonGraph,z_index) {
 
 function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 
-	
+	var scene = document.querySelector('a-scene');
+    var node = document.createElement('a-entity');
+    node.setAttribute('class', 'node');
+    node.setAttribute('id', ID);
+    node.setAttribute('cursor-listener');
+    node.setAttribute('position', {x: pos_x, y:pos_y, z:pos_z});
+    node.setAttribute('material', 'color', 'white');
+    node.setAttribute('geometry', {primitive: 'circle',
+    							   height: 'auto'});
+    node.setAttribute('scale', {x: 0.9, y:0.25, z:2});
+    node.setAttribute('text', {align: 'center',
+    						   zOffset: 0.01, 
+    						   color: 'black',
+    						   font: 'https://cdn.aframe.io/fonts/Roboto-msdf.json',
+    						   opacity: 1,
+    						   side: 'double',
+    						   value: name.replace("\n","\n\n"), 
+    						   width: 8.9,
+    						   wrapCount: 60.6,
+    						   wrapPixels: 1500,
+    						   zOffset: 0});
 
-    var circle_template = '<a-entity class= "node" cursor-listener id="' + ID + '" material="color: white" geometry="primitive: circle; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" position="'+
-                  (pos_x) + ' ' +
-                  (pos_y) + ' ' +
-                  pos_z +'" text="align: center; zOffset: 0.01; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value: '+ name.replace("\n","\n\n") +
-                  '; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"></a-entity>';
-    return circle_template
+    scene.appendChild(node);
 }
 
 function create_line_entity(path, fromNode, toNode, z_index){
