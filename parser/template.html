@@ -81,9 +81,9 @@
             scene = document.querySelector("a-scene")
             graphElements = scene.querySelectorAll(".graphElement");
             console.log("Graph elements",graphElements)
-            // graphElements.forEach(function (graphElement) {
-            //     graphElement.parentNode.removeChild(graphElement);
-            // })
+            graphElements.forEach(function (graphElement) {
+                graphElement.parentNode.removeChild(graphElement);
+            })
 
             previousSignalGraphs.forEach(function (graph, index) {
                 dotString = make_dot_file(graph);
