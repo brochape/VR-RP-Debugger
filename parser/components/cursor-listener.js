@@ -9,10 +9,8 @@ AFRAME.registerComponent('cursor-listener', {
         var COLORS = ['green','white'];
         this.el.addEventListener('click', function (evt) {
             counter ++;
-            //console.log("click");
             if (counter%2 == 1) {
                 var randomIndex = Math.floor(Math.random() * COLORS.length);
-                //console.log('I was clicked at: ', evt.detail.intersection.point);
 
                 /* DISPLAY MENU */
                 menuBackgroud = document.querySelector("#menu-backgroud");
@@ -76,7 +74,6 @@ AFRAME.registerComponent('cursor-listener', {
                             var node = findNodeByID(signalGraph, that.id);
                             canModify = !canModify;
                             if (canModify) {
-                                console.log(canModify);
                                 switch(action){
                                     case "DEL":
                                         console.log("I'm deleting",that.id);
@@ -91,9 +88,11 @@ AFRAME.registerComponent('cursor-listener', {
                                         // }
                                         break;
                                     case "SAVE":
+                                    console.log("SAVE")
                                         previousSignalGraphs.push(signalGraph);
                                         currentSignalGraph += 1;
-                                        //Todo: update the view
+                                        console.log(previousSignalGraphs)
+                                        refresh();
                                         break;
             //TODO: Tiggered twice for some reason
                                     case "+":
