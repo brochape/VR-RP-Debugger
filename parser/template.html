@@ -20,6 +20,7 @@
     
     <!-- HELPERS -->
     <script type="text/javascript" src="./helpers.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./parse_helpers.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <script src="lib/codemirror.js"></script>
@@ -36,7 +37,7 @@
     <script type="text/javascript" charset="utf-8">
         var signalGraph = "";
         var codeMirror;
-        var previousSignalGraphs = [signalGraph];
+        var previousSignalGraphs = [];
         var currentSignalGraph = 0;
         function sleep(milliseconds) {
             var start = new Date().getTime();
@@ -74,6 +75,19 @@
             }
             return result;
         }
+
+        function refresh() {
+            resString = ""
+            console.log(previousSignalGraphs)
+            previousSignalGraphs.forEach(function (graph, index) {
+                dotString = make_dot_file(graph);
+                jsonGraph = get_json(dotString)
+                resString += json_to_hml(JSON.parse(jsonGraph),index+1);
+                
+            })
+            console.log(resString)
+        }
+
         function start() {
             codeMirror = CodeMirror(function (elt) {
                 document.querySelector("#codeEditor").parentNode.replaceChild(elt, document.querySelector("#codeEditor"));
@@ -82,8 +96,11 @@
                 mode:  "javascript",
                 lineNumbers: true
             });
-            signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
 
+            signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
+            previousSignalGraphs.push(signalGraph)
+            previousSignalGraphs.push(signalGraph)
+            refresh();
             /*if (typeof(Worker) !== "undefined") {
                 if (typeof(w) == "undefined") {
                     w = new Worker("webworker.js");

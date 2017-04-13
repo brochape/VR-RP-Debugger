@@ -1,7 +1,4 @@
-const Viz = require('viz.js')
-
 function make_dot_file(graph) {
-    // console.log(graph.seconds);
     str = "digraph {\n"
     // for (var i = graph.seconds.length - 1; i >= 0; i--) {
     traverse(graph.seconds);
@@ -78,9 +75,15 @@ function create_line_entity(path, fromNode, toNode, z_index){
     return html;
 }
 
-graph = JSON.parse('{"name":"root","children":[],"seconds":{"name":"seconds","value":0,"ref":"seconds","id":1,"children":[{"name":"map","value":1,"formula":["a+1","a"],"id":2,"ref":"mapVar","line":2,"children":[{"name":"map","value":2,"formula":["a+1","a"],"id":5,"ref":"map2","line":5,"children":[{"name":"merge","value":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["mapVar"]},{"name":"merge","value":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["seconds"]},{"name":"fold","value":0,"initValue":0,"formula":"currentValue+$$signalValue$$","id":3,"ref":"","line":3,"children":[],"parents":["seconds"]},{"name":"filter","value":"0","formula":["a%3==0","a"],"id":4,"ref":"","line":4,"children":[],"parents":["seconds"]}]}}')
-dotString = make_dot_file(graph);
-jsonGraph = get_json(dotString)
-// console.log(jsonGraph)
-resString = json_to_hml(JSON.parse(jsonGraph),1);
-console.log(resString)
+// graph = JSON.parse('{"name":"root","children":[],"seconds":{"name":"seconds","value":0,"ref":"seconds","id":1,"children":[{"name":"map","value":1,"formula":["a+1","a"],"id":2,"ref":"mapVar","line":2,"children":[{"name":"map","value":2,"formula":["a+1","a"],"id":5,"ref":"map2","line":5,"children":[{"name":"merge","value":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["mapVar"]},{"name":"merge","value":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["seconds"]},{"name":"fold","value":0,"initValue":0,"formula":"currentValue+$$signalValue$$","id":3,"ref":"","line":3,"children":[],"parents":["seconds"]},{"name":"filter","value":"0","formula":["a%3==0","a"],"id":4,"ref":"","line":4,"children":[],"parents":["seconds"]}]}}')
+// graphs = [graph,graph];
+
+// resString = ""
+// graphs.forEach(function (graph, index) {
+// 	dotString = make_dot_file(graph);
+// 	jsonGraph = get_json(dotString)
+// 	// console.log(jsonGraph)
+// 	resString += json_to_hml(JSON.parse(jsonGraph),index+1);
+	
+// })
+// console.log(resString)
