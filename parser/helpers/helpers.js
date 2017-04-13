@@ -29,29 +29,7 @@ function findNodeByID(signalGraph, ID) {
     return result;
 }
 
-function delete_flowing_values() {
-    var flowing = document.querySelectorAll(".flowingText");
-    ////console.log(flowing[flowing.length - 1],flowing[flowing.length - 1].getAttribute('scale'));
-    for (var i = 0; i < flowing.length-1; i++) {
-        //console.log(flowing[i].attributes);
-        ////console.log(flowing[i])
-        try{
-            var pathArray = flowing[i].getAttribute('alongpath').path.split(' ');
-            ////console.log("bib");
-            var destination = pathArray[pathArray.length - 1].split(",");
-            ////console.log(destination);// Array os destination pos
-            var currentPos = flowing[i].getAttribute('position');
-            var currentPosArray = [currentPos.x,currentPos.y,currentPos.z];
-            if (close_enough_2D(currentPosArray, destination)) {
-                flowing[i].parentNode.removeChild(flowing[i]);
-            }
-        }
-        catch(err){
-            
-        }
-        ////console.log(currentPos);
-    }
-}
+
 
 function deleteEdgesForID(ID) {
     var edges = document.querySelectorAll(".edge");

@@ -1,3 +1,5 @@
+var dotIDtoMyID = {}
+
 function make_dot_file(graph) {
     str = "digraph {\n"
     // for (var i = graph.seconds.length - 1; i >= 0; i--) {
@@ -31,6 +33,7 @@ function json_to_hml(jsonGraph,z_index) {
         splitname = jsonGraph.objects[node].name.split("$$");
         name = splitname[0] + splitname[2]
         id = splitname[1]
+        dotIDtoMyID[jsonGraph.objects[node]._gvid] = id
         create_node_entity(name, parseFloat(pos[0])/40 -2.5, parseFloat(pos[1])/70, z_index*-2.5, id) + "\n\t\t";
     }
 	for (var edge in jsonGraph.edges){
@@ -98,7 +101,7 @@ function create_line_entity(path, fromNode, toNode, z_index){
 								   	path: stringPath,
 								   	color: 'black'
 								   	});
-	edge.setAttribute('id', fromNode + '-' + toNode);
+	edge.setAttribute('id', dotIDtoMyID[fromNode] + '-' + dotIDtoMyID[toNode]);
 
     scene.appendChild(edge);
 

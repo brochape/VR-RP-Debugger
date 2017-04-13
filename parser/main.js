@@ -49,27 +49,27 @@ function writeToFile(filename){
 var ID = 1;
 
 //A Textnode with ID i is associated with a circle of ID i*10000
-function create_node_entity(name, pos_x, pos_y, pos_z, ID){
+// function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 
-    var circle_template = '<a-entity class= "node graphElement" cursor-listener id="' + ID + '" material="color: white" geometry="primitive: circle; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" position="'+
-                  (pos_x) + ' ' +
-                  (pos_y) + ' ' +
-                  pos_z +'" text="align: center; zOffset: 0.01; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value: '+ name.replace("\n","\n\n") +
-                  '; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"></a-entity>';
-    return circle_template
-}
+//     var circle_template = '<a-entity class= "node graphElement" cursor-listener id="' + ID + '" material="color: white" geometry="primitive: circle; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" position="'+
+//                   (pos_x) + ' ' +
+//                   (pos_y) + ' ' +
+//                   pos_z +'" text="align: center; zOffset: 0.01; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value: '+ name.replace("\n","\n\n") +
+//                   '; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0"></a-entity>';
+//     return circle_template
+// }
 
-function create_line_entity(path, fromNode, toNode){
-    html = '<a-entity class="edge graphElement" cursor-listener meshline="lineWidth: 16; path: ';
-    for (var i = path.length - 1; i >= 0; i--) {
-      html += path[i][0] + ' ' + path[i][1] + ' ' + '-2.5';
-      if (i!=0) {html+=','}
-    }
-    html += '; color: black" id="'+
-    fromNode + '-' + toNode
-    +'"></a-entity>';
-    return html;
-}
+// function create_line_entity(path, fromNode, toNode){
+//     html = '<a-entity class="edge graphElement" cursor-listener meshline="lineWidth: 16; path: ';
+//     for (var i = path.length - 1; i >= 0; i--) {
+//       html += path[i][0] + ' ' + path[i][1] + ' ' + '-2.5';
+//       if (i!=0) {html+=','}
+//     }
+//     html += '; color: black" id="'+
+//     fromNode + '-' + toNode
+//     +'"></a-entity>';
+//     return html;
+// }
 
 function stringToObj(path,value,obj) {
     var parts = path.split("."), part;
@@ -91,7 +91,7 @@ function execute(command){
             splitname = key.split("$$");
             name = splitname[0] + splitname[2]
             id = splitname[1]
-            htmlString += create_node_entity(name, parseFloat(pos[0])/40 -2.5, parseFloat(pos[1])/70, -2.5, id) + "\n\t\t";
+            // htmlString += create_node_entity(name, parseFloat(pos[0])/40 -2.5, parseFloat(pos[1])/70, -2.5, id) + "\n\t\t";
         }
         for (var edge in graph._edgeLabels){
             edge_ = edge.split("$$")
@@ -116,12 +116,12 @@ function execute(command){
               res_edges.push(temp_edge);
             })
             
-            htmlString += create_line_entity(res_edges,fromNode,toNode) + "\n\t\t";
+            // htmlString += create_line_entity(res_edges,fromNode,toNode) + "\n\t\t";
         }
         // console.log(code);
         a = nunjucks.render('template.html', { 
               title: 'VaRken Debugger',
-              scene: htmlString,
+              // scene: htmlString,
               graph: JSON.stringify(signalGraph),
               code: code
             });
