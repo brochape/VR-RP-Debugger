@@ -24,10 +24,10 @@ function get_json(dotString) {
 function json_to_hml(jsonGraph,z_index) {
 	//console.log(jsonGraph.objects)
 	htmlString = ""
-	console.log(jsonGraph.edges[0]._hdraw_)
+	// console.log(jsonGraph.edges[0]._hdraw_)
 	for (var node in jsonGraph.objects){
         pos = jsonGraph.objects[node].pos.split(',');
-        console.log(pos)
+        // console.log(pos)
         splitname = jsonGraph.objects[node].name.split("$$");
         name = splitname[0] + splitname[2]
         id = splitname[1]
@@ -54,6 +54,8 @@ function json_to_hml(jsonGraph,z_index) {
 }
 
 function create_node_entity(name, pos_x, pos_y, pos_z, ID){
+
+	
 
     var circle_template = '<a-entity class= "node" cursor-listener id="' + ID + '" material="color: white" geometry="primitive: circle; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" position="'+
                   (pos_x) + ' ' +

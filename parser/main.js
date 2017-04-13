@@ -51,7 +51,7 @@ var ID = 1;
 //A Textnode with ID i is associated with a circle of ID i*10000
 function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 
-    var circle_template = '<a-entity class= "node" cursor-listener id="' + ID + '" material="color: white" geometry="primitive: circle; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" position="'+
+    var circle_template = '<a-entity class= "node graphElement" cursor-listener id="' + ID + '" material="color: white" geometry="primitive: circle; radius-outer:1; radius-inner:0.97; height: auto" scale="0.9 0.25 2" position="'+
                   (pos_x) + ' ' +
                   (pos_y) + ' ' +
                   pos_z +'" text="align: center; zOffset: 0.01; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value: '+ name.replace("\n","\n\n") +
@@ -60,7 +60,7 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 }
 
 function create_line_entity(path, fromNode, toNode){
-    html = '<a-entity class="edge" cursor-listener meshline="lineWidth: 16; path: ';
+    html = '<a-entity class="edge graphElement" cursor-listener meshline="lineWidth: 16; path: ';
     for (var i = path.length - 1; i >= 0; i--) {
       html += path[i][0] + ' ' + path[i][1] + ' ' + '-2.5';
       if (i!=0) {html+=','}
@@ -97,7 +97,7 @@ function execute(command){
             edge_ = edge.split("$$")
             var fromNode = edge_[1]
             var toNode = edge_[3]
-            console.log(fromNode,toNode);
+            // console.log(fromNode,toNode);
             edges = graph._edgeLabels[edge].pos.replace("e,","").split(" ")
             var res_edges = [];
             updated_edges = [];
@@ -118,7 +118,7 @@ function execute(command){
             
             htmlString += create_line_entity(res_edges,fromNode,toNode) + "\n\t\t";
         }
-        console.log(code);
+        // console.log(code);
         a = nunjucks.render('template.html', { 
               title: 'VaRken Debugger',
               scene: htmlString,

@@ -78,14 +78,21 @@
 
         function refresh() {
             resString = ""
-            console.log(previousSignalGraphs)
+            graphElements = document.querySelectorAll(".graphElement");
+            console.log("Graph elements",graphElements)
+            // graphElements.forEach(function (graphElement) {
+            //     graphElement.parentNode.removeChild(graphElement);
+            // })
+
             previousSignalGraphs.forEach(function (graph, index) {
                 dotString = make_dot_file(graph);
                 jsonGraph = get_json(dotString)
                 resString += json_to_hml(JSON.parse(jsonGraph),index+1);
                 
             })
-            console.log(resString)
+            // Here delete the previously present graph
+            // console.log(resString)
+            // document.querySelector("#scene").innerHTML += resString;
         }
 
         function start() {
