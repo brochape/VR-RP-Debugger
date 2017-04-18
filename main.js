@@ -125,7 +125,7 @@ function execute(command){
               graph: JSON.stringify(signalGraph),
               code: code
             });
-        writeToHTMLFile("test.html",a)
+        writeToHTMLFile("index.html",a)
         // console.log(JSON.parse(JSON.stringify(graph._nodes)));
     });
 };

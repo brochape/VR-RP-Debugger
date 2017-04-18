@@ -4,11 +4,12 @@ AFRAME.registerComponent('cursor-listener', {
         this.isSelected = false;
         var counter = 0;
         var menuElements = 
-            {"node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","","SAVE"],["filter","/","","DEL"]],
+            {"node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","ADD","SAVE"],["filter","/","","DEL"]],
              "edge": [["DEL"]]
             };
         var COLORS = ['green','white'];
         this.el.addEventListener('click', function (evt) {
+            console.log("click");
             counter ++;
             if (counter%2 == 1) {
                 document.querySelector('a-scene').querySelectorAll(".node").forEach(function (node) {
