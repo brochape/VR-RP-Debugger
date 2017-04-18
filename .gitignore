@@ -3,6 +3,6 @@ Debugger/Temp
 Debugger/obj
 Noesis.Javascript v0.7 - Binaries
 
-parser/node_modules/*
-parser/test.dot
-parser/test.html
+node_modules/*
+test.dot
+test.html
