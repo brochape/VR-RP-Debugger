@@ -310,7 +310,14 @@
 
         <!-- CAMERA -->
         <a-entity position="3 1 1.68">
-            <a-camera user-height="1.6"></a-camera>
+            <a-camera user-height="1.6">
+                <a-entity
+                    debugger-control
+                    geometry="primitive: plane; width:0.5; height: auto"
+                    material="color: blue"
+                    position="0 1.5 -2"
+                    text="width: 3;value: Pause ; align: center"></a-entity>
+            </a-camera>
         </a-entity>
 
         <!-- HELPER BUTTONS -->
