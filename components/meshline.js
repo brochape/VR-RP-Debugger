@@ -77,10 +77,6 @@
 	    var sceneEl = this.el.sceneEl;
 	    sceneEl.addEventListener( 'render-target-loaded', this.do_update.bind(this) );
 	    sceneEl.addEventListener( 'render-target-loaded', this.addlisteners.bind(this) );
-	    this.el.addEventListener('loaded', function () {
-		  console.log('meshline attached');
-		});
-	  	console.log(this.el);
 	    
 	  /*
 	    if (sceneEl.hasLoaded) {
