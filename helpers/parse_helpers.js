@@ -66,7 +66,9 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     	node.setAttribute('cursor-listener', {});
     }
     node.setAttribute('position', {x: pos_x, y:pos_y, z:pos_z});
-    node.setAttribute('material', 'color', 'white');
+    node.setAttribute('material', { color: 'white',
+                                    side: 'double'
+                                    });
     node.setAttribute('geometry', {primitive: 'circle',
     							   height: 'auto'});
     node.setAttribute('scale', {x: 0.9, y:0.25, z:2});
@@ -81,6 +83,7 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     						   wrapCount: 60.6,
     						   wrapPixels: 1500,
     						   zOffset: 0});
+    
 
     scene.appendChild(node);
 }
@@ -97,9 +100,9 @@ function create_line_entity(path, fromNode, toNode, z_index){
 	
 	edge.setAttribute("class", "edge graphElement");
 	edge.setAttribute('cursor-listener', {});
-	edge.setAttribute('meshline', {	lineWidth: 16,
+	edge.setAttribute('meshline', {	lineWidth: 36,
 								   	path: stringPath,
-								   	color: 'black'
+								   	color: 'red'
 								   	});
 	edge.setAttribute('id', dotIDtoMyID[fromNode] + '-' + dotIDtoMyID[toNode]);
 
