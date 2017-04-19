@@ -102,7 +102,7 @@ function create_line_entity(path, fromNode, toNode, z_index){
 	edge.setAttribute('cursor-listener', {});
 	edge.setAttribute('meshline', {	lineWidth: 36,
 								   	path: stringPath,
-								   	color: 'red'
+								   	color: 'black'
 								   	});
 	edge.setAttribute('id', dotIDtoMyID[fromNode] + '-' + dotIDtoMyID[toNode]);
 
