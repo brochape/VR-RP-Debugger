@@ -34,7 +34,7 @@ function json_to_hml(jsonGraph,z_index) {
         name = splitname[0] + splitname[2]
         id = splitname[1]
         dotIDtoMyID[jsonGraph.objects[node]._gvid] = id
-        create_node_entity(name, parseFloat(pos[0])/40 -2.5, parseFloat(pos[1])/70, z_index*-2.5, id) + "\n\t\t";
+        create_node_entity(name, parseFloat(pos[0])/40 -5, parseFloat(pos[1])/70, -5 - z_index*8, id) + "\n\t\t";
     }
 	for (var edge in jsonGraph.edges){
 
@@ -47,11 +47,11 @@ function json_to_hml(jsonGraph,z_index) {
 
 	    path.forEach(function(item) {
 	      item[0] /= 40;
-	      item[0] -= 2.5;
+	      item[0] -= 5;
 	      item[1] /= 70;
 	    })
 	    
-	    htmlString += create_line_entity(path,fromNode,toNode, z_index*-2.5) + "\n\t\t";
+	    htmlString += create_line_entity(path,fromNode,toNode, -5 - z_index*8) + "\n\t\t";
 	}
 	return htmlString;
 }
@@ -62,15 +62,15 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     var node = document.createElement('a-entity');
     node.setAttribute('class', 'node graphElement');
     node.setAttribute('id', ID);
-    if (pos_z == -2.5) {
-    	node.setAttribute('cursor-listener', {});
-    }
-    node.setAttribute('position', {x: pos_x, y:pos_y, z:pos_z});
-    node.setAttribute('material', { color: 'white',
+    console.log(pos_z)
+    node.setAttribute('material', { color: pos_z == -5? "white": "#A9A9A9",
                                     side: 'double'
                                     });
-    node.setAttribute('geometry', {primitive: 'circle',
-    							   height: 'auto'});
+    if (pos_z == -5) {
+        node.setAttribute('cursor-listener', {});
+    }
+    node.setAttribute('position', {x: pos_x, y:pos_y, z:pos_z});
+    node.setAttribute('geometry', {primitive: 'circle'});
     node.setAttribute('scale', {x: 0.9, y:0.25, z:2});
     node.setAttribute('text', {align: 'center',
     						   zOffset: 0.01, 
@@ -102,7 +102,7 @@ function create_line_entity(path, fromNode, toNode, z_index){
 	edge.setAttribute('cursor-listener', {});
 	edge.setAttribute('meshline', {	lineWidth: 36,
 								   	path: stringPath,
-								   	color: 'black'
+								   	color: z_index == -5? "black": "#808080"
 								   	});
 	edge.setAttribute('id', dotIDtoMyID[fromNode] + '-' + dotIDtoMyID[toNode]);
 

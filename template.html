@@ -91,7 +91,7 @@
             previousSignalGraphs.forEach(function (graph, index) {
                 dotString = make_dot_file(graph);
                 jsonGraph = get_json(dotString)
-                resString += json_to_hml(JSON.parse(jsonGraph),index+1);
+                resString += json_to_hml(JSON.parse(jsonGraph),index);
                 
             })
             // Here delete the previously present graph
