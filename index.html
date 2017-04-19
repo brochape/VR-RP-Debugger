@@ -16,7 +16,7 @@
     <script src="components/cursor-listener.js" charset="utf-8"></script>
     <script src="components/alongpath.js" charset="utf-8"></script>
     <script src="components/meshline.js" charset="utf-8"></script>
-    <!-- <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script> -->
+    <script src="https://unpkg.com/aframe-teleport-controls@0.2.x/dist/aframe-teleport-controls.min.js"></script>
     
     <!-- HELPERS -->
     <script type="text/javascript" src="./helpers/helpers.js" charset="utf-8"></script>
@@ -258,7 +258,7 @@
 
         function handle_signals(signalGraph) {
             if (secondSignalEnabled) {
-                setInterval(function(){ 
+                var secondSignalUpdate = setInterval(function(){ 
                     signalGraph[signal].value ++;
                     updateNode(signalGraph[signal]);
 
@@ -266,6 +266,7 @@
                     this.update_children(signalGraph[signal], signalGraph);  
                     this.delete_flowing_values();
                 }, 1000);
+                this.addEventListener("stopDebugger", () => clearInterval(secondSignalUpdate));
             }
         }
         function dive() {
@@ -302,15 +303,24 @@
         </div>
     </div>
     <a-scene class="mainContent" id = "scene">
-        
-        <!-- Hands -->
-        <a-entity position="3 1 1.38" teleport-controls hand-controls="left" aabb-collider="objects: .node;" grab controller-cursor="color: #000080" if-no-vr-headset="visible: false"></a-entity>
-        <a-entity position="3 1 1.38" teleport-controls hand-controls="right" aabb-collider="objects: .node;" grab controller-cursor="color: #000080" if-no-vr-headset="visible: false"></a-entity>
 
         <!-- CAMERA -->
         <a-entity position="3 1 1.68">
-            <a-camera user-height="1.6"></a-camera>
+            <a-camera user-height="1.6">
+                <!-- Hands -->
+                <a-entity position="-0.2 -1.6 -0.2" teleport-controls hand-controls="left" controller-cursor="color: #000080" ></a-entity>
+                <a-entity position="0.2 -1.6 -0.2" teleport-controls hand-controls="right" controller-cursor="color: #000080" ></a-entity>
+                <!--  -->
+                <a-entity
+                    debugger-control
+                    geometry="primitive: plane; width:0.5; height: auto"
+                    material="color: blue"
+                    position="0 1 -2"
+                    text="width: 3;value: Pause ; align: center"></a-entity>
+            </a-camera>
         </a-entity>
+
+        <!-- HELPER BUTTONS -->
         <!-- SKY -->
         <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
         <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
