@@ -310,13 +310,19 @@
                 <!-- Hands -->
                 <a-entity position="-0.2 -1.6 -0.2" teleport-controls hand-controls="left" controller-cursor="color: #000080" ></a-entity>
                 <a-entity position="0.2 -1.6 -0.2" teleport-controls hand-controls="right" controller-cursor="color: #000080" ></a-entity>
-                <!--  -->
+                <!-- DEBUGGER CONTROLS -->
                 <a-entity
                     debugger-control
                     geometry="primitive: plane; width:0.5; height: auto"
                     material="color: blue"
-                    position="0 1 -2"
+                    position="-0.3 1 -2"
                     text="width: 3;value: Pause ; align: center"></a-entity>
+                <a-entity
+                    debugger-control
+                    geometry="primitive: plane; width:0.5; height: auto"
+                    material="color: blue"
+                    position="0.3 1 -2"
+                    text="width: 3;value: Play ; align: center"></a-entity>
             </a-camera>
         </a-entity>
 
