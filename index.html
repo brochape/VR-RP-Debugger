@@ -14,6 +14,7 @@
 
     <!-- COMPONENTS -->
     <script src="components/cursor-listener.js" charset="utf-8"></script>
+    <script src="components/debugger-control.js" charset="utf-8"></script>
     <script src="components/alongpath.js" charset="utf-8"></script>
     <script src="components/meshline.js" charset="utf-8"></script>
     <script src="https://unpkg.com/aframe-teleport-controls@0.2.x/dist/aframe-teleport-controls.min.js"></script>
@@ -38,6 +39,7 @@
     <script type="text/javascript" charset="utf-8">
         var signalGraph = "";
         var codeMirror;
+        var paused = false;
         var previousSignalGraphs = [];
         var currentSignalGraph = 0;
         function sleep(milliseconds) {
@@ -90,7 +92,7 @@
             previousSignalGraphs.forEach(function (graph, index) {
                 dotString = make_dot_file(graph);
                 jsonGraph = get_json(dotString)
-                resString += json_to_hml(JSON.parse(jsonGraph),index+1);
+                resString += json_to_hml(JSON.parse(jsonGraph),index);
                 
             })
             // Here delete the previously present graph
@@ -257,7 +259,8 @@
         }
 
         function handle_signals(signalGraph) {
-            if (secondSignalEnabled) {
+            console.log('tick');
+            if (secondSignalEnabled && !paused) {
                 var secondSignalUpdate = setInterval(function(){ 
                     signalGraph[signal].value ++;
                     updateNode(signalGraph[signal]);
@@ -266,7 +269,22 @@
                     this.update_children(signalGraph[signal], signalGraph);  
                     this.delete_flowing_values();
                 }, 1000);
-                this.addEventListener("stopDebugger", () => clearInterval(secondSignalUpdate));
+                this.addEventListener("stopDebugger", () => {
+                    paused = true;
+                    clearInterval(secondSignalUpdate);
+                });
+                this.addEventListener("startDebugger", () => {
+                    console.log(paused);
+                    if (paused) {
+                        secondSignalUpdate = null;
+                        paused = false;
+                        handle_signals(signalGraph);
+                    }
+                });
+                this.addEventListener("restartDebugger", () => {
+                    reset_graph(signalGraph[signal]);
+
+                })
             }
         }
         function dive() {
@@ -304,24 +322,33 @@
     </div>
     <a-scene class="mainContent" id = "scene">
 
+        <!-- Hands -->
+        <a-entity teleport-controls hand-controls="left" controller-cursor="color: red" ></a-entity>
+        <a-entity teleport-controls hand-controls="right" controller-cursor="color: red" ></a-entity>
         <!-- CAMERA -->
-        <a-entity position="3 1 1.68">
+        <a-entity>
             <a-camera user-height="1.6">
-                <!-- Hands -->
-                <a-entity position="-0.2 -1.6 -0.2" teleport-controls hand-controls="left" controller-cursor="color: #000080" ></a-entity>
-                <a-entity position="0.2 -1.6 -0.2" teleport-controls hand-controls="right" controller-cursor="color: #000080" ></a-entity>
                 <!-- DEBUGGER CONTROLS -->
                 <a-entity
                     debugger-control
+                    id="restart"
                     geometry="primitive: plane; width:0.5; height: auto"
-                    material="color: blue"
-                    position="-0.3 1 -2"
+                    material="color: #333399"
+                    position="-0.55 -1 -2"
+                    text="width: 3;value: Restart ; align: center"></a-entity>
+                <a-entity
+                    debugger-control
+                    id="pause"
+                    geometry="primitive: plane; width:0.5; height: auto"
+                    material="color: #333399"
+                    position="0 -1 -2"
                     text="width: 3;value: Pause ; align: center"></a-entity>
                 <a-entity
                     debugger-control
+                    id="play"
                     geometry="primitive: plane; width:0.5; height: auto"
-                    material="color: blue"
-                    position="0.3 1 -2"
+                    material="color: #333399"
+                    position="0.55 -1 -2"
                     text="width: 3;value: Play ; align: center"></a-entity>
             </a-camera>
         </a-entity>
@@ -333,7 +360,7 @@
 
     </a-scene>
     <div id="graph" style="display: none;">
-        {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"ref":"seconds","id":1,"children":[{"name":"map","value":1,"formula":["a+1","a"],"id":2,"ref":"mapVar","line":2,"children":[{"name":"map","value":2,"formula":["a+1","a"],"id":5,"ref":"map2","line":5,"children":[{"name":"merge","value":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["mapVar"]},{"name":"merge","value":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["seconds"]},{"name":"fold","value":0,"initValue":0,"formula":"currentValue+$$signalValue$$","id":3,"ref":"","line":3,"children":[],"parents":["seconds"]},{"name":"filter","value":"0","formula":["a%3==0","a"],"id":4,"ref":"","line":4,"children":[],"parents":["seconds"]}]}}
+        {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"initValue":0,"ref":"seconds","id":1,"children":[{"name":"map","value":1,"initValue":1,"formula":["a+1","a"],"id":2,"ref":"mapVar","line":2,"children":[{"name":"map","value":2,"initValue":2,"formula":["a+1","a"],"id":5,"ref":"map2","line":5,"children":[{"name":"merge","value":3,"initValue":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["mapVar"]},{"name":"merge","value":3,"initValue":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["seconds"]},{"name":"fold","value":0,"initValue":0,"formula":"currentValue+$$signalValue$$","id":3,"ref":"","line":3,"children":[],"parents":["seconds"]},{"name":"filter","value":"0","initValue":"0","formula":["a%3==0","a"],"id":4,"ref":"","line":4,"children":[],"parents":["seconds"]}]}}
     </div>
     <div id="initCode"  style="display: none;">activate seconds
 var mapVar = map( (a)=>(a+1) seconds)
