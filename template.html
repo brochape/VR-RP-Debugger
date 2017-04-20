@@ -14,7 +14,7 @@
 
     <!-- COMPONENTS -->
     <script src="components/cursor-listener.js" charset="utf-8"></script>
-    <!-- <script src="components/debugger-control.js" charset="utf-8"></script> -->
+    <script src="components/debugger-control.js" charset="utf-8"></script>
     <script src="components/alongpath.js" charset="utf-8"></script>
     <script src="components/meshline.js" charset="utf-8"></script>
     <script src="https://unpkg.com/aframe-teleport-controls@0.2.x/dist/aframe-teleport-controls.min.js"></script>
@@ -39,6 +39,7 @@
     <script type="text/javascript" charset="utf-8">
         var signalGraph = "";
         var codeMirror;
+        var paused = false;
         var previousSignalGraphs = [];
         var currentSignalGraph = 0;
         function sleep(milliseconds) {
@@ -258,7 +259,8 @@
         }
 
         function handle_signals(signalGraph) {
-            if (secondSignalEnabled) {
+            console.log('tick');
+            if (secondSignalEnabled && !paused) {
                 var secondSignalUpdate = setInterval(function(){ 
                     signalGraph[signal].value ++;
                     updateNode(signalGraph[signal]);
@@ -267,7 +269,18 @@
                     this.update_children(signalGraph[signal], signalGraph);  
                     this.delete_flowing_values();
                 }, 1000);
-                this.addEventListener("stopDebugger", () => clearInterval(secondSignalUpdate));
+                this.addEventListener("stopDebugger", () => {
+                    paused = true;
+                    clearInterval(secondSignalUpdate);
+                });
+                this.addEventListener("startDebugger", () => {
+                    console.log(paused);
+                    if (paused) {
+                        secondSignalUpdate = null;
+                        paused = false;
+                        handle_signals(signalGraph);
+                    }
+                });
             }
         }
         function dive() {
