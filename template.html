@@ -281,6 +281,10 @@
                         handle_signals(signalGraph);
                     }
                 });
+                this.addEventListener("restartDebugger", () => {
+                    reset_graph(signalGraph[signal]);
+
+                })
             }
         }
         function dive() {

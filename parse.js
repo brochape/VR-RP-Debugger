@@ -93,6 +93,7 @@ module.exports = {
                     var signalNode = {
                         name: "map",
                         value: initVal,
+                        initValue: initVal,
                         formula: [body,param],
                         id: ID,
                         ref: "",
@@ -121,6 +122,7 @@ module.exports = {
                     var signalNode = {
                         name: "filter",
                         value: initValue,
+                        initValue: initValue,
                         formula: [body, param],
                         id: ID,
                         ref: "",
@@ -147,6 +149,7 @@ module.exports = {
                     var signalNode = {
                         name: "merge",
                         value: initValue,
+                        initValue: initValue,
                         formula: [signal1, signal2, operator],
                         id: ID,
                         ref: "",
@@ -176,6 +179,7 @@ module.exports = {
                             var secondSignal = {
                                 name: signalName,
                                 value: 0,
+                                initValue: 0,
                                 ref: signalName,
                                 id: ID,
                                 children: []

@@ -154,6 +154,16 @@ function changeOperator(signalGraph, node, operation){
     editor.setValue(code.replace(previousCode,newCode));
 }
 
+function reset_graph(startNode){
+    // console.log(node.kids);
+    startNode.value = startNode.initValue;
+    if (startNode.children != undefined) {
+        for (var i = startNode.children.length - 1; i >= 0; i--) {
+            reset_graph(startNode.children[i]);
+        }
+    }
+}
+
 var decodeEntities = (function() {
   // this prevents any overhead from creating the object each time
   var element = document.createElement('div');
@@ -173,3 +183,4 @@ var decodeEntities = (function() {
 
   return decodeHTMLEntities;
 })();
+
