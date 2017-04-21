@@ -134,7 +134,7 @@
                 var toNode = document.querySelector('#\\3' + node.children[i].id);
 
                 var edgeToFollow = document.querySelector(`#\\3${node.children[i].id}-${node.id}`)
-                console.log(edgeToFollow.getAttribute('pathToFollow')); 
+                // console.log(edgeToFollow.getAttribute('pathToFollow')); 
                 var pathToFollow = []
                 var tempPath = edgeToFollow.getAttribute('pathToFollow').split(',').map((x) => parseFloat(x))
                 while (tempPath.length > 0) pathToFollow.push(tempPath.splice(0, 4));
