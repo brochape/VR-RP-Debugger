@@ -88,12 +88,14 @@ AFRAME.registerComponent('cursor-listener', {
                             if (canModify) {
                                 switch(action){
                                     case "DEL":
-                                        console.log("I'm deleting",that.id);
                                         if (type == "node") {
                                             deleteNodeFromGraph(signalGraph,that.id);
                                             that.parentNode.removeChild(that);
 
                                             deleteEdgesForID(that.id);
+                                        }
+                                        else{
+                                            //Delete a dependency
                                         }
                                         break;
                                     case "SAVE":
