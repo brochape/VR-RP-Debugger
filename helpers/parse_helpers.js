@@ -89,24 +89,61 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 }
 
 function create_line_entity(path, fromNode, toNode, z_index){
-	var scene = document.querySelector('a-scene');
+    var dx = path[path.length-1][0]-path[0][0]
+    var dy = path[path.length-1][1]-path[0][1]
+    console.log(`Angle-${Math.atan(dx/dy)*180/Math.PI   }`)
+
+    // var fromNode = document.querySelector('#\\3' + node.id);
+    // var toNode = document.querySelector('#\\3' + node.children[i].id);
+
+
+    var scene = document.querySelector('a-scene');
     var edge = document.createElement('a-entity');
+    
 
-    var stringPath = ""
-    for (var i = path.length - 1; i >= 0; i--) {
-      stringPath += path[i][0] + ' ' + path[i][1] + ' ' + z_index;
-      if (i!=0) {stringPath+=','}
+    var newEdge = document.createElement('a-plane');
+    newEdge.setAttribute('material', { color: z_index == -5? "black": "#A9A9A9",
+                                    side: 'double'
+                                    });
+    newEdge.setAttribute("class", "edge graphElement");
+    newEdge.setAttribute('cursor-listener', {});
+    newEdge.setAttribute('position', path[0]);
+    newEdge.setAttribute('width', 0.1);
+    newEdge.setAttribute('height', Math.sqrt(dx*dx + dy*dy));
+    var middle = {
+        z: z_index
     }
-	
-	edge.setAttribute("class", "edge graphElement");
-	edge.setAttribute('cursor-listener', {});
-	edge.setAttribute('meshline', {	lineWidth: 36,
-								   	path: stringPath,
-								   	color: z_index == -5? "black": "#808080"
-								   	});
-	edge.setAttribute('id', dotIDtoMyID[fromNode] + '-' + dotIDtoMyID[toNode]);
+    if (path.length %2 == 0) {
+        middle.x = (path[path.length/2][0] + path[path.length/2-1][0])/2,
+        middle.y = (path[path.length/2][1] + path[path.length/2-1][1])/2
+    }
+    else{
+        middle.x = path[Math.floor(path.length/2)][0],
+        middle.y = path[Math.floor(path.length/2)][1]
+    }
+    newEdge.setAttribute('position', middle);
+    console.log(path.length)
+    newEdge.setAttribute('pathToFollow', path);
 
-    scene.appendChild(edge);
+    newEdge.setAttribute('rotation', "0 0 " + (180-Math.atan(dx/dy) * 180/Math.PI));
+	newEdge.setAttribute('id', dotIDtoMyID[fromNode] + '-' + dotIDtoMyID[toNode]);
+    scene.appendChild(newEdge);
+
+
+    // var stringPath = ""
+    // for (var i = path.length - 1; i >= 0; i--) {
+    //   stringPath += path[i][0] + ' ' + path[i][1] + ' ' + z_index;
+    //   if (i!=0) {stringPath+=','}
+    // }
+    
+    // edge.setAttribute("class", "edge graphElement");
+    // edge.setAttribute('cursor-listener', {});
+    // edge.setAttribute('meshline', { lineWidth: 36,
+    //                                 path: stringPath,
+    //                                 color: z_index == -5? "black": "#808080"
+    //                                 });
+
+    //scene.appendChild(edge);
 
 }
 

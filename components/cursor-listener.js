@@ -8,6 +8,9 @@ AFRAME.registerComponent('cursor-listener', {
              "edge": [["DEL"]]
             };
         var COLORS = ['green','white'];
+        this.el.addEventListener("mouseenter", (evt) => {
+            console.log("mouseenter");
+        })
         this.el.addEventListener('click', function (evt) {
             console.log("click");
             counter ++;
