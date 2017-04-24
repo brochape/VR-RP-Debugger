@@ -40,7 +40,9 @@ function json_to_hml(jsonGraph,z_index) {
 
 
 	    var fromNode = jsonGraph.edges[edge].head
+        var fromNodePos = jsonGraph.objects[fromNode].pos.split(',').map((x)=>parseFloat(x));
 	    var toNode = jsonGraph.edges[edge].tail
+        var toNodePos = jsonGraph.objects[toNode].pos.split(',').map((x)=>parseFloat(x));
 
 	    
 	    path = jsonGraph.edges[edge]._draw_[1].points
@@ -51,7 +53,7 @@ function json_to_hml(jsonGraph,z_index) {
 	      item[1] /= 70;
 	    })
 	    
-	    htmlString += create_line_entity(path,fromNode,toNode, -5 - z_index*8) + "\n\t\t";
+	    htmlString += create_line_entity(path,fromNode,toNode,fromNodePos, toNodePos, -5 - z_index*8) + "\n\t\t";
 	}
 	return htmlString;
 }
@@ -88,25 +90,59 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     scene.appendChild(node);
 }
 
-function create_line_entity(path, fromNode, toNode, z_index){
-	var scene = document.querySelector('a-scene');
+function create_line_entity(path, fromNodeID, toNodeID,fromNodePos, toNodePos, z_index){
+    // console.log('#\\3' + dotIDtoMyID[fromNodeID])
+    // var fromNode = document.querySelector('#\\3' + dotIDtoMyID[fromNodeID]);
+    // var toNode = document.querySelector('#\\3' + dotIDtoMyID[toNodeID]);
+    // console.log(fromNode)
+    // var fromDest = fromNode.getAttribute('material');//TODO
+    // var toDest = toNode.getAttribute('position');
+    // console.log(fromDest)
+
+
+    var scene = document.querySelector('a-scene');
     var edge = document.createElement('a-entity');
+    
+    var dx = path[path.length-1][0]-path[0][0]
+    var dy = path[path.length-1][1]-path[0][1]
 
-    var stringPath = ""
-    for (var i = path.length - 1; i >= 0; i--) {
-      stringPath += path[i][0] + ' ' + path[i][1] + ' ' + z_index;
-      if (i!=0) {stringPath+=','}
+    var newEdge = document.createElement('a-plane');
+    newEdge.setAttribute('material', { color: z_index == -5? "black": "#A9A9A9",
+                                    side: 'double'
+                                    });
+    newEdge.setAttribute("class", "edge graphElement");
+    newEdge.setAttribute('cursor-listener', {});
+    newEdge.setAttribute('position', path[0]);
+    newEdge.setAttribute('width', 0.1);
+    newEdge.setAttribute('height', Math.sqrt(dx*dx + dy*dy));
+    var middle = {
+        x: ((toNodePos[0] + fromNodePos[0])/2)/40-5,
+        y: (toNodePos[1] + fromNodePos [1])/140,
+        z: z_index -0.01
     }
-	
-	edge.setAttribute("class", "edge graphElement");
-	edge.setAttribute('cursor-listener', {});
-	edge.setAttribute('meshline', {	lineWidth: 36,
-								   	path: stringPath,
-								   	color: z_index == -5? "black": "#808080"
-								   	});
-	edge.setAttribute('id', dotIDtoMyID[fromNode] + '-' + dotIDtoMyID[toNode]);
+    newEdge.setAttribute('position', middle);
+    // console.log(path.length)
+    newEdge.setAttribute('pathToFollow', path);
 
-    scene.appendChild(edge);
+    newEdge.setAttribute('rotation', "0 0 " + Math.ceil(180 - Math.atan(dx/dy) * 180/Math.PI));
+	newEdge.setAttribute('id', dotIDtoMyID[fromNodeID] + '-' + dotIDtoMyID[toNodeID]);
+    scene.appendChild(newEdge);
+
+
+    // var stringPath = ""
+    // for (var i = path.length - 1; i >= 0; i--) {
+    //   stringPath += path[i][0] + ' ' + path[i][1] + ' ' + z_index;
+    //   if (i!=0) {stringPath+=','}
+    // }
+    
+    // edge.setAttribute("class", "edge graphElement");
+    // edge.setAttribute('cursor-listener', {});
+    // edge.setAttribute('meshline', { lineWidth: 36,
+    //                                 path: stringPath,
+    //                                 color: z_index == -5? "black": "#808080"
+    //                                 });
+
+    //scene.appendChild(edge);
 
 }
 

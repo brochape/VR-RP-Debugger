@@ -4,19 +4,28 @@ AFRAME.registerComponent('cursor-listener', {
         this.isSelected = false;
         var counter = 0;
         var menuElements = 
-            {"node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","ADD","SAVE"],["filter","/","","DEL"]],
-             "edge": [["DEL"]]
+            {
+                "node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","ADD","SAVE"],["filter","/","","DEL"]],
+                "edge": [["DEL"]]
             };
-        var COLORS = ['green','white'];
+        var COLORS = 
+            {
+                "node": ['green','white'],
+                "edge": ['green','black']
+            };
+
         this.el.addEventListener('click', function (evt) {
-            console.log("click");
+            var type = this.getAttribute("class").split(" ")[0]
             counter ++;
             if (counter%2 == 1) {
                 document.querySelector('a-scene').querySelectorAll(".node").forEach(function (node) {
                     node.setAttribute('material', 'color', "white");
                 });
+                document.querySelector('a-scene').querySelectorAll(".edge").forEach(function (node) {
+                    node.setAttribute('material', 'color', "black");
+                });
 
-                this.setAttribute('material', 'color', COLORS[this.isSelected ? 1 : 0]);
+                this.setAttribute('material', 'color', COLORS[type][this.isSelected ? 1 : 0]);
                 this.isSelected = ! this.isSelected;
                 /* DISPLAY MENU */
                 menuBackgroud = document.querySelector("#menu-backgroud");
@@ -34,13 +43,18 @@ AFRAME.registerComponent('cursor-listener', {
 
                     menuBackgroud.setAttribute("material", " color: black");
 
-                    menuBackgroud.setAttribute("height",2.15);
-                    menuBackgroud.setAttribute("width",2.15);
 
-                    menu.setAttribute("height",2.1);
-                    menu.setAttribute("width",2.1);
+                    menuBackgroud.setAttribute("height",menuElements[type].length*0.5+0.15);
+                    menuBackgroud.setAttribute("width",menuElements[type][0].length*0.5+.15);
+
+                    menu.setAttribute("height",menuElements[type].length*0.5+0.1);
+                    menu.setAttribute("width",menuElements[type][0].length*0.5+.1);
                     var pos = this.getAttribute("position");
-                    pos.x -= 2;
+                    if (type == "node") {
+                        pos.x -= 2;
+                    } else {
+                        pos.x -= 1;
+                    }
                     pos.z += 0.02;
 
 
@@ -51,29 +65,31 @@ AFRAME.registerComponent('cursor-listener', {
                     }
                     menu.setAttribute('position',menuPos);
                     menuBackgroud.setAttribute("position",pos); 
-                    var type = this.getAttribute("class").split(" ")[0]//here know if it's a node or an edge
                     for (var i = 0; i < menuElements[type].length; i++) {
                       for (var j = 0; j < menuElements[type][i].length; j++) {
                         var button = document.createElement('a-entity');
                         menu.appendChild(button);
                         button.setAttribute("geometry","primitive: plane; width: 0.4; height:0.4;")
                         button.setAttribute("class","menu-button");
-                        button.setAttribute("text","color: white; zOffset: 0.02; align: center; width:2; height:2; value:"+menuElements[type][i][j]+";")
+                        button.setAttribute("text","color: white; zOffset: 0.02; align: center; width:2; height:2; value:" + menuElements[type][i][j]+";")
 
-                        /*button.setAttribute("text", )*/
                         button.setAttribute("material", " color: #496FFF");
-                        if (i*4+j == 15) {
+                        if (menuElements[type][i][j] == "DEL") {
                             button.setAttribute("material", " color: red");
                         }
-                        else if (i == 4 ) {
-                            button.setAttribute("material", " color: red");
-                        }
-                        //button.setAttribute("height",0.4);
-                        //button.setAttribute("width",0.4);
-                        newPos = {
-                          x: -0.75 + (i*0.5),
-                          y: 0.75 - (j*0.5),
-                          z: 0.01
+                        if (type == "node") {
+                            newPos = {
+                              x: -0.75 + (i*0.5),
+                              y: 0.75 - (j*0.5),
+                              z: 0.01
+                            }
+                        } else {
+                            newPos = {
+                              x: 0,
+                              y: 0,
+                              z: 0.01
+                            }
+
                         }
                         var that = this;
                         var canModify = false;//avoid the doubletrigger
@@ -85,12 +101,14 @@ AFRAME.registerComponent('cursor-listener', {
                             if (canModify) {
                                 switch(action){
                                     case "DEL":
-                                        console.log("I'm deleting",that.id);
                                         if (type == "node") {
                                             deleteNodeFromGraph(signalGraph,that.id);
                                             that.parentNode.removeChild(that);
 
                                             deleteEdgesForID(that.id);
+                                        }
+                                        else{
+                                            //Delete a dependency
                                         }
                                         break;
                                     case "SAVE":

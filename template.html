@@ -134,7 +134,12 @@
                 var toNode = document.querySelector('#\\3' + node.children[i].id);
 
                 var edgeToFollow = document.querySelector(`#\\3${node.children[i].id}-${node.id}`)
-                pathToFollow = edgeToFollow.getAttribute('meshline').path.sort(function (elem1, elem2) {
+                // console.log(edgeToFollow.getAttribute('pathToFollow')); 
+                var pathToFollow = []
+                var tempPath = edgeToFollow.getAttribute('pathToFollow').split(',').map((x) => parseFloat(x))
+                while (tempPath.length > 0) pathToFollow.push(tempPath.splice(0, 4));
+
+                pathToFollow = pathToFollow.sort(function (elem1, elem2) {
                     return elem2.y - elem1.y;
                 });
                 // console.log(pathToFollow);
@@ -162,14 +167,14 @@
                 // entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
 
                 var pathstring = 'path:'
-                for (step in pathToFollow) {
-                    if ({}.hasOwnProperty.call(pathToFollow, step)) {
-                        pathstring += `${pathToFollow[step].x}` + "," + `${pathToFollow[step].y}` + "," + `${pathToFollow[step].z} `;
-                    }
-                }
-                // for (var j = 0; j < division; j++) {
-                //     pathstring += `${fromDest.x + j*deltaX}` + "," + `${fromDest.y + j*deltaY}` + "," + `${fromDest.z} `
+                // for (step in pathToFollow) {
+                //     if ({}.hasOwnProperty.call(pathToFollow, step)) {
+                //         pathstring += `${pathToFollow[step].x}` + "," + `${pathToFollow[step].y}` + "," + `${pathToFollow[step].z} `;
+                //     }
                 // }
+                for (var j = 0; j < division; j++) {
+                    pathstring += `${fromDest.x + j*deltaX}` + "," + `${fromDest.y + j*deltaY}` + "," + `${fromDest.z} `
+                }
                 pathstring += `${toDest.x}` + "," + `${toDest.y}` + "," + `${toDest.z} `
                 pathstring += `; closed: false; dur: 4000; loop: false`;
                 entityEl.setAttribute("alongpath", pathstring);
@@ -259,7 +264,6 @@
         }
 
         function handle_signals(signalGraph) {
-            console.log('tick');
             if (secondSignalEnabled && !paused) {
                 var secondSignalUpdate = setInterval(function(){ 
                     signalGraph[signal].value ++;
@@ -274,7 +278,6 @@
                     clearInterval(secondSignalUpdate);
                 });
                 this.addEventListener("startDebugger", () => {
-                    console.log(paused);
                     if (paused) {
                         secondSignalUpdate = null;
                         paused = false;
