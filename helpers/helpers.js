@@ -65,6 +65,23 @@ function deleteNodeFromGraph(signalGraph,nodeID) {
     }
 
 }
+
+function deleteEdgeFromGraph(signalGraph, edgeID) {
+    console.log("Deleting: ", edgeID);
+    [toNodeID, fromNodeID] = edgeID.split(/-/).map((elem) => parseInt(elem));
+    fromNode = findNodeByID(signalGraph, fromNodeID);
+    console.log(fromNode.children.length);
+    newChildren = fromNode.children.slice();
+    for(i = 0; i < fromNode.children.length; i++){
+        if (fromNode.children[i].id == toNodeID){
+            indexToDelete = i;
+        }
+    }
+    console.log("index:",indexToDelete)
+    fromNode.children.splice(indexToDelete,1);
+    console.log(fromNode.children);
+}
+
 function changeArgument(signalGraph, node, operation){
     switch(node.name){
         case "fold":

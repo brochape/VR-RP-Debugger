@@ -108,8 +108,10 @@ AFRAME.registerComponent('cursor-listener', {
                                             deleteEdgesForID(that.id);
                                         }
                                         else{
-                                            //Delete a dependency
+                                            deleteEdgeFromGraph(signalGraph, that.id)
+                                            that.parentNode.removeChild(that);
                                         }
+                                        menuBackgroud.parentNode.removeChild(menuBackgroud);
                                         break;
                                     case "SAVE":
                                         previousSignalGraphs.push(signalGraph);
