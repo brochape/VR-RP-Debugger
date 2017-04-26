@@ -33,7 +33,7 @@ AFRAME.registerComponent('cursor-listener', {
                 this.setAttribute('material', 'color', COLORS[type][this.isSelected ? 1 : 0]);
                 this.isSelected = ! this.isSelected;
                 /* DISPLAY MENU */
-                menuBackgroud = document.querySelector("#menu-backgroud");
+                var menuBackgroud = document.querySelector("#menu-backgroud");
                 if(menuBackgroud != undefined){
                     menuBackgroud.parentNode.removeChild(menuBackgroud);
                 }
