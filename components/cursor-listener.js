@@ -114,9 +114,9 @@ AFRAME.registerComponent('cursor-listener', {
                                         menuBackgroud.parentNode.removeChild(menuBackgroud);
                                         break;
                                     case "SAVE":
-                                        previousSignalGraphs.push(signalGraph);
+                                        previousSignalGraphs[0] = signalGraph;
+                                        previousSignalGraphs.unshift(signalGraph);
                                         currentSignalGraph += 1;
-                                        console.log(previousSignalGraphs)
                                         refresh();
                                         break;
                                     case "+":
