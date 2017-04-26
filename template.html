@@ -85,8 +85,9 @@
             resString = ""
             scene = document.querySelector("a-scene")
             graphElements = scene.querySelectorAll(".graphElement");
-            // console.log("Graph elements",graphElements)
+            console.log("Graph elements",graphElements)
             graphElements.forEach(function (graphElement) {
+                console.log(graphElement)
                 graphElement.parentNode.removeChild(graphElement);
             })
 
