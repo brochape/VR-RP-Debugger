@@ -25,7 +25,6 @@ function get_json(dotString) {
 
 function json_to_hml(jsonGraph,z_index) {
 	//console.log(jsonGraph.objects)
-	htmlString = ""
 	// console.log(jsonGraph.edges[0]._hdraw_)
 	for (var node in jsonGraph.objects){
         pos = jsonGraph.objects[node].pos.split(',');
@@ -53,9 +52,8 @@ function json_to_hml(jsonGraph,z_index) {
 	      item[1] /= 70;
 	    })
 	    
-	    htmlString += create_line_entity(path,fromNode,toNode,fromNodePos, toNodePos, -5 - z_index*8) + "\n\t\t";
+	    create_line_entity(path,fromNode,toNode,fromNodePos, toNodePos, -5 - z_index*8) + "\n\t\t";
 	}
-	return htmlString;
 }
 
 function create_node_entity(name, pos_x, pos_y, pos_z, ID){

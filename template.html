@@ -82,19 +82,20 @@
 
         function refresh() {
             console.log("Refreshing scene...")
-            resString = ""
             scene = document.querySelector("a-scene")
             graphElements = scene.querySelectorAll(".graphElement");
             console.log("Graph elements",graphElements)
             graphElements.forEach(function (graphElement) {
-                console.log(graphElement)
-                graphElement.parentNode.removeChild(graphElement);
+                console.log("Graph element",graphElement)
+                //graphElement.parentNode.removeChild(graphElement);
             })
-
+            $( ".graphElement" ).remove();
+            // Uh oh something wrong here
+            console.log("AFTER");
             previousSignalGraphs.forEach(function (graph, index) {
                 dotString = make_dot_file(graph);
                 jsonGraph = get_json(dotString)
-                resString += json_to_hml(JSON.parse(jsonGraph),index);
+                json_to_hml(JSON.parse(jsonGraph),index);
                 
             })
             // Here delete the previously present graph
@@ -112,6 +113,7 @@
             });
 
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
+            previousSignalGraphs.push(signalGraph)
             previousSignalGraphs.push(signalGraph)
             refresh();
             /*if (typeof(Worker) !== "undefined") {
