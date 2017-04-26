@@ -71,6 +71,9 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     if (pos_z == -5) {
         node.setAttribute('cursor-listener', {});
     }
+    else{
+        node.setAttribute('revert-listener', {})
+    }
     node.setAttribute('position', {x: pos_x, y:pos_y, z:pos_z});
     node.setAttribute('geometry', {primitive: 'circle'});
     node.setAttribute('scale', {x: 0.9, y:0.25, z:2});
@@ -111,7 +114,12 @@ function create_line_entity(path, fromNodeID, toNodeID,fromNodePos, toNodePos, z
                                     side: 'double'
                                     });
     newEdge.setAttribute("class", "edge graphElement");
-    newEdge.setAttribute('cursor-listener', {});
+    if (z_index == -5) {
+        newEdge.setAttribute('cursor-listener', {});
+    }
+    else{
+        newEdge.setAttribute('revert-listener', {})
+    }
     newEdge.setAttribute('position', path[0]);
     newEdge.setAttribute('width', 0.1);
     newEdge.setAttribute('height', Math.sqrt(dx*dx + dy*dy));
