@@ -19,10 +19,15 @@ AFRAME.registerComponent('cursor-listener', {
             counter ++;
             if (counter%2 == 1) {
                 document.querySelector('a-scene').querySelectorAll(".node").forEach(function (node) {
-                    node.setAttribute('material', 'color', "white");
+                    console.log(node);
+                    if (node.getAttribute('position').z == -5) {
+                        node.setAttribute('material', 'color', "white");
+                    }
                 });
-                document.querySelector('a-scene').querySelectorAll(".edge").forEach(function (node) {
-                    node.setAttribute('material', 'color', "black");
+                document.querySelector('a-scene').querySelectorAll(".edge").forEach(function (edge) {
+                    if (edge.getAttribute('position').z == -5) {
+                        edge.setAttribute('material', 'color', "black");
+                    }
                 });
 
                 this.setAttribute('material', 'color', COLORS[type][this.isSelected ? 1 : 0]);
