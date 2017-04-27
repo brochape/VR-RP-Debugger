@@ -80,18 +80,18 @@
             return result;
         }
 
-        function refresh() {
-            console.log("Refreshing scene...")
+        function refreshScene() {
+            console.log("refreshSceneing scene...")
             scene = document.querySelector("a-scene")
             graphElements = scene.querySelectorAll(".graphElement");
-            console.log("Graph elements",graphElements)
-            graphElements.forEach(function (graphElement) {
-                console.log("Graph element",graphElement)
-                //graphElement.parentNode.removeChild(graphElement);
-            })
+            console.log("Graph elements: ",graphElements.length)
+            // graphElements.forEach(function (graphElement) {
+            //     console.log("Graph element",graphElement)
+            //     //graphElement.parentNode.removeChild(graphElement);
+            // })
             $( ".graphElement" ).remove();
             // Uh oh something wrong here
-            console.log("AFTER");
+            // console.log("AFTER");
             previousSignalGraphs.forEach(function (graph, index) {
                 dotString = make_dot_file(graph);
                 jsonGraph = get_json(dotString)
@@ -99,11 +99,12 @@
                 
             })
             // Here delete the previously present graph
-            // console.log(resString)
+            // console.log(resString) 
             // document.querySelector("#scene").innerHTML += resString;
         }
 
         function start() {
+            console.log("Starting");
             codeMirror = CodeMirror(function (elt) {
                 document.querySelector("#codeEditor").parentNode.replaceChild(elt, document.querySelector("#codeEditor"));
             }, {
@@ -115,7 +116,7 @@
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
             previousSignalGraphs.push(signalGraph)
             previousSignalGraphs.push(signalGraph)
-            refresh();
+            refreshScene();
             /*if (typeof(Worker) !== "undefined") {
                 if (typeof(w) == "undefined") {
                     w = new Worker("webworker.js");
