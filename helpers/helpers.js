@@ -31,13 +31,18 @@ function findNodeByID(signalGraph, ID) {
 
 
 
-function deleteEdgesForID(ID) {
+function deleteEdgesForID(ID, z_level) {
     var edges = document.querySelectorAll(".edge");
+    // console.log(edges);
+    // edges = edges.filter((edge)=>{return edges.getAttribute('class').includes(z_level.toString())});
+
     for (var i = 0; i < edges.length; i++) {
         edge = edges[i];
-        [fromNodeID,toNodeID] = edge.id.split('-');
-        if (fromNodeID == ID || toNodeID == ID){
-            edge.parentNode.removeChild(edge);
+        if (edge.getAttribute('class').includes(z_level.toString())) {
+            [fromNodeID,toNodeID] = edge.id.split('-');
+            if (fromNodeID == ID || toNodeID == ID){
+                edge.parentNode.removeChild(edge);
+            }
         }
     }
 }

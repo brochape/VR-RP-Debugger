@@ -110,8 +110,7 @@ AFRAME.registerComponent('cursor-listener', {
                                         if (type == "node") {
                                             deleteNodeFromGraph(signalGraph,that.id);
                                             that.parentNode.removeChild(that);
-
-                                            deleteEdgesForID(that.id);
+                                            deleteEdgesForID(that.id, that.getAttribute("position").z);
                                         }
                                         else{
                                             deleteEdgeFromGraph(signalGraph, that.id)
