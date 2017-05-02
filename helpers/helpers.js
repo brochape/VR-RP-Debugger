@@ -16,6 +16,7 @@ function findNodeByID(signalGraph, ID) {
     }
     var i;
     var result = null;
+    console.log(signalGraph);
     var keys = Object.keys(signalGraph);
     for (i = 0; result == null && i < keys.length; i++){
         // //console.log(signalGraph);
@@ -184,6 +185,10 @@ function reset_graph(startNode){
             reset_graph(startNode.children[i]);
         }
     }
+}
+
+function setBreakPointOn(signalGraph,node) {
+    node.breakpoint = !node.breakpoint;
 }
 
 var decodeEntities = (function() {

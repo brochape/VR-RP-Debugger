@@ -5,7 +5,7 @@ AFRAME.registerComponent('cursor-listener', {
         var counter = 0;
         var menuElements = 
             {
-                "node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","ADD","SAVE"],["filter","/","","DEL"]],
+                "node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","ADD","SAVE"],["filter","/","BREAK","DEL"]],
                 "edge": [["DEL"]]
             };
         var COLORS = 
@@ -19,7 +19,6 @@ AFRAME.registerComponent('cursor-listener', {
             counter ++;
             if (counter%2 == 1) {
                 document.querySelector('a-scene').querySelectorAll(".node").forEach(function (node) {
-                    console.log(node);
                     if (node.getAttribute('position').z == -5) {
                         node.setAttribute('material', 'color', "white");
                     }
@@ -82,6 +81,9 @@ AFRAME.registerComponent('cursor-listener', {
                         if (menuElements[type][i][j] == "DEL") {
                             button.setAttribute("material", " color: red");
                         }
+                        else if (menuElements[type][i][j] == "BREAK") {
+                            button.setAttribute("material", " color: blue");
+                        }
                         if (type == "node") {
                             newPos = {
                               x: -0.75 + (i*0.5),
@@ -106,7 +108,6 @@ AFRAME.registerComponent('cursor-listener', {
                             if (canModify) {
                                 switch(action){
                                     case "DEL":
-                                        
                                         if (type == "node") {
                                             deleteNodeFromGraph(signalGraph,that.id);
                                             that.parentNode.removeChild(that);
@@ -117,6 +118,9 @@ AFRAME.registerComponent('cursor-listener', {
                                             that.parentNode.removeChild(that);
                                         }
                                         menuBackgroud.parentNode.removeChild(menuBackgroud);
+                                        break;
+                                    case "BREAK":
+                                        setBreakPointOn(signalGraph,node);
                                         break;
                                     case "SAVE":
                                         previousSignalGraphs[0] = signalGraph;
