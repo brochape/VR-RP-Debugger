@@ -188,7 +188,7 @@ function reset_graph(startNode){
 }
 
 function setBreakPointOn(signalGraph,node) {
-    node.breakpoint = !node.breakpoint;
+    node.globalBreakpoint = !node.globalBreakpoint;
 }
 
 var decodeEntities = (function() {
