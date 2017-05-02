@@ -62,11 +62,8 @@ AFRAME.registerComponent('revert-listener', {
                 sceneEl.appendChild(revertMenuBackgroud);
                 button.addEventListener('click', () => {
                     revertMenuBackgroud.parentNode.removeChild(revertMenuBackgroud);
-                    console.log(previousSignalGraphs);
                     var index = (5 - this.el.getAttribute("position").z)/8 -1;
-                    console.log(Math.round(index));
                     previousSignalGraphs = previousSignalGraphs.slice(Math.round(index));
-                    console.log("Length", previousSignalGraphs.length);
                     refreshScene();
                 })
 
