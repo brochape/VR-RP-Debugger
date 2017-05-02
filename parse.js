@@ -186,6 +186,7 @@ module.exports = {
                                 initValue: 0,
                                 ref: signalName,
                                 id: ID,
+                                breakpoint: false,
                                 children: []
 
                             }
