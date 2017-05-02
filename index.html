@@ -8,7 +8,7 @@
     <meta name="description" content="Hello, World! - A-Frame">
     <!-- AFRAME -->
     <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
-    <!-- <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.1/dist/aframe-extras.misc.min.js"></script> --><!-- For controllers -->
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.3.1/dist/aframe-extras.misc.min.js"></script><!-- For controllers-->
     <script src="https://rawgit.com/ngokevin/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
     <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.2/dist/aframe-controller-cursor-component.min.js"></script>
 
@@ -115,7 +115,6 @@
 
             signalGraph = JSON.parse(document.getElementById("graph").innerHTML);
             previousSignalGraphs.push(signalGraph)
-            previousSignalGraphs.push(signalGraph)
             refreshScene();
             /*if (typeof(Worker) !== "undefined") {
                 if (typeof(w) == "undefined") {
@@ -206,37 +205,44 @@
         function update_children(parentNode, graph){
             if (parentNode.children) {
                 for (var i = 0; i < parentNode.children.length; i++) {
-                    node = parentNode.children[i];
-                    switch(node.name){
-                        case "fold":
-                            node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value)) + node.initValue;
-                            updateNode(node);
-                            break;
-                        case "map":
-                            [body,param] = node.formula;
-                            node.value = eval(body.replace(param, parentNode.value));
-                            updateNode(node);
-                            break;
-                        case "filter":
-                            [body,param] = node.formula;
-                            signalValue = parentNode.value
-                            if (eval(body.replace(param, signalValue))) {
-                                node.value = signalValue;
-                            }
-                            updateNode(node);
-                            break;
-                        case "merge":
-                            [signal1, signal2, operator] = node.formula;
-                            signal1Value = findSignalNode(graph, signal1).value;
-                            signal2Value = findSignalNode(graph, signal2).value;
-                            node.value = eval(signal1Value + operator + signal2Value);
-                            
-                            updateNode(node);
-                            break;
-
-
+                    node = parentNode.children[i];  
+                    if (node.globalBreakpoint) {
+                        var event = new Event("stopDebugger");
+                        this.dispatchEvent(event);
                     }
-                    update_children(node, graph);
+
+                    if (! node.localBreakpoint) {
+                        switch(node.name){
+                            case "fold":
+                                node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value)) + node.initValue;
+                                updateNode(node);
+                                break;
+                            case "map":
+                                [body,param] = node.formula;
+                                node.value = eval(body.replace(param, parentNode.value));
+                                updateNode(node);
+                                break;
+                            case "filter":
+                                [body,param] = node.formula;
+                                signalValue = parentNode.value
+                                if (eval(body.replace(param, signalValue))) {
+                                    node.value = signalValue;
+                                }
+                                updateNode(node);
+                                break;
+                            case "merge":
+                                [signal1, signal2, operator] = node.formula;
+                                signal1Value = findSignalNode(graph, signal1).value;
+                                signal2Value = findSignalNode(graph, signal2).value;
+                                node.value = eval(signal1Value + operator + signal2Value);
+                                
+                                updateNode(node);
+                                break;
+
+
+                        }
+                        update_children(node, graph);
+                    }
                 }
             }
         }
@@ -368,7 +374,7 @@
 
     </a-scene>
     <div id="graph" style="display: none;">
-        {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"initValue":0,"ref":"seconds","id":1,"children":[{"name":"map","value":1,"initValue":1,"formula":["a+1","a"],"id":2,"ref":"mapVar","line":2,"children":[{"name":"map","value":2,"initValue":2,"formula":["a+1","a"],"id":5,"ref":"map2","line":5,"children":[{"name":"merge","value":3,"initValue":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["mapVar"]},{"name":"merge","value":3,"initValue":3,"formula":["mapVar","map2","+"],"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["seconds"]},{"name":"fold","value":0,"initValue":0,"formula":"currentValue+$$signalValue$$","id":3,"ref":"","line":3,"children":[],"parents":["seconds"]},{"name":"filter","value":"0","initValue":"0","formula":["a%3==0","a"],"id":4,"ref":"","line":4,"children":[],"parents":["seconds"]}]}}
+        {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"initValue":0,"ref":"seconds","id":1,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"map","value":1,"initValue":1,"formula":["a+1","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":2,"ref":"mapVar","line":2,"children":[{"name":"map","value":2,"initValue":2,"formula":["a+1","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":5,"ref":"map2","line":5,"children":[{"name":"merge","value":3,"initValue":3,"formula":["mapVar","map2","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["mapVar"]},{"name":"merge","value":3,"initValue":3,"formula":["mapVar","map2","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":6,"ref":"","line":6,"children":[],"parents":["mapVar","map2"]}],"parents":["seconds"]},{"name":"fold","value":0,"initValue":0,"globalBreakpoint":false,"formula":"currentValue+$$signalValue$$","id":3,"ref":"","line":3,"children":[],"parents":["seconds"]},{"name":"filter","value":"0","initValue":"0","formula":["a%3==0","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":4,"ref":"","line":4,"children":[],"parents":["seconds"]}]}}
     </div>
     <div id="initCode"  style="display: none;">activate seconds
 var mapVar = map( (a)=>(a+1) seconds)
