@@ -205,41 +205,44 @@
         function update_children(parentNode, graph){
             if (parentNode.children) {
                 for (var i = 0; i < parentNode.children.length; i++) {
-                    node = parentNode.children[i];
-                    switch(node.name){
-                        case "fold":
-                            node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value)) + node.initValue;
-                            updateNode(node);
-                            break;
-                        case "map":
-                            [body,param] = node.formula;
-                            node.value = eval(body.replace(param, parentNode.value));
-                            updateNode(node);
-                            break;
-                        case "filter":
-                            [body,param] = node.formula;
-                            signalValue = parentNode.value
-                            if (eval(body.replace(param, signalValue))) {
-                                node.value = signalValue;
-                            }
-                            updateNode(node);
-                            break;
-                        case "merge":
-                            [signal1, signal2, operator] = node.formula;
-                            signal1Value = findSignalNode(graph, signal1).value;
-                            signal2Value = findSignalNode(graph, signal2).value;
-                            node.value = eval(signal1Value + operator + signal2Value);
-                            
-                            updateNode(node);
-                            break;
-
-
-                    }
+                    node = parentNode.children[i];  
                     if (node.globalBreakpoint) {
                         var event = new Event("stopDebugger");
                         this.dispatchEvent(event);
                     }
-                    update_children(node, graph);
+
+                    if (! node.localBreakpoint) {
+                        switch(node.name){
+                            case "fold":
+                                node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value)) + node.initValue;
+                                updateNode(node);
+                                break;
+                            case "map":
+                                [body,param] = node.formula;
+                                node.value = eval(body.replace(param, parentNode.value));
+                                updateNode(node);
+                                break;
+                            case "filter":
+                                [body,param] = node.formula;
+                                signalValue = parentNode.value
+                                if (eval(body.replace(param, signalValue))) {
+                                    node.value = signalValue;
+                                }
+                                updateNode(node);
+                                break;
+                            case "merge":
+                                [signal1, signal2, operator] = node.formula;
+                                signal1Value = findSignalNode(graph, signal1).value;
+                                signal2Value = findSignalNode(graph, signal2).value;
+                                node.value = eval(signal1Value + operator + signal2Value);
+                                
+                                updateNode(node);
+                                break;
+
+
+                        }
+                        update_children(node, graph);
+                    }
                 }
             }
         }
