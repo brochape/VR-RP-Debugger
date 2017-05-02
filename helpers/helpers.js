@@ -191,6 +191,10 @@ function setBreakPointOn(signalGraph,node) {
     node.globalBreakpoint = !node.globalBreakpoint;
 }
 
+
+function setLocalBreakpointOn(node) {
+    node.localBreakpoint = !node.localBreakpoint;
+}
 var decodeEntities = (function() {
   // this prevents any overhead from creating the object each time
   var element = document.createElement('div');

@@ -5,7 +5,7 @@ AFRAME.registerComponent('cursor-listener', {
         var counter = 0;
         var menuElements = 
             {
-                "node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","ADD","SAVE"],["filter","/","BREAK","DEL"]],
+                "node": [["fold", "+", "arg+1", "arg+5"], ["merge","-","arg-1","arg-5"],["map","*","LOCAL\nBREAK","SAVE"],["filter","/","BREAK","DEL"]],
                 "edge": [["DEL"]]
             };
         var COLORS = 
@@ -84,6 +84,9 @@ AFRAME.registerComponent('cursor-listener', {
                         else if (menuElements[type][i][j] == "BREAK") {
                             button.setAttribute("material", " color: blue");
                         }
+                        else if (menuElements[type][i][j] == "LOCAL\nBREAK") {
+                            button.setAttribute("material", " color: blue");
+                        }
                         if (type == "node") {
                             newPos = {
                               x: -0.75 + (i*0.5),
@@ -121,6 +124,9 @@ AFRAME.registerComponent('cursor-listener', {
                                         break;
                                     case "BREAK":
                                         setBreakPointOn(signalGraph,node);
+                                        break;
+                                    case "LOCAL\nBREAK":
+                                        setLocalBreakpointOn(node);
                                         break;
                                     case "SAVE":
                                         previousSignalGraphs[0] = signalGraph;

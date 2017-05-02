@@ -97,6 +97,7 @@ module.exports = {
                         initValue: initVal,
                         formula: [body,param],
                         globalBreakpoint: false,
+                        localBreakpoint: false,
                         id: ID,
                         ref: "",
                         line: statement.location.start.line,
@@ -127,6 +128,7 @@ module.exports = {
                         initValue: initValue,
                         formula: [body, param],
                         globalBreakpoint: false,
+                        localBreakpoint: false,
                         id: ID,
                         ref: "",
                         line: statement.location.start.line,
@@ -155,6 +157,7 @@ module.exports = {
                         initValue: initValue,
                         formula: [signal1, signal2, operator],
                         globalBreakpoint: false,
+                        localBreakpoint: false,
                         id: ID,
                         ref: "",
                         line: statement.location.start.line,
@@ -187,6 +190,7 @@ module.exports = {
                                 ref: signalName,
                                 id: ID,
                                 globalBreakpoint: false,
+                                localBreakpoint: false,
                                 children: []
 
                             }
