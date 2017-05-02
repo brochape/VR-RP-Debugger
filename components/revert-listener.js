@@ -50,11 +50,6 @@ AFRAME.registerComponent('revert-listener', {
                 revertMenu.setAttribute('position',menuPos);
                 revertMenuBackgroud.setAttribute("position",pos); 
                 var button = document.createElement('a-entity');
-                button.addEventListener('click', () => {
-                    var index = (5 - this.el.getAttribute("position"))/8;
-                    previousSignalGraphs = previousSignalGraphs.slice(Math.round(index));
-                    refresh();
-                })
                 revertMenu.appendChild(button);
                 button.setAttribute("geometry","primitive: plane; width: 0.4; height:0.4;")
                 button.setAttribute("class","revertMenu-button");
@@ -65,6 +60,15 @@ AFRAME.registerComponent('revert-listener', {
 
                 revertMenuBackgroud.appendChild(revertMenu);
                 sceneEl.appendChild(revertMenuBackgroud);
+                button.addEventListener('click', () => {
+                    revertMenuBackgroud.parentNode.removeChild(revertMenuBackgroud);
+                    console.log(previousSignalGraphs);
+                    var index = (5 - this.el.getAttribute("position").z)/8 -1;
+                    console.log(Math.round(index));
+                    previousSignalGraphs = previousSignalGraphs.slice(Math.round(index));
+                    console.log("Length", previousSignalGraphs.length);
+                    refreshScene();
+                })
 
 
             }

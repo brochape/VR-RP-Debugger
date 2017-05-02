@@ -25,7 +25,6 @@ function get_json(dotString) {
 
 function json_to_hml(jsonGraph,z_index) {
 	//console.log(jsonGraph.objects)
-	htmlString = ""
 	// console.log(jsonGraph.edges[0]._hdraw_)
 	for (var node in jsonGraph.objects){
         pos = jsonGraph.objects[node].pos.split(',');
@@ -53,16 +52,15 @@ function json_to_hml(jsonGraph,z_index) {
 	      item[1] /= 70;
 	    })
 	    
-	    htmlString += create_line_entity(path,fromNode,toNode,fromNodePos, toNodePos, -5 - z_index*8) + "\n\t\t";
+	    create_line_entity(path,fromNode,toNode,fromNodePos, toNodePos, -5 - z_index*8) + "\n\t\t";
 	}
-	return htmlString;
 }
 
 function create_node_entity(name, pos_x, pos_y, pos_z, ID){
 
 	var scene = document.querySelector('a-scene');
     var node = document.createElement('a-entity');
-    node.setAttribute('class', 'node graphElement');
+    node.setAttribute('class', 'node graphElement '+ pos_z);
     node.setAttribute('id', ID);
     console.log(pos_z)
     node.setAttribute('material', { color: pos_z == -5? "white": "#A9A9A9",
@@ -113,7 +111,7 @@ function create_line_entity(path, fromNodeID, toNodeID,fromNodePos, toNodePos, z
     newEdge.setAttribute('material', { color: z_index == -5? "black": "#A9A9A9",
                                     side: 'double'
                                     });
-    newEdge.setAttribute("class", "edge graphElement");
+    newEdge.setAttribute("class", "edge graphElement "+ z_index);
     if (z_index == -5) {
         newEdge.setAttribute('cursor-listener', {});
     }

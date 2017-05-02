@@ -106,11 +106,11 @@ AFRAME.registerComponent('cursor-listener', {
                             if (canModify) {
                                 switch(action){
                                     case "DEL":
+                                        
                                         if (type == "node") {
                                             deleteNodeFromGraph(signalGraph,that.id);
                                             that.parentNode.removeChild(that);
-
-                                            deleteEdgesForID(that.id);
+                                            deleteEdgesForID(that.id, that.getAttribute("position").z);
                                         }
                                         else{
                                             deleteEdgeFromGraph(signalGraph, that.id)
@@ -122,7 +122,7 @@ AFRAME.registerComponent('cursor-listener', {
                                         previousSignalGraphs[0] = signalGraph;
                                         previousSignalGraphs.unshift(signalGraph);
                                         currentSignalGraph += 1;
-                                        refresh();
+                                        refreshScene();
                                         break;
                                     case "+":
                                     case "-":
