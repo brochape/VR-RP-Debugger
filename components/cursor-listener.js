@@ -146,6 +146,12 @@ AFRAME.registerComponent('cursor-listener', {
                                     case "arg+5":
                                         changeArgument(signalGraph, node, action.replace("arg",""));
                                         break;
+                                    case "fold":
+                                    case "map":
+                                    case "merge":
+                                    case "filter":
+                                        changeOperator(signalGraph, node, action);  
+                                        break;
                                 }
                             }
                         });

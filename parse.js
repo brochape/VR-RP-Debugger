@@ -197,6 +197,21 @@ module.exports = {
                             ID += 1;
                             signalGraph[signalName] = secondSignal;
                             break;
+                        case "input":
+                            var inputSignal = {
+                                name: signalName,
+                                value: 0,
+                                initValue: 0,
+                                ref: signalName,
+                                id: ID,
+                                globalBreakpoint: false,
+                                localBreakpoint: false,
+                                children: []
+
+                            }
+                            ID += 1;
+                            signalGraph[signalName] = inputSignal;
+                            break;
                     }
                     break;
 

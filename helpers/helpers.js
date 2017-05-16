@@ -177,6 +177,49 @@ function changeOperator(signalGraph, node, operation){
     editor.setValue(code.replace(previousCode,newCode));
 }
 
+function changeOperator(signalGraph, node, newOperation) {
+        switch (node.name){
+            case newOperation:
+                break;
+            case "merge":// TODO 2 dependencies -> 1
+                var parent = findSignalNode(signalGraph,node.parents[0]);
+                var array = parentNode.children;
+                var index = array.indexOf(node);
+                if (index > -1) {
+                    array.splice(index, 1);
+                }
+                parentNode.children = array;
+            default:
+                switch (newOperation){
+                    case "fold":
+                        node.formula =  "currentValue + $$signalValue$$" ;
+                        node.value = 0;
+                        node.name = newOperation;
+                        break;
+
+                    case "filter":
+                        var param = "x";
+                        var body = "x%1 == 0"
+                        node.formula = [body,param];
+                        node.value = 0;
+                        node.name = newOperation;
+                        break;
+
+                    case "map":
+                        var param = "x";
+                        var body = "x + 1"
+                        node.formula = [body,param];
+                        node.value = 0;
+                        node.name = newOperation;
+                        break;
+                }
+
+                break;
+
+
+        }
+}
+
 function reset_graph(startNode){
     // console.log(node.kids);
     startNode.value = startNode.initValue;
