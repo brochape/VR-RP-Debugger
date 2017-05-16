@@ -4,6 +4,7 @@ function make_dot_file(graph) {
     str = "digraph {\n"
     // for (var i = graph.seconds.length - 1; i >= 0; i--) {
     traverse(graph.seconds);
+    traverse(graph.input);
     // }
     str += "}";
     return str;
@@ -26,6 +27,7 @@ function get_json(dotString) {
 function json_to_hml(jsonGraph,z_index) {
 	//console.log(jsonGraph.objects)
 	// console.log(jsonGraph.edges[0]._hdraw_)
+    console.log(jsonGraph);
 	for (var node in jsonGraph.objects){
         pos = jsonGraph.objects[node].pos.split(',');
         // console.log(pos)

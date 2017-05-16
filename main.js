@@ -6,7 +6,7 @@ const exec = require('child_process').exec;
 
 var parser = require('./parse.js');
 
-var code = "activate seconds\nactivate input\nvar mapVar = map( (a)=>(a+1) input)\nvar mapVar = map( (a)=>(a+1) seconds)\nfold(seconds + 0)\nfilter((a)=>(a%3==0) seconds 0)\nvar map2 = map((a)=>(a+1) mapVar)\nmerge(mapVar map2 +)"
+var code = "activate seconds\nactivate input\nmerge(input seconds /)\nvar mapVar = map( (a)=>(a+1) seconds)\nfold(seconds + 0)\nfilter((a)=>(a%3==0) seconds 0)\nvar map2 = map((a)=>(a+1) mapVar)\nmerge(mapVar map2 +)"
 ast = parser.parse(code);
 // console.log(ast);
 

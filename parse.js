@@ -165,7 +165,7 @@ module.exports = {
                         parents: [signal1,signal2]
                     }
                     ID += 1;
-                    return [signal,signalNode];
+                    return [signal1,signalNode];
 
             }
     },
