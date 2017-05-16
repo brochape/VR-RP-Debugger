@@ -84,7 +84,6 @@
             console.log("refreshSceneing scene...")
             scene = document.querySelector("a-scene")
             graphElements = scene.querySelectorAll(".graphElement");
-            console.log("Graph elements: ",graphElements.length)
             // graphElements.forEach(function (graphElement) {
             //     console.log("Graph element",graphElement)
             //     //graphElement.parentNode.removeChild(graphElement);
@@ -93,11 +92,8 @@
             // Uh oh something wrong here
             // console.log("AFTER");
             previousSignalGraphs.forEach(function (graph, index) {
-                console.log(graph);
                 dotString = make_dot_file(graph);
-                console.log(dotString);
                 jsonGraph = get_json(dotString)
-                console.log(jsonGraph);
                 json_to_hml(JSON.parse(jsonGraph),index);
                 
             })
