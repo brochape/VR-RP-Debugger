@@ -187,8 +187,22 @@ function changeOperator(signalGraph, node, operation){
 }
 
 function changeOperator(signalGraph, node, newOperation) {
+        var editor = $('.CodeMirror')[0].CodeMirror;
+        console.log(editor)
+
+        var code = editor.getValue();
+        var splitCode = code.split('\n')
+        var previousLine = splitCode[node.line-1];
+        [leftPart,rightPart] = previousLine.split("=");//ERROR FOR THE FILTER WITH "=" in their lambda
+        var newLine = "";
+        console.log(rightPart)
+        if (rightPart){
+            newLine = leftPart + " = "
+        }
+
         switch (node.name){
             case newOperation:
+                newLine = previousLine;
                 break;
             case "merge":// 2 dependencies -> 1
                 var parentNode = findSignalNode(signalGraph,node.parents[0]);
@@ -213,6 +227,7 @@ function changeOperator(signalGraph, node, newOperation) {
                         node.formula =  "currentValue "+ operation +" $$signalValue$$" ;
                         node.value = 0;
                         node.name = newOperation;
+                        newLine += (node.name + '(' + node.parents[0] + ' ' + operation + ' ' + node.value + ')')
                         break;
 
                     case "filter":
@@ -221,6 +236,7 @@ function changeOperator(signalGraph, node, newOperation) {
                         node.formula = [body,param];
                         node.value = 0;
                         node.name = newOperation;
+                        newLine += (node.name + "((" + param +') => ('+ body+ ') ' + node.parents[0] + node.value + ')')
                         break;
 
                     case "map":
@@ -229,8 +245,11 @@ function changeOperator(signalGraph, node, newOperation) {
                         node.formula = [body,param];
                         node.value = 0;
                         node.name = newOperation;
+                        newLine += (node.name + "((" + param +') => ('+ body+ ') ' + node.parents[0] + ')')
                         break;
                 }
+                splitCode[node.line-1] = newLine;
+                editor.setValue(splitCode.join('\n'));
 
                 break;
 
