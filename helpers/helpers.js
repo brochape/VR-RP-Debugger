@@ -16,7 +16,7 @@ function findNodeByID(signalGraph, ID) {
     }
     var i;
     var result = null;
-    console.log(signalGraph);
+    // console.log(signalGraph);
     var keys = Object.keys(signalGraph);
     for (i = 0; result == null && i < keys.length; i++){
         // //console.log(signalGraph);
@@ -48,7 +48,15 @@ function deleteEdgesForID(ID, z_level) {
     }
 }
 
-
+function deleteEdgewithID(ID) {
+    var edgeToDelete = document.querySelectorAll("#\\3" + ID);
+    for (var i = edgeToDelete.length - 1; i >= 0; i--) {
+        var edge = edgeToDelete[i];
+        if (edge.getAttribute('class').includes((-5).toString())) {
+            edge.parentNode.removeChild(edge);
+        }
+    }
+}
 function deleteNodeFromGraph(signalGraph,nodeID) {
     var node = findNodeByID(signalGraph,nodeID);
     if (node) {
@@ -74,6 +82,7 @@ function deleteNodeFromGraph(signalGraph,nodeID) {
 
 function deleteEdgeFromGraph(signalGraph, edgeID) {
     console.log("Deleting: ", edgeID);
+    deleteEdgewithID(edgeID)
     [toNodeID, fromNodeID] = edgeID.split(/-/).map((elem) => parseInt(elem));
     fromNode = findNodeByID(signalGraph, fromNodeID);
     console.log(fromNode.children.length);
@@ -181,18 +190,27 @@ function changeOperator(signalGraph, node, newOperation) {
         switch (node.name){
             case newOperation:
                 break;
-            case "merge":// TODO 2 dependencies -> 1
-                var parent = findSignalNode(signalGraph,node.parents[0]);
+            case "merge":// 2 dependencies -> 1
+                var parentNode = findSignalNode(signalGraph,node.parents[0]);
                 var array = parentNode.children;
-                var index = array.indexOf(node);
+                deleteEdgewithID(node.id + "-" + parentNode.id)
+                var index = -1;
+                for (var i = array.length - 1; i >= 0; i--) {
+                    if (array[i].id == node.id)
+                        index = i;
+                }
+
                 if (index > -1) {
                     array.splice(index, 1);
                 }
+                node.parents = [node.parents[1]]
                 parentNode.children = array;
+
             default:
                 switch (newOperation){
                     case "fold":
-                        node.formula =  "currentValue + $$signalValue$$" ;
+                        var operation = "+";
+                        node.formula =  "currentValue "+ operation +" $$signalValue$$" ;
                         node.value = 0;
                         node.name = newOperation;
                         break;
