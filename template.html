@@ -282,6 +282,7 @@
                     this.update_children(signalGraph[signal], signalGraph);  
                     this.delete_flowing_values();
                 }, 1000);
+                window.onkeydown = keyPressed;
 
                 this.addEventListener("stopDebugger", () => {
                     paused = true;
@@ -300,6 +301,13 @@
                 })
             }
         }
+
+        function keyPressed(e){
+
+            signalGraph.input.value ++;
+            updateNode(signalGraph.input);
+        }
+
         function dive() {
             document.getElementById("code").style.display="none";
             document.getElementById("scene").style = null;
