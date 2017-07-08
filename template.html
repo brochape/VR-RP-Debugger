@@ -133,11 +133,13 @@
             // VALUES FLOWINGs      
             for (var i = 0; i < node.children.length; i++) {
                 
-                var fromNode = document.querySelector('#\\3' + node.id);
-                var toNode = document.querySelector('#\\3' + node.children[i].id);
+                var fromNode = document.querySelector("[id='" + node.id + "']");
+                var toNode = document.querySelector("[id='" + node.children[i].id + "']");
 
-                var edgeToFollow = document.querySelector(`#\\3${node.children[i].id}-${node.id}`)
+                var edgeToFollow = document.querySelector("[id='"+ node.children[i].id+"-"+node.id+"']")
+                console.log("[id='" + node.children[i].id + "']");
                 // console.log(edgeToFollow.getAttribute('pathToFollow')); 
+                console.log(edgeToFollow);
                 var pathToFollow = []
                 var tempPath = edgeToFollow.getAttribute('pathToFollow').split(',').map((x) => parseFloat(x))
                 while (tempPath.length > 0) pathToFollow.push(tempPath.splice(0, 4));
@@ -192,7 +194,7 @@
             }
             
 
-            var nodeTest = document.querySelector('#\\3' + node.id);
+            var nodeTest = document.querySelector("[id='" + node.id + "']");
             var nodeText = nodeTest.getAttribute('text').value;
             var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
             nodeTest.setAttribute('text', newNodeText);
@@ -211,6 +213,8 @@
                     }
 
                     if (! node.localBreakpoint) {
+                        var updateChildren = true;
+                        console.log(node.name);
                         switch(node.name){
                             case "fold":
                                 node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value)) + node.initValue;
@@ -223,24 +227,33 @@
                                 break;
                             case "filter":
                                 [body,param] = node.formula;
-                                signalValue = parentNode.value
+                                signalValue = parentNode.value;
                                 if (eval(body.replace(param, signalValue))) {
                                     node.value = signalValue;
+                                    updateNode(node);
                                 }
-                                updateNode(node);
+                                else{
+                                    updateChildren = false;
+                                }
                                 break;
                             case "merge":
+                                console.log("merge");
                                 [signal1, signal2, operator] = node.formula;
                                 signal1Value = findSignalNode(graph, signal1).value;
                                 signal2Value = findSignalNode(graph, signal2).value;
+                                console.log("Merge");
                                 node.value = eval(signal1Value + operator + signal2Value);
-                                
+                                console.log("Merge value: " + node.value);
+                                if (node.value == null)
+                                    node.value = 0;
                                 updateNode(node);
                                 break;
 
 
                         }
-                        update_children(node, graph);
+                        if (updateChildren) {
+                            update_children(node, graph);
+                        }
                     }
                 }
             }
@@ -276,9 +289,9 @@
             if (secondSignalEnabled && !paused) {
                 var secondSignalUpdate = setInterval(function(){ 
                     signalGraph[signal].value ++;
+                    console.log(signalGraph[signal].value);
                     updateNode(signalGraph[signal]);
-
-                    // //console.log(signalGraph);
+                    console.log("ok")
                     this.update_children(signalGraph[signal], signalGraph);  
                     this.delete_flowing_values();
                 }, 1000);
