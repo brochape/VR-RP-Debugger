@@ -141,7 +141,7 @@ merge = 'merge' space? '(' space? signal1:word space signal2:word space operator
 }
 
 lambda
-  = '(' space? w:(word space?)* space?')' space? "=>" space?'(' space? a:word space? o:(operator space? word)* space?')'  {
+  = '(' space? w:(word space?)* space?')' space? "=>" space?'{' space? a:word space? o:(operator space? word)* space?'}'  {
     var leftNode = {
       name: "param",
       value: w,

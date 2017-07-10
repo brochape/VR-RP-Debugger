@@ -68,6 +68,7 @@
             }
             var i;
             var result = null;
+            console.log(signalGraph);
             var keys = Object.keys(signalGraph);
             for (i = 0; result == null && i < keys.length; i++){
                 if (signalGraph[keys[i]].ref ==signalName ) {
@@ -81,7 +82,7 @@
         }
 
         function refreshScene() {
-            console.log("refreshSceneing scene...")
+            console.log("refreshing scene...")
             scene = document.querySelector("a-scene")
             graphElements = scene.querySelectorAll(".graphElement");
             // graphElements.forEach(function (graphElement) {
@@ -137,9 +138,9 @@
                 var toNode = document.querySelector("[id='" + node.children[i].id + "']");
 
                 var edgeToFollow = document.querySelector("[id='"+ node.children[i].id+"-"+node.id+"']")
-                console.log("[id='" + node.children[i].id + "']");
+                // console.log("[id='" + node.children[i].id + "']");
                 // console.log(edgeToFollow.getAttribute('pathToFollow')); 
-                console.log(edgeToFollow);
+                // console.log(edgeToFollow);
                 var pathToFollow = []
                 var tempPath = edgeToFollow.getAttribute('pathToFollow').split(',').map((x) => parseFloat(x))
                 while (tempPath.length > 0) pathToFollow.push(tempPath.splice(0, 4));
@@ -214,7 +215,7 @@
 
                     if (! node.localBreakpoint) {
                         var updateChildren = true;
-                        console.log(node.name);
+                        // console.log(node.name);
                         switch(node.name){
                             case "fold":
                                 node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value)) + node.initValue;
@@ -237,13 +238,11 @@
                                 }
                                 break;
                             case "merge":
-                                console.log("merge");
                                 [signal1, signal2, operator] = node.formula;
+                                console.log(graph)
                                 signal1Value = findSignalNode(graph, signal1).value;
                                 signal2Value = findSignalNode(graph, signal2).value;
-                                console.log("Merge");
                                 node.value = eval(signal1Value + operator + signal2Value);
-                                console.log("Merge value: " + node.value);
                                 if (node.value == null)
                                     node.value = 0;
                                 updateNode(node);
@@ -319,6 +318,7 @@
 
             signalGraph.input.value ++;
             updateNode(signalGraph.input);
+            update_children(signalGraph.input, signalGraph);
         }
 
         function dive() {

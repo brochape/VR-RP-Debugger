@@ -68,6 +68,7 @@
             }
             var i;
             var result = null;
+            console.log(signalGraph);
             var keys = Object.keys(signalGraph);
             for (i = 0; result == null && i < keys.length; i++){
                 if (signalGraph[keys[i]].ref ==signalName ) {
@@ -81,7 +82,7 @@
         }
 
         function refreshScene() {
-            console.log("refreshSceneing scene...")
+            console.log("refreshing scene...")
             scene = document.querySelector("a-scene")
             graphElements = scene.querySelectorAll(".graphElement");
             // graphElements.forEach(function (graphElement) {
@@ -133,11 +134,13 @@
             // VALUES FLOWINGs      
             for (var i = 0; i < node.children.length; i++) {
                 
-                var fromNode = document.querySelector('#\\3' + node.id);
-                var toNode = document.querySelector('#\\3' + node.children[i].id);
+                var fromNode = document.querySelector("[id='" + node.id + "']");
+                var toNode = document.querySelector("[id='" + node.children[i].id + "']");
 
-                var edgeToFollow = document.querySelector(`#\\3${node.children[i].id}-${node.id}`)
+                var edgeToFollow = document.querySelector("[id='"+ node.children[i].id+"-"+node.id+"']")
+                // console.log("[id='" + node.children[i].id + "']");
                 // console.log(edgeToFollow.getAttribute('pathToFollow')); 
+                // console.log(edgeToFollow);
                 var pathToFollow = []
                 var tempPath = edgeToFollow.getAttribute('pathToFollow').split(',').map((x) => parseFloat(x))
                 while (tempPath.length > 0) pathToFollow.push(tempPath.splice(0, 4));
@@ -192,7 +195,7 @@
             }
             
 
-            var nodeTest = document.querySelector('#\\3' + node.id);
+            var nodeTest = document.querySelector("[id='" + node.id + "']");
             var nodeText = nodeTest.getAttribute('text').value;
             var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
             nodeTest.setAttribute('text', newNodeText);
@@ -211,6 +214,8 @@
                     }
 
                     if (! node.localBreakpoint) {
+                        var updateChildren = true;
+                        // console.log(node.name);
                         switch(node.name){
                             case "fold":
                                 node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value)) + node.initValue;
@@ -223,24 +228,31 @@
                                 break;
                             case "filter":
                                 [body,param] = node.formula;
-                                signalValue = parentNode.value
+                                signalValue = parentNode.value;
                                 if (eval(body.replace(param, signalValue))) {
                                     node.value = signalValue;
+                                    updateNode(node);
                                 }
-                                updateNode(node);
+                                else{
+                                    updateChildren = false;
+                                }
                                 break;
                             case "merge":
                                 [signal1, signal2, operator] = node.formula;
+                                console.log(graph)
                                 signal1Value = findSignalNode(graph, signal1).value;
                                 signal2Value = findSignalNode(graph, signal2).value;
                                 node.value = eval(signal1Value + operator + signal2Value);
-                                
+                                if (node.value == null)
+                                    node.value = 0;
                                 updateNode(node);
                                 break;
 
 
                         }
-                        update_children(node, graph);
+                        if (updateChildren) {
+                            update_children(node, graph);
+                        }
                     }
                 }
             }
@@ -276,12 +288,13 @@
             if (secondSignalEnabled && !paused) {
                 var secondSignalUpdate = setInterval(function(){ 
                     signalGraph[signal].value ++;
+                    console.log(signalGraph[signal].value);
                     updateNode(signalGraph[signal]);
-
-                    // //console.log(signalGraph);
+                    console.log("ok")
                     this.update_children(signalGraph[signal], signalGraph);  
                     this.delete_flowing_values();
                 }, 1000);
+                window.onkeydown = keyPressed;
 
                 this.addEventListener("stopDebugger", () => {
                     paused = true;
@@ -300,6 +313,14 @@
                 })
             }
         }
+
+        function keyPressed(e){
+
+            signalGraph.input.value ++;
+            updateNode(signalGraph.input);
+            update_children(signalGraph.input, signalGraph);
+        }
+
         function dive() {
             document.getElementById("code").style.display="none";
             document.getElementById("scene").style = null;
@@ -373,15 +394,19 @@
 
     </a-scene>
     <div id="graph" style="display: none;">
-        {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"initValue":0,"ref":"seconds","id":1,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"merge","value":null,"initValue":null,"formula":["input","seconds","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":3,"ref":"","line":3,"children":[],"parents":["input","seconds"]},{"name":"map","value":1,"initValue":1,"formula":["a+1","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":4,"ref":"mapVar","line":4,"children":[{"name":"map","value":2,"initValue":2,"formula":["a+1","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":7,"ref":"map2","line":7,"children":[{"name":"merge","value":3,"initValue":3,"formula":["mapVar","map2","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"","line":8,"children":[],"parents":["mapVar","map2"]}],"parents":["mapVar"]},{"name":"merge","value":3,"initValue":3,"formula":["mapVar","map2","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"","line":8,"children":[],"parents":["mapVar","map2"]}],"parents":["seconds"]},{"name":"fold","value":0,"initValue":0,"globalBreakpoint":false,"formula":"currentValue+$$signalValue$$","id":5,"ref":"","line":5,"children":[],"parents":["seconds"]},{"name":"filter","value":"0","initValue":"0","formula":["a%3==0","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":6,"ref":"","line":6,"children":[],"parents":["seconds"]}]},"input":{"name":"input","value":0,"initValue":0,"ref":"input","id":2,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"merge","value":null,"initValue":null,"formula":["input","seconds","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":3,"ref":"","line":3,"children":[],"parents":["input","seconds"]}]}}
+        {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"initValue":0,"ref":"seconds","id":1,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"fold","value":0,"initValue":0,"globalBreakpoint":false,"formula":"currentValue+$$signalValue$$","id":4,"ref":"topsum","line":4,"children":[{"name":"merge","value":0,"initValue":0,"formula":["topleftIncrement","topsum","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":5,"ref":"topLeftSumWithIncrement","line":5,"children":[{"name":"merge","value":2,"initValue":2,"formula":["topLeftSumWithIncrement","topRight","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":7,"ref":"toprightTerm","line":7,"children":[{"name":"merge","value":0,"initValue":0,"formula":["input","toprightTerm","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"topTerm","line":8,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":12,"ref":"","line":12,"children":[],"parents":["topTerm","bottomTerm"]}],"parents":["input","toprightTerm"]}],"parents":["topLeftSumWithIncrement","topRight"]}],"parents":["topleftIncrement","topsum"]}],"parents":["seconds"]},{"name":"filter","value":"0","initValue":"0","formula":["a%3","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":10,"ref":"bottomRightTerm","line":10,"children":[{"name":"merge","value":0,"initValue":0,"formula":["bottomRightTerm","bottomSum","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":11,"ref":"bottomTerm","line":11,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":12,"ref":"","line":12,"children":[],"parents":["topTerm","bottomTerm"]}],"parents":["bottomRightTerm","bottomSum"]}],"parents":["seconds"]}]},"input":{"name":"input","value":0,"initValue":0,"ref":"input","id":2,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"map","value":1,"initValue":1,"formula":["a+1","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":3,"ref":"topleftIncrement","line":3,"children":[{"name":"merge","value":0,"initValue":0,"formula":["topleftIncrement","topsum","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":5,"ref":"topLeftSumWithIncrement","line":5,"children":[{"name":"merge","value":2,"initValue":2,"formula":["topLeftSumWithIncrement","topRight","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":7,"ref":"toprightTerm","line":7,"children":[{"name":"merge","value":0,"initValue":0,"formula":["input","toprightTerm","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"topTerm","line":8,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":12,"ref":"","line":12,"children":[],"parents":["topTerm","bottomTerm"]}],"parents":["input","toprightTerm"]}],"parents":["topLeftSumWithIncrement","topRight"]}],"parents":["topleftIncrement","topsum"]}],"parents":["input"]},{"name":"map","value":2,"initValue":2,"formula":["x+2","x"],"globalBreakpoint":false,"localBreakpoint":false,"id":6,"ref":"topRight","line":6,"children":[{"name":"merge","value":2,"initValue":2,"formula":["topLeftSumWithIncrement","topRight","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":7,"ref":"toprightTerm","line":7,"children":[{"name":"merge","value":0,"initValue":0,"formula":["input","toprightTerm","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"topTerm","line":8,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":12,"ref":"","line":12,"children":[],"parents":["topTerm","bottomTerm"]}],"parents":["input","toprightTerm"]}],"parents":["topLeftSumWithIncrement","topRight"]}],"parents":["input"]},{"name":"merge","value":0,"initValue":0,"formula":["input","toprightTerm","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"topTerm","line":8,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":12,"ref":"","line":12,"children":[],"parents":["topTerm","bottomTerm"]}],"parents":["input","toprightTerm"]},{"name":"fold","value":0,"initValue":0,"globalBreakpoint":false,"formula":"currentValue+$$signalValue$$","id":9,"ref":"bottomSum","line":9,"children":[{"name":"merge","value":0,"initValue":0,"formula":["bottomRightTerm","bottomSum","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":11,"ref":"bottomTerm","line":11,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":12,"ref":"","line":12,"children":[],"parents":["topTerm","bottomTerm"]}],"parents":["bottomRightTerm","bottomSum"]}],"parents":["input"]}]}}
     </div>
     <div id="initCode"  style="display: none;">activate seconds
 activate input
-merge(input seconds /)
-var mapVar = map( (a)=>(a+1) seconds)
-fold(seconds + 0)
-filter((a)=>(a%3==0) seconds 0)
-var map2 = map((a)=>(a+1) mapVar)
-merge(mapVar map2 +)</div>
+var topleftIncrement = map ((a)=>{a+1} input)
+var topsum = fold(seconds + 0)
+var topLeftSumWithIncrement = merge(topleftIncrement topsum *)
+var topRight = map ((x)=>{x+2} input)
+var toprightTerm = merge(topLeftSumWithIncrement topRight +)
+var topTerm = merge(input toprightTerm *)
+var bottomSum = fold(input + 0)
+var bottomRightTerm = filter((a)=>{a%3} seconds 0)
+var bottomTerm = merge(bottomRightTerm bottomSum +)
+merge(topTerm bottomTerm /)</div>
 </body>
 </html>
