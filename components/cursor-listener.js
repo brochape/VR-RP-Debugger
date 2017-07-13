@@ -60,8 +60,6 @@ AFRAME.registerComponent('cursor-listener', {
 
                     }
 
-                    console.log("THIS: ", this);
-                    console.log(node);
                     menuBackgroud.setAttribute("id", "menu-backgroud")
                     menu.setAttribute("id", "menu")
 
