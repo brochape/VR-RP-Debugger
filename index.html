@@ -68,7 +68,6 @@
             }
             var i;
             var result = null;
-            console.log(signalGraph);
             var keys = Object.keys(signalGraph);
             for (i = 0; result == null && i < keys.length; i++){
                 if (signalGraph[keys[i]].ref ==signalName ) {
@@ -239,7 +238,7 @@
                                 break;
                             case "merge":
                                 [signal1, signal2, operator] = node.formula;
-                                console.log(graph)
+                                
                                 signal1Value = findSignalNode(graph, signal1).value;
                                 signal2Value = findSignalNode(graph, signal2).value;
                                 node.value = eval(signal1Value + operator + signal2Value);
@@ -288,9 +287,7 @@
             if (secondSignalEnabled && !paused) {
                 var secondSignalUpdate = setInterval(function(){ 
                     signalGraph[signal].value ++;
-                    console.log(signalGraph[signal].value);
                     updateNode(signalGraph[signal]);
-                    console.log("ok")
                     this.update_children(signalGraph[signal], signalGraph);  
                     this.delete_flowing_values();
                 }, 1000);

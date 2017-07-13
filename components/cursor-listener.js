@@ -42,6 +42,26 @@ AFRAME.registerComponent('cursor-listener', {
                     var sceneEl = document.querySelector('a-scene');
                     var menu = document.createElement('a-plane');
                     var menuBackgroud = document.createElement('a-plane');
+                    var pos = this.getAttribute("position");
+                    var nodeName = findNodeByID(signalGraph,this.id).ref;
+                    if (nodeName) {
+                        var nodeNameText = document.createElement('a-entity');
+
+                        nodeNameText.setAttribute("geometry","primitive: plane; width: "+ 0.1*nodeName.length +"; height:0.2;")
+                        nodeNameText.setAttribute("material", " color: black");
+                        nodeNameText.setAttribute("text","color: white; zOffset: 0.02; align: center; width:3; height:1; value:" + nodeName+";")
+                        menu.appendChild(nodeNameText);
+                        nodeNamePos = {
+                            x: 0,
+                            y: 1.171,
+                            z: 0.010
+                        }
+                        nodeNameText.setAttribute("position", nodeNamePos);
+
+                    }
+
+                    console.log("THIS: ", this);
+                    console.log(node);
                     menuBackgroud.setAttribute("id", "menu-backgroud")
                     menu.setAttribute("id", "menu")
 
@@ -53,7 +73,6 @@ AFRAME.registerComponent('cursor-listener', {
 
                     menu.setAttribute("height",menuElements[type].length*0.5+0.1);
                     menu.setAttribute("width",menuElements[type][0].length*0.5+.1);
-                    var pos = this.getAttribute("position");
                     if (type == "node") {
                         pos.x -= 2;
                     } else {
