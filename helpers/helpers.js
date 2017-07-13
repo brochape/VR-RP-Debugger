@@ -30,7 +30,43 @@ function findNodeByID(signalGraph, ID) {
     return result;
 }
 
+function findNodeByRef(signalGraph, reference) {
+    function searchInNode(node, reference) {
+        //console.log(node);
+        if (node.ref == reference) {
+            return node;
+        }
+        else if (node.children) {
+            var i;
+            var result = null;
+            for(i = 0; result == null && i < node.children.length; i++){
+                result = searchInNode(node.children[i], reference);
+           }
+           return result;
+        }
+        return null;
+    }
+    var i;
+    var result = null;
+    // console.log(signalGraph);
+    var keys = Object.keys(signalGraph);
+    for (i = 0; result == null && i < keys.length; i++){
+        // //console.log(signalGraph);
+        if (signalGraph[keys[i]].ref ==reference ) {
+            result = signalGraph[keys[i]];
+        }
+        else{
+            result = searchInNode(signalGraph[keys[i]], reference);
+        }
+    }
+    return result;
+}
 
+function printf(nodeName){
+    var signal = findNodeByRef(signalGraph, nodeName);
+    var value = signal.value;
+    console.log(nodeName+": "+ value);
+}
 
 function deleteEdgesForID(ID, z_level) {
     var edges = document.querySelectorAll(".edge");
