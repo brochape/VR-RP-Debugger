@@ -1,0 +1,12 @@
+activate seconds
+activate input
+var topleftIncrement = map ((a)=>{a+1} input)
+var topsum = fold(seconds + 0)
+var topLeftSumWithIncrement = merge(topleftIncrement topsum *)
+var topRight = map ((x)=>{x+2} input)
+var toprightTerm = merge(topLeftSumWithIncrement topRight +)
+var topTerm = merge(input toprightTerm *)
+var bottomSum = fold(input + 0)
+var bottomRightTerm = filter((a)=>{a%3} seconds 0)
+var bottomTerm = merge(bottomRightTerm bottomSum +)
+merge(topTerm bottomTerm /)

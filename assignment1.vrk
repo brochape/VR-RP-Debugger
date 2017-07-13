@@ -1,0 +1,3 @@
+activate seconds
+activate input
+merge(input seconds /)
