@@ -2,3 +2,4 @@ activate seconds
 activate input
 var oddseconds = filter((a)=>{a%2!=0} seconds 0)
 fold(oddseconds + 0)
+var sum = fold(oddseconds + 0)
