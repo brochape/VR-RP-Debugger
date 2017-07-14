@@ -352,7 +352,9 @@
         </div>
     </div>
     <a-scene class="mainContent" id = "scene">
-
+          <a-assets>
+            <img id="assignment" src="assignment3.png">
+          </a-assets>
         <!-- Hands -->
         <a-entity teleport-controls hand-controls="left" controller-cursor="color: red" ></a-entity>
         <a-entity teleport-controls hand-controls="right" controller-cursor="color: red" ></a-entity>
@@ -385,6 +387,7 @@
         </a-entity>
 
         <!-- HELPER BUTTONS -->
+        <a-image src="#assignment" position="2 8.4 -5.2" scale="3.7 1 1"></a-image>
         <!-- SKY -->
         <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
         <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
