@@ -63,6 +63,7 @@ function findNodeByRef(signalGraph, reference) {
 }
 
 function printf(nodeName){
+    
     var signal = findNodeByRef(signalGraph, nodeName);
     var value = signal.value;
     console.log(nodeName+": "+ value);
@@ -170,7 +171,7 @@ function changeArgument(signalGraph, node, operation){
             break;
         case "filter"://TODO: this is "hardcoded"
             [body,param] = node.formula;
-            var newBody = body.split(/\>\=|\%|\<\=|\=\=|\>|\<|\=/g);
+            var newBody = body.split(/\>\=|\%|\!\=|\<\=|\=\=|\>|\<|\=/g);
             var oldArg = newBody[1];
             var newArg = eval(oldArg + operation);
             newBody = body.replace(oldArg,newArg) ;
