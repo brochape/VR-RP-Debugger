@@ -217,7 +217,9 @@
                         // console.log(node.name);
                         switch(node.name){
                             case "fold":
-                                node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value)) + node.initValue;
+                                //console.log(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value))
+                                node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value));
+                                //console.log("Fold value: " + node.value)
                                 updateNode(node);
                                 break;
                             case "map":

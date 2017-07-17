@@ -217,7 +217,9 @@
                         // console.log(node.name);
                         switch(node.name){
                             case "fold":
-                                node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value)) + node.initValue;
+                                //console.log(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value))
+                                node.value = eval(node.formula.replace("$$signalValue$$",parentNode.value).replace("currentValue",node.value));
+                                //console.log("Fold value: " + node.value)
                                 updateNode(node);
                                 break;
                             case "map":
@@ -394,11 +396,12 @@
 
     </a-scene>
     <div id="graph" style="display: none;">
-        {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"initValue":0,"ref":"seconds","id":1,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"filter","value":"0","initValue":"0","formula":["a%2!=0","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":3,"ref":"oddseconds","line":3,"children":[{"name":"fold","value":0,"initValue":0,"globalBreakpoint":false,"formula":"currentValue+$$signalValue$$","id":4,"ref":"","line":4,"children":[],"parents":["oddseconds"]}],"parents":["seconds"]}]},"input":{"name":"input","value":0,"initValue":0,"ref":"input","id":2,"globalBreakpoint":false,"localBreakpoint":false,"children":[]}}
+        {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"initValue":0,"ref":"seconds","id":1,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"map","value":1,"initValue":1,"formula":["x+1","x"],"globalBreakpoint":false,"localBreakpoint":false,"id":3,"ref":"oddseconds","line":3,"children":[{"name":"fold","value":"0","initValue":"0","globalBreakpoint":false,"formula":"currentValue+$$signalValue$$","id":4,"ref":"secondsSum","line":4,"children":[],"parents":["oddseconds"]}],"parents":["seconds"]}]},"input":{"name":"input","value":0,"initValue":0,"ref":"input","id":2,"globalBreakpoint":false,"localBreakpoint":false,"children":[]}}
     </div>
     <div id="initCode"  style="display: none;">activate seconds
 activate input
-var oddseconds = filter((a)=>{a%2!=0} seconds 0)
-fold(oddseconds + 0)</div>
+var oddseconds = map((x) => {x + 1} seconds)
+var secondsSum = fold(oddseconds + 0)
+</div>
 </body>
 </html>

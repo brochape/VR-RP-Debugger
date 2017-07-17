@@ -193,7 +193,7 @@ function changeArgument(signalGraph, node, operation){
 
 }
 
-function changeOperator(signalGraph, node, operation){
+function changeOperation(signalGraph, node, operation){
     switch(node.name){
         case "fold":
             var parentValue = findSignalNode(signalGraph,node.parents[0]).value// TODO: THIS ONLY WORKS FOR A SECOND- based signal
@@ -208,19 +208,24 @@ function changeOperator(signalGraph, node, operation){
             [body,param] = node.formula;
             var newBody = body.replace(/\+|\/|\-|\*/g,operation);
             node.formula = [newBody,param];// Value automatically updated at first computation of the formula
-            console.log("Node formula: ",node.formula)
+            break;
+
+        case "merge":
+            node.formula[2] = operation;
             break;
 
     }
-    var editor = $('.CodeMirror')[0].CodeMirror;
-    console.log(editor)
+    if (node.name != "filter") {
+        var editor = $('.CodeMirror')[0].CodeMirror;
 
-    var code = editor.getValue();
-    // console.log(code.innerHTML);
-    //activate seconds<br>var mapVar = map( (a)=&gt;(a+1) seconds)<br>fold(seconds + 0)<br>filter((a)=&gt;(a%3==0) seconds 0)<br>var map2 = map((a)=&gt;(a+1) mapVar)<br>merge(mapVar map2 +)
-    var previousCode = code.split('\n')[node.line-1];
-    var newCode = previousCode.replace(/\+|\/|\-|\*/g,operation);
-    editor.setValue(code.replace(previousCode,newCode));
+        var code = editor.getValue();
+        // console.log(code.innerHTML);
+        //activate seconds<br>var mapVar = map( (a)=&gt;(a+1) seconds)<br>fold(seconds + 0)<br>filter((a)=&gt;(a%3==0) seconds 0)<br>var map2 = map((a)=&gt;(a+1) mapVar)<br>merge(mapVar map2 +)
+        var previousCode = code.split('\n')[node.line-1];
+        var newCode = previousCode.replace(/\+|\/|\-|\*/g,operation);
+        editor.setValue(code.replace(previousCode,newCode));
+    }
+
 }
 
 function changeOperator(signalGraph, node, newOperation) {
@@ -273,7 +278,7 @@ function changeOperator(signalGraph, node, newOperation) {
                         node.formula = [body,param];
                         node.value = 0;
                         node.name = newOperation;
-                        newLine += (node.name + "((" + param +') => ('+ body+ ') ' + node.parents[0] + node.value + ')')
+                        newLine += (node.name + "((" + param +') => {'+ body+ '} ' + node.parents[0] + node.value + ')')
                         break;
 
                     case "map":
@@ -282,7 +287,7 @@ function changeOperator(signalGraph, node, newOperation) {
                         node.formula = [body,param];
                         node.value = 0;
                         node.name = newOperation;
-                        newLine += (node.name + "((" + param +') => ('+ body+ ') ' + node.parents[0] + ')')
+                        newLine += (node.name + "((" + param +') => {'+ body+ '} ' + node.parents[0] + ')')
                         break;
                 }
                 splitCode[node.line-1] = newLine;

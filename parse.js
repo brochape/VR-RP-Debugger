@@ -52,7 +52,6 @@ module.exports = {
             switch(statement.name){
                 case "fold":
                     [signal,operand,initVal] = statement.children.map((x)=>(x.value));
-
                     if (Object.keys(signalGraph).indexOf(signal) >= 0) {
                         var signalValue = signalGraph[signal].value;
                     }
@@ -60,7 +59,8 @@ module.exports = {
                         var signalValue = this.findSignalNode(signalGraph,signal).value;
                     }
                     var formula =  "currentValue" + operand + "$$signalValue$$" ;
-                    var initVal = eval(formula.replace("$$signalValue$$",signalValue).replace("currentValue",initVal));
+                    //var initVal = eval(formula.replace("$$signalValue$$",signalValue).replace("currentValue",initVal));
+                    console.log("InitValue:"+initVal);
                     var signalNode = {
                         name: "fold",
                         value: initVal,

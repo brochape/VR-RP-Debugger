@@ -43,20 +43,61 @@ AFRAME.registerComponent('cursor-listener', {
                     var menu = document.createElement('a-plane');
                     var menuBackgroud = document.createElement('a-plane');
                     var pos = this.getAttribute("position");
-                    var nodeName = findNodeByID(signalGraph,this.id).ref;
-                    if (nodeName) {
-                        var nodeNameText = document.createElement('a-entity');
 
-                        nodeNameText.setAttribute("geometry","primitive: plane; width: "+ 0.1*nodeName.length +"; height:0.2;")
-                        nodeNameText.setAttribute("material", " color: black");
-                        nodeNameText.setAttribute("text","color: white; zOffset: 0.02; align: center; width:3; height:1; value:" + nodeName+";")
-                        menu.appendChild(nodeNameText);
-                        nodeNamePos = {
-                            x: 0,
-                            y: 1.171,
-                            z: 0.010
+                    console.log();
+                    if (type == "node") {
+                        var nodeName = findNodeByID(signalGraph,this.id).ref;
+
+                        if (nodeName) {
+                            var nodeNameText = document.createElement('a-entity');
+
+                            nodeNameText.setAttribute("geometry","primitive: plane; width: "+ 0.1*nodeName.length +"; height:0.2;")
+                            nodeNameText.setAttribute("material", " color: black");
+                            nodeNameText.setAttribute("text","color: white; zOffset: 0.02; align: center; width:3; height:1; value:" + nodeName+";")
+                            menu.appendChild(nodeNameText);
+                            nodeNamePos = {
+                                x: 0,
+                                y: 1.171,
+                                z: 0.010
+                            }
+                            nodeNameText.setAttribute("position", nodeNamePos);
+
                         }
-                        nodeNameText.setAttribute("position", nodeNamePos);
+                        var selectedNode = findNodeByID(signalGraph,this.id)
+                        console.log(selectedNode)
+                        if (selectedNode) {
+                            var nodeOperation = document.createElement('a-entity');
+                            var formula = selectedNode.formula;
+                            var operation = ' ';
+                            switch (selectedNode.name) {
+                                case "merge":
+                                    operation = formula[2];
+                                    break;
+                                case "fold":
+                                    console.log("fold");
+                                    var temp = formula.split('$')[0]
+                                    operation = temp[temp.length-1];
+                                    break;
+                                case "filter":
+                                    operation = formula[0].replace(formula[1],'');
+                                    break;
+                                case "map":
+                                    peration = formula[0].replace(formula[1],'');
+                                    break;
+                            }
+                            var textToDisplay = "Operation: " + operation;
+                            nodeOperation.setAttribute("geometry","primitive: plane; width: "+ 0.1*textToDisplay.length +"; height:0.2;")
+                            nodeOperation.setAttribute("material", " color: black");
+                            nodeOperation.setAttribute("text","color: white; zOffset: 0.02; align: center; width:3; height:1; value: "+ textToDisplay+";")
+                            menu.appendChild(nodeOperation);
+                            nodeNamePos = {
+                                x: 0,
+                                y: -1.171,
+                                z: 0.010
+                            }
+                            nodeOperation.setAttribute("position", nodeNamePos);
+
+                        }
 
                     }
 
@@ -155,7 +196,7 @@ AFRAME.registerComponent('cursor-listener', {
                                     case "-":
                                     case "/":
                                     case "*":
-                                        changeOperator(signalGraph, node, action);
+                                        changeOperation(signalGraph, node, action);
                                         break;
                                     case "arg-1":
                                     case "arg+1":
