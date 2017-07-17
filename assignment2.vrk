@@ -1,5 +1,4 @@
 activate seconds
 activate input
-var oddseconds = filter((a)=>{a%2!=0} seconds 0)
+var oddseconds = map((x) => {x + 1} seconds)
 var secondsSum = fold(oddseconds + 0)
-var sum = fold(oddseconds + 0)
