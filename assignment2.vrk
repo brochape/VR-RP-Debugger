@@ -1,4 +1,4 @@
 activate seconds
 activate input
-var oddseconds = map((x) => {x + 1} seconds)
-var secondsSum = fold(oddseconds + 0)
+var evenSeconds = map((x) => (x + 1) seconds)
+var secondsSum = fold(evenSeconds + 0)

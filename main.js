@@ -5,7 +5,7 @@ const dot = require('graphlib-dot')
 const exec = require('child_process').exec;
 
 var parser = require('./parse.js');
-var code = fs.readFileSync('assignment2.vrk','utf8');
+var code = fs.readFileSync('assignment3.vrk','utf8');
 console.log(code);
 //var code = "activate seconds\nactivate input\nmerge(input seconds /)\nvar mapVar = map( (a)=>(a+1) seconds)\nfold(seconds + 0)\nfilter((a)=>(a%3==0) seconds 0)\nvar map2 = map((a)=>(a+1) mapVar)\nmerge(mapVar map2 +)"
 ast = parser.parse(code);

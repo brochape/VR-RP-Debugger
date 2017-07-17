@@ -224,7 +224,13 @@ function changeOperation(signalGraph, node, operation){
         var previousCode = code.split('\n')[node.line-1];
         var newCode = previousCode.replace(/\+|\/|\-|\*/g,operation);
         editor.setValue(code.replace(previousCode,newCode));
+
+        var nodeTest = document.querySelector("[id='" + node.id + "']");
+        var nodeText = nodeTest.getAttribute('text').value;
+        var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
+        nodeTest.setAttribute('text', newNodeText);
     }
+
 
 }
 
@@ -297,6 +303,11 @@ function changeOperator(signalGraph, node, newOperation) {
 
 
         }
+        
+        var nodeTest = document.querySelector("[id='" + node.id + "']");
+        var nodeText = nodeTest.getAttribute('text').value;
+        var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
+        nodeTest.setAttribute('text', newNodeText);
 }
 
 function reset_graph(startNode){
