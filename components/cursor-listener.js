@@ -82,7 +82,7 @@ AFRAME.registerComponent('cursor-listener', {
                                     operation = formula[0].replace(formula[1],'');
                                     break;
                                 case "map":
-                                    peration = formula[0].replace(formula[1],'');
+                                    operation = formula[0].replace(formula[1],'');
                                     break;
                             }
                             var textToDisplay = "Operation: " + operation;
