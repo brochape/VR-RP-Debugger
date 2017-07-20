@@ -3,6 +3,6 @@ activate input
 merge(input seconds /)
 var mapVar = map( (a)=>{a+1} seconds)
 fold(seconds + 0)
-filter((a)=>(a%3==0) seconds 0)
+filter((a)=>{a%3==0} seconds 0)
 var map2 = map((a)=>{a+1} mapVar)
 merge(mapVar map2 +)
