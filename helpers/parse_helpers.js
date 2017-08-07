@@ -80,11 +80,11 @@ function create_node_entity(name, pos_x, pos_y, pos_z, ID){
     node.setAttribute('text', {align: 'center',
     						   zOffset: 0.01, 
     						   color: 'black',
-    						   font: 'https://cdn.aframe.io/fonts/Roboto-msdf.json',
+    						   font: 'https://cdn.aframe.io/fonts/mozillavr.fnt',
     						   opacity: 1,
     						   side: 'double',
     						   value: name.replace("\n","\n\n"), 
-    						   width: 8.9,
+    						   width: 5.870,
     						   wrapCount: 60.6,
     						   wrapPixels: 1500,
     						   zOffset: 0});
