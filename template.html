@@ -166,7 +166,7 @@
                 var nodeText = fromNode.getAttribute('text').value.split("\n");
                 var slidingText = nodeText[nodeText.length-1];
 
-                var text_ = "align: center; color: white; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + slidingText +"; width: 5; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
+                var text_ = "align: center; color: white; font: https://cdn.aframe.io/fonts/mozillavr.fnt; opacity: 1; side: double; value:" + slidingText +"; width: 4; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
 
                 entityEl.setAttribute('text', text_);
                 // entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
@@ -196,7 +196,7 @@
 
             var nodeTest = document.querySelector("[id='" + node.id + "']");
             var nodeText = nodeTest.getAttribute('text').value;
-            var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
+            var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/mozillavr.fnt; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 5.870; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.02"
             nodeTest.setAttribute('text', newNodeText);
 
 
@@ -358,11 +358,11 @@
             <img id="assignment" src="assignment3.png">
           </a-assets>
         <!-- Hands -->
-        <a-entity teleport-controls hand-controls="left" position="2 4 -0.5" controller-cursor="color: red" ></a-entity>
-        <a-entity teleport-controls hand-controls="right" position="2 4 -0.5" controller-cursor="color: red" ></a-entity>
+        <a-entity teleport-controls hand-controls="left" position="2 3.5 -0.5" controller-cursor="color: red" ></a-entity>
+        <a-entity teleport-controls hand-controls="right" position="2 3.5 -0.5" controller-cursor="color: red" ></a-entity>
         <!-- CAMERA -->
         <a-entity>
-            <a-camera user-height="1.6" position="2 4 0">
+            <a-camera user-height="1.6" position="2 3.5 0">
                 <!-- DEBUGGER CONTROLS -->
                 <a-entity
                     debugger-control
@@ -389,7 +389,7 @@
         </a-entity>
 
         <!-- HELPER BUTTONS -->
-        <a-image src="#assignment" position="2 8.4 -5.2" scale="3.7 1 1"></a-image>
+        <!-- <a-image src="#assignment" position="2 8.4 -5.2" scale="3.7 1 1"></a-image> -->
         <!-- SKY -->
         <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
         <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
