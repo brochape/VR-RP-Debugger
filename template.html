@@ -92,8 +92,15 @@
             // Uh oh something wrong here
             // console.log("AFTER");
             previousSignalGraphs.forEach(function (graph, index) {
+                // console.log("Signal Graph: ")
+                // console.log(graph)
                 dotString = make_dot_file(graph);
+                // console.log("Dot signal Graph: ")
+
+                // console.log(dotString)
                 jsonGraph = get_json(dotString)
+                // console.log("JSON signal Graph: ")
+                // console.log(jsonGraph)
                 json_to_hml(JSON.parse(jsonGraph),index);
                 
             })
@@ -129,7 +136,7 @@
         function updateNode(node){
             var sceneEl = document.querySelector('a-scene');
             var reached = false;
-
+            // if(node.name=='seconds') console.log(node.children)
             // VALUES FLOWINGs      
             for (var i = 0; i < node.children.length; i++) {
                 
@@ -164,7 +171,8 @@
                 var deltaY = dist.y/division;
 
                 var nodeText = fromNode.getAttribute('text').value.split("\n");
-                var slidingText = nodeText[nodeText.length-1];
+                var slidingText = (parseInt(nodeText[nodeText.length-1])+1).toString();
+                // if (slidingText!= 'seconds' && slidingText !=)
 
                 var text_ = "align: center; color: white; font: https://cdn.aframe.io/fonts/mozillavr.fnt; opacity: 1; side: double; value:" + slidingText +"; width: 4; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
 
@@ -290,6 +298,7 @@
                 var secondSignalUpdate = setInterval(function(){ 
                     signalGraph[signal].value ++;
                     updateNode(signalGraph[signal]);
+                    console.log(signalGraph)
                     this.update_children(signalGraph[signal], signalGraph);  
                     this.delete_flowing_values();
                 }, 1000);

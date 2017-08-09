@@ -14,11 +14,33 @@ function traverse(node){
     // console.log(node.kids);
     if (node.children != undefined) {
         for (var i = node.children.length - 1; i >= 0; i--) {
-            str += '\t"' + node.name + "$$"+ node.id+"$$"  + '\n    ' + node.value + '"'  + "->" + '"' + node.children[i].name + "$$"+ node.children[i].id+"$$"  + '\n    ' + node.children[i].value +'"' + "\n";
+            str += '\t"' + node.name + "$$"+ node.id+"$$"  + '\n    ' + node.initValue + '"'  + "->" + '"' + node.children[i].name + "$$"+ node.children[i].id+"$$"  + '\n    ' + node.children[i].initValue +'"' + "\n";
             traverse(node.children[i]);
         }
     }
 }
+
+/*function make_dot_without_values(graph) {
+    str = "digraph {\n"
+    // for (var i = graph.seconds.length - 1; i >= 0; i--) {
+    traverse_withoutValue(graph.seconds);
+    traverse_withoutValue(graph.input);
+    // }
+    str += "}";
+    return str;
+};
+
+function traverse_withoutValue(node) {
+    // console.log(node.kids);
+    if (node.children != undefined) {
+        for (var i = node.children.length - 1; i >= 0; i--) {
+            console.log("NODE")
+            console.log(node)
+            str += '\t"' + node.name + "$$"+ node.id+"$$"  + '\n    ' + node.initValue + '"'  + "->" + '"' + node.children[i].name + "$$"+ node.children[i].id+"$$" +'"' + "\n";
+            traverse_withoutValue(node.children[i]);
+        }
+    }
+}*/
 
 function get_json(dotString) {
 	return Viz(dotString, {format: "json"})
@@ -32,9 +54,12 @@ function json_to_hml(jsonGraph,z_index) {
         pos = jsonGraph.objects[node].pos.split(',');
         // console.log(pos)
         splitname = jsonGraph.objects[node].name.split("$$");
+        console.log("jsonGraph.objects[node]")
+        console.log(jsonGraph.objects[node])
         name = splitname[0] + splitname[2]
         id = splitname[1]
         dotIDtoMyID[jsonGraph.objects[node]._gvid] = id
+        name += "\n" + 
         create_node_entity(name, parseFloat(pos[0])/40 -5, parseFloat(pos[1])/70, -5 - z_index*8, id) + "\n\t\t";
     }
 	for (var edge in jsonGraph.edges){

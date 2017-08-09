@@ -61,10 +61,17 @@ AFRAME.registerComponent('revert-listener', {
                 revertMenuBackgroud.appendChild(revertMenu);
                 sceneEl.appendChild(revertMenuBackgroud);
                 button.addEventListener('click', () => {
+
                     revertMenuBackgroud.parentNode.removeChild(revertMenuBackgroud);
                     var index = (5 - this.el.getAttribute("position").z)/8 -1;
-                    previousSignalGraphs = previousSignalGraphs.slice(Math.round(index));
+                    console.log(previousSignalGraphs)
+                    console.log("INDEX TO DELETE: " + Math.round(index))
+
+                    previousSignalGraphs = previousSignalGraphs.slice(1);
+                    signalGraph = previousSignalGraphs[0]
                     refreshScene();
+                    this.el.emit('stopDebugger');
+                    handle_signals(signalGraph);  
                 })
 
 

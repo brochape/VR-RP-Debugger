@@ -58,7 +58,7 @@ AFRAME.registerComponent('cursor-listener', {
                             nodeNamePos = {
                                 x: 0,
                                 y: 1.171,
-                                z: 0.010
+                                z: 0.020
                             }
                             nodeNameText.setAttribute("position", nodeNamePos);
 
@@ -117,13 +117,13 @@ AFRAME.registerComponent('cursor-listener', {
                     } else {
                         pos.x -= 1;
                     }
-                    pos.z += 0.02;
+                    pos.z += 0.05;
 
 
                     menuPos = {
                       x: 0,
                       y: 0,
-                      z: 0.01
+                      z: 0.05
                     }
                     menu.setAttribute('position',menuPos);
                     menuBackgroud.setAttribute("position",pos); 
@@ -187,8 +187,7 @@ AFRAME.registerComponent('cursor-listener', {
                                         setLocalBreakpointOn(node);
                                         break;
                                     case "SAVE":
-                                        previousSignalGraphs[0] = signalGraph;
-                                        previousSignalGraphs.unshift(signalGraph);
+                                        previousSignalGraphs.push(JSON.parse(JSON.stringify(signalGraph)));
                                         currentSignalGraph += 1;
                                         refreshScene();
                                         break;

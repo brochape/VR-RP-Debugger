@@ -92,8 +92,15 @@
             // Uh oh something wrong here
             // console.log("AFTER");
             previousSignalGraphs.forEach(function (graph, index) {
+                // console.log("Signal Graph: ")
+                // console.log(graph)
                 dotString = make_dot_file(graph);
+                // console.log("Dot signal Graph: ")
+
+                // console.log(dotString)
                 jsonGraph = get_json(dotString)
+                // console.log("JSON signal Graph: ")
+                // console.log(jsonGraph)
                 json_to_hml(JSON.parse(jsonGraph),index);
                 
             })
@@ -129,7 +136,7 @@
         function updateNode(node){
             var sceneEl = document.querySelector('a-scene');
             var reached = false;
-
+            // if(node.name=='seconds') console.log(node.children)
             // VALUES FLOWINGs      
             for (var i = 0; i < node.children.length; i++) {
                 
@@ -164,9 +171,10 @@
                 var deltaY = dist.y/division;
 
                 var nodeText = fromNode.getAttribute('text').value.split("\n");
-                var slidingText = nodeText[nodeText.length-1];
+                var slidingText = (parseInt(nodeText[nodeText.length-1])+1).toString();
+                // if (slidingText!= 'seconds' && slidingText !=)
 
-                var text_ = "align: center; color: white; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + slidingText +"; width: 5; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
+                var text_ = "align: center; color: white; font: https://cdn.aframe.io/fonts/mozillavr.fnt; opacity: 1; side: double; value:" + slidingText +"; width: 4; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
 
                 entityEl.setAttribute('text', text_);
                 // entityEl.setAttribute('position', fromDest.x + " " + fromDest.y +" " + fromDest.z)
@@ -196,7 +204,7 @@
 
             var nodeTest = document.querySelector("[id='" + node.id + "']");
             var nodeText = nodeTest.getAttribute('text').value;
-            var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/Roboto-msdf.json; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 8.9; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.01"
+            var newNodeText = "align: center; color: black; font: https://cdn.aframe.io/fonts/mozillavr.fnt; opacity: 1; side: double; value:" + node.name +'\n\n'+ node.value.toString() +"; width: 5.870; wrapCount: 60.6; wrapPixels: 1500; zOffset: 0.02"
             nodeTest.setAttribute('text', newNodeText);
 
 
@@ -290,6 +298,7 @@
                 var secondSignalUpdate = setInterval(function(){ 
                     signalGraph[signal].value ++;
                     updateNode(signalGraph[signal]);
+                    console.log(signalGraph)
                     this.update_children(signalGraph[signal], signalGraph);  
                     this.delete_flowing_values();
                 }, 1000);
@@ -358,11 +367,11 @@
             <img id="assignment" src="assignment3.png">
           </a-assets>
         <!-- Hands -->
-        <a-entity teleport-controls hand-controls="left" position="2 4 -0.5" controller-cursor="color: red" ></a-entity>
-        <a-entity teleport-controls hand-controls="right" position="2 4 -0.5" controller-cursor="color: red" ></a-entity>
+        <a-entity teleport-controls hand-controls="left" position="2 3.5 -0.5" controller-cursor="color: red" ></a-entity>
+        <a-entity teleport-controls hand-controls="right" position="2 3.5 -0.5" controller-cursor="color: red" ></a-entity>
         <!-- CAMERA -->
         <a-entity>
-            <a-camera user-height="1.6" position="2 4 0">
+            <a-camera user-height="1.6" position="2 3.5 0">
                 <!-- DEBUGGER CONTROLS -->
                 <a-entity
                     debugger-control
@@ -389,28 +398,22 @@
         </a-entity>
 
         <!-- HELPER BUTTONS -->
-        <a-image src="#assignment" position="2 8.4 -5.2" scale="3.7 1 1"></a-image>
+        <!-- <a-image src="#assignment" position="2 8.4 -5.2" scale="3.7 1 1"></a-image> -->
         <!-- SKY -->
         <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
         <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
 
     </a-scene>
     <div id="graph" style="display: none;">
-        {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"initValue":0,"ref":"seconds","id":1,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"fold","value":"0","initValue":"0","globalBreakpoint":false,"formula":"currentValue*$$signalValue$$","id":4,"ref":"topsum","line":4,"children":[{"name":"merge","value":0,"initValue":0,"formula":["topleftIncrement","topsum","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":5,"ref":"topLeftSumWithIncrement","line":5,"children":[{"name":"merge","value":-2,"initValue":-2,"formula":["topLeftSumWithIncrement","topRight","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":7,"ref":"toprightTerm","line":7,"children":[{"name":"merge","value":0,"initValue":0,"formula":["input","toprightTerm","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"topTerm","line":8,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":13,"ref":"result","line":13,"children":[{"name":"merge","value":null,"initValue":null,"formula":["tempResult","result","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":14,"ref":"subResult","line":14,"children":[],"parents":["tempResult","result"]}],"parents":["topTerm","bottomTerm"]}],"parents":["input","toprightTerm"]}],"parents":["topLeftSumWithIncrement","topRight"]}],"parents":["topleftIncrement","topsum"]}],"parents":["seconds"]},{"name":"filter","value":"0","initValue":"0","formula":["a%2","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":11,"ref":"bottomRightTerm","line":11,"children":[{"name":"merge","value":0,"initValue":0,"formula":["bottomRightTerm","bottomSum","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":12,"ref":"bottomTerm","line":12,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":13,"ref":"result","line":13,"children":[{"name":"merge","value":null,"initValue":null,"formula":["tempResult","result","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":14,"ref":"subResult","line":14,"children":[],"parents":["tempResult","result"]}],"parents":["topTerm","bottomTerm"]}],"parents":["bottomRightTerm","bottomSum"]}],"parents":["seconds"]}]},"input":{"name":"input","value":0,"initValue":0,"ref":"input","id":2,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"map","value":1,"initValue":1,"formula":["a+1","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":3,"ref":"topleftIncrement","line":3,"children":[{"name":"merge","value":0,"initValue":0,"formula":["topleftIncrement","topsum","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":5,"ref":"topLeftSumWithIncrement","line":5,"children":[{"name":"merge","value":-2,"initValue":-2,"formula":["topLeftSumWithIncrement","topRight","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":7,"ref":"toprightTerm","line":7,"children":[{"name":"merge","value":0,"initValue":0,"formula":["input","toprightTerm","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"topTerm","line":8,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":13,"ref":"result","line":13,"children":[{"name":"merge","value":null,"initValue":null,"formula":["tempResult","result","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":14,"ref":"subResult","line":14,"children":[],"parents":["tempResult","result"]}],"parents":["topTerm","bottomTerm"]}],"parents":["input","toprightTerm"]}],"parents":["topLeftSumWithIncrement","topRight"]}],"parents":["topleftIncrement","topsum"]}],"parents":["input"]},{"name":"map","value":-2,"initValue":-2,"formula":["x-2","x"],"globalBreakpoint":false,"localBreakpoint":false,"id":6,"ref":"topRight","line":6,"children":[{"name":"merge","value":-2,"initValue":-2,"formula":["topLeftSumWithIncrement","topRight","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":7,"ref":"toprightTerm","line":7,"children":[{"name":"merge","value":0,"initValue":0,"formula":["input","toprightTerm","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"topTerm","line":8,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":13,"ref":"result","line":13,"children":[{"name":"merge","value":null,"initValue":null,"formula":["tempResult","result","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":14,"ref":"subResult","line":14,"children":[],"parents":["tempResult","result"]}],"parents":["topTerm","bottomTerm"]}],"parents":["input","toprightTerm"]}],"parents":["topLeftSumWithIncrement","topRight"]},{"name":"merge","value":-2,"initValue":-2,"formula":["input","topRight","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":9,"ref":"tempResult","line":9,"children":[{"name":"merge","value":null,"initValue":null,"formula":["tempResult","result","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":14,"ref":"subResult","line":14,"children":[],"parents":["tempResult","result"]}],"parents":["input","topRight"]}],"parents":["input"]},{"name":"merge","value":0,"initValue":0,"formula":["input","toprightTerm","*"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"topTerm","line":8,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":13,"ref":"result","line":13,"children":[{"name":"merge","value":null,"initValue":null,"formula":["tempResult","result","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":14,"ref":"subResult","line":14,"children":[],"parents":["tempResult","result"]}],"parents":["topTerm","bottomTerm"]}],"parents":["input","toprightTerm"]},{"name":"merge","value":-2,"initValue":-2,"formula":["input","topRight","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":9,"ref":"tempResult","line":9,"children":[{"name":"merge","value":null,"initValue":null,"formula":["tempResult","result","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":14,"ref":"subResult","line":14,"children":[],"parents":["tempResult","result"]}],"parents":["input","topRight"]},{"name":"fold","value":"0","initValue":"0","globalBreakpoint":false,"formula":"currentValue+$$signalValue$$","id":10,"ref":"bottomSum","line":10,"children":[{"name":"merge","value":0,"initValue":0,"formula":["bottomRightTerm","bottomSum","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":12,"ref":"bottomTerm","line":12,"children":[{"name":"merge","value":null,"initValue":null,"formula":["topTerm","bottomTerm","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":13,"ref":"result","line":13,"children":[{"name":"merge","value":null,"initValue":null,"formula":["tempResult","result","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":14,"ref":"subResult","line":14,"children":[],"parents":["tempResult","result"]}],"parents":["topTerm","bottomTerm"]}],"parents":["bottomRightTerm","bottomSum"]}],"parents":["input"]}]}}
+        {"name":"root","children":[],"seconds":{"name":"seconds","value":0,"initValue":0,"ref":"seconds","id":1,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"merge","value":null,"initValue":null,"formula":["input","seconds","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":3,"ref":"","line":3,"children":[],"parents":["input","seconds"]},{"name":"map","value":1,"initValue":1,"formula":["a+1","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":4,"ref":"mapVar","line":4,"children":[{"name":"map","value":2,"initValue":2,"formula":["a+1","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":7,"ref":"map2","line":7,"children":[{"name":"merge","value":3,"initValue":3,"formula":["mapVar","map2","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"","line":8,"children":[],"parents":["mapVar","map2"]}],"parents":["mapVar"]},{"name":"merge","value":3,"initValue":3,"formula":["mapVar","map2","+"],"globalBreakpoint":false,"localBreakpoint":false,"id":8,"ref":"","line":8,"children":[],"parents":["mapVar","map2"]}],"parents":["seconds"]},{"name":"fold","value":"0","initValue":"0","globalBreakpoint":false,"formula":"currentValue+$$signalValue$$","id":5,"ref":"","line":5,"children":[],"parents":["seconds"]},{"name":"filter","value":"0","initValue":"0","formula":["a%3==0","a"],"globalBreakpoint":false,"localBreakpoint":false,"id":6,"ref":"","line":6,"children":[],"parents":["seconds"]}]},"input":{"name":"input","value":0,"initValue":0,"ref":"input","id":2,"globalBreakpoint":false,"localBreakpoint":false,"children":[{"name":"merge","value":null,"initValue":null,"formula":["input","seconds","/"],"globalBreakpoint":false,"localBreakpoint":false,"id":3,"ref":"","line":3,"children":[],"parents":["input","seconds"]}]}}
     </div>
     <div id="initCode"  style="display: none;">activate seconds
 activate input
-var topleftIncrement = map ((a)=>{a+11} input)
-var topsum = fold(seconds * 0)
-var topLeftSumWithIncrement = merge(topleftIncrement topsum *)
-var topRight = map ((x)=>{x-2} input)
-var toprightTerm = merge(topLeftSumWithIncrement topRight +)
-var topTerm = merge(input toprightTerm *)
-var tempResult = merge(input topRight +)
-var bottomSum = fold(input + 0)
-var bottomRightTerm = filter((a)=>{a%2} seconds 0)
-var bottomTerm = merge(bottomRightTerm bottomSum +)
-var result = merge(topTerm bottomTerm /)
-var subResult = merge(tempResult result /)</div>
+merge(input seconds /)
+var mapVar = map( (a)=>{a+1} seconds)
+fold(seconds + 0)
+filter((a)=>{a%3==0} seconds 0)
+var map2 = map((a)=>{a+1} mapVar)
+merge(mapVar map2 +)</div>
 </body>
 </html>
